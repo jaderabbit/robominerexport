@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Robots">
+      <UniqueIdentifier>{67154647-4ad9-4a94-bb07-f2c1244360c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment">
+      <UniqueIdentifier>{b7a16b44-ee64-4663-9d42-7afa5a215e02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{540ecb41-8079-424c-bc60-41a483a1a839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataAnalysis">
+      <UniqueIdentifier>{1e4a1b98-ec15-40c6-b883-8856bbb71c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Visualizer">
+      <UniqueIdentifier>{2644407a-3e17-488d-9870-0395d2b21fbe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Forager.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="Mine.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="Robot.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="mt.cc">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Explorer.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="Clusterer.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="StatisticsHandler.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="FrequencyHistogramTool.cpp">
+      <Filter>DataAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="DXRenderer.cpp">
+      <Filter>Visualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Visualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>Visualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Update.cpp">
+      <Filter>Visualizer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Robot.h">
+      <Filter>Robots</Filter>
+    </ClInclude>
+    <ClInclude Include="Mine.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="mt.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="FrequencyHistogramTool.h">
+      <Filter>DataAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateConversions.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXRenderer.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="FatalError.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="TileRenderGraph.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
