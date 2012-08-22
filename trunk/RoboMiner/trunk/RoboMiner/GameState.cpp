@@ -1,6 +1,8 @@
 #include "GameState.h"
 #include "CoordinateConversions.h"
 #include "FatalError.h"
+#include <fstream>
+#include <string> 
 
 using namespace std;
 
@@ -73,20 +75,24 @@ bool GameState::LoadLevel( const char* filename, int width, int height, int num_
 	}
 
 	//generate 255 random colors
-	for ( unsigned int i=0; i < 255; i++)
+	/*for ( unsigned int i=0; i < 255; i++)
 	{
 		float r = (float)rand() / RAND_MAX;
         float g = (float)rand() / RAND_MAX;
 		float b = (float)rand() / RAND_MAX;
 
 		rndColors.push_back( float3( r,g,b));
-	}
+	}*/
+
+	//generate colours from file for debugging
+	GenerateColoursFromFile("Colour Chart.txt");
 
 	//create vertex buffer
 	if ( !renderer.CreateVertexBuffer(sizeof(Tile),m.size.y*m.size.x) ) return FatalError(*pHWnd, "Vertex Buffer creation failed!");
 
 	return true;
 }
+
 //render grid map and visualizations
 void GameState::RenderScene()
 {
@@ -96,13 +102,13 @@ void GameState::RenderScene()
 		for ( unsigned int x=0; x < m.size.x; x++ )
 		{
 			switch ( m.grid[x][y].type ) {
-				case ROBOT: trg.pTiles[count].color = float3(1,0,1); 
-							
+				case ROBOT: trg.pTiles[count].color = rndColors[m.grid[x][y].index];
+							/*
 							switch ( m.robots[m.grid[x][y].index].activity ) {
 								case CLUSTER: trg.pTiles[count].color = float3(1,1,0); break;
 								case EXPLORE: trg.pTiles[count].color = float3(0,1,1); break;
 								case FORAGE: trg.pTiles[count].color = rndColors[m.robots[m.grid[x][y].index].state]; break;
-							}
+							}*/
 							break;
 				case GOLD: trg.pTiles[count].color= float3(0,0,1);break;
 				case WASTE: trg.pTiles[count].color= float3(0,1,0);break;
@@ -137,4 +143,32 @@ void GameState::RenderScene()
 	
 		//render scene
 		renderer.RenderScene(trg);
+}
+
+
+void GameState::GenerateColoursFromFile( const char* filename) {
+	ifstream in(filename);
+
+	if ( in.is_open() ) {
+		while ( in.good() ) {
+			//get colour name for debugging purposes
+			string colourName;
+			getline(in,colourName,'\t');
+			colourNames.push_back(colourName);
+
+			//discard hex value
+			string hex;
+			getline(in,hex,'\t');
+
+			//RGB
+			int r,g,b;
+			in >> r; in.ignore(1);in >> g; in.ignore(1);in >> b ;in.ignore(1);
+
+			//ignore rest of line
+			getline(in,colourName);
+
+			//save color
+			rndColors.push_back(float3(r/100.0,g/100.0,b/100.0));
+		}
+	}
 }

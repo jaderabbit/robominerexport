@@ -1,6 +1,7 @@
 #include "Robot.h"
 #include "Mine.h"
 #include <iostream>
+#include <assert.h>
 
 using namespace std;
 
@@ -32,25 +33,34 @@ void Robot::locateStep() {
 	dir.x = (t.randomOpen() < 0.5) ? sgm(destination.x) : 0;
 	dir.y = (t.randomOpen() < 0.5) ? sgm(destination.y) : 0;
 
-	state_counter++;
+	//assert(dir.x != 0 && dir.y != 0 );
 
-	if (validMove()) {
-		makeMove();
-		if ( destination.x ==0 && destination.y ==0 ) {
-			state_counter = 0;
-			state = LOADING;
-		}
-	} else {
-		if (seeItem()) {
-			state = LOADING;
-			state_counter = 0;
-		} else if ( walkingIntoAWall() ) {
-			state = LOADING;
-			state_counter = 0;
+	state_counter++;
+	int rep_count =0;
+	bool madeMove = false;
+	do { 
+		if (validMove()) {
+			makeMove();
+			madeMove =true;
+			if ( destination.x ==0 && destination.y ==0 ) {
+				state_counter = 0;
+				state = LOADING;
+			}
 		} else {
-			avoidObstacle();
+			if (seeItem()) {
+				state = LOADING;
+				state_counter = 0;
+				madeMove =true;
+			} else if ( walkingIntoAWall() ) {
+				state = LOADING;
+				state_counter = 0;
+				madeMove =true;
+			} else {
+				avoidObstacle();
+			}
 		}
-	}
+		rep_count++;
+	} while ( rep_count < 8 && madeMove==false);
 
 }
 
