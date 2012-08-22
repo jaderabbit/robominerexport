@@ -41,6 +41,7 @@ private:
 
 	//Random colours
 	vector<float3> rndColors;
+	vector<string> colourNames;
 
 public:
 
@@ -63,6 +64,9 @@ public:
 
 	//render graph functions
 	void RenderScene();
+
+	//Get colours from file
+	void GenerateColoursFromFile( const char* filename);
 
 private:
 	
