@@ -110,9 +110,11 @@ void GameState::RenderScene()
 								case FORAGE: trg.pTiles[count].color = rndColors[m.robots[m.grid[x][y].index].state]; break;
 							}*/
 							break;
-				case GOLD: trg.pTiles[count].color= float3(0,0,1);break;
-				case WASTE: trg.pTiles[count].color= float3(0,1,0);break;
+				case GOLD: trg.pTiles[count].color= float3(139.0/255.0,117.0/255.0,0);break; //gold colour
+				case WASTE: trg.pTiles[count].color= float3(40/255,40/255,40/255);break;				//waste colour
 				case SINK: trg.pTiles[count].color= float3(1,0,0);break;
+				case G_SINK: trg.pTiles[count].color= float3(1,215.0/255,0);break;
+				case W_SINK: trg.pTiles[count].color= float3(170/255,170/255,170/255);break;
 				case EMPTY:  trg.pTiles[count].color= float3(1,1,1);break;
 			}
 			count++;

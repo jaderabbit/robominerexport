@@ -7,7 +7,7 @@ using namespace std;
 
 class Mine;
 
-enum { EMPTY, GOLD, WASTE, ROBOT, SINK };
+enum { EMPTY, GOLD, WASTE, ROBOT, SINK, G_SINK, W_SINK };
 
 enum { CLUSTER, FORAGE, EXPLORE };
 
@@ -125,6 +125,7 @@ public:
 	bool seeItem();
 	void reset();
 	bool walkingIntoAWall();
+	bool directionYToSink();
 
 	//OutputMessages
 	void trackerOutput();
