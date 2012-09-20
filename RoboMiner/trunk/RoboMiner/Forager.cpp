@@ -30,8 +30,10 @@ void Robot::waitStep() {
 
 void Robot::locateStep() {
 	//follow cluster location. 
-	dir.x = (t.randomOpen() < 0.5) ? sgm(destination.x) : 0;
-	dir.y = (t.randomOpen() < 0.5) ? sgm(destination.y) : 0;
+	do { 
+		dir.x = (t.randomOpen() < 0.5) ? sgm(destination.x) : 0;
+		dir.y = (t.randomOpen() < 0.5) ? sgm(destination.y) : 0;
+	} while ( dir.x == 0 && dir.y == 0 );
 
 	//assert(dir.x != 0 && dir.y != 0 );
 

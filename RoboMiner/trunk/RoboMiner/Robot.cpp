@@ -356,5 +356,17 @@ int  Robot::sgm(int x) {
 
 bool Robot::isHome() {
 	return (pos.x == 1);
+	//return (pos.x == 1 && directionYToSink());
+}
+
+bool Robot::directionYToSink() {
+	if ( load_type == GOLD ) {
+		//gold is on the left
+		return pos.y < mine->size.y;
+	} else {
+		return pos.y <= mine->size.y;
+	}
+
+	return true;
 }
 

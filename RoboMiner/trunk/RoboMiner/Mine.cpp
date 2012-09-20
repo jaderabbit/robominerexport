@@ -60,7 +60,7 @@ Mine::Mine(int x, int y, int num_rob, int num_items, int num_item_types) {
 	initRandomPositionRobots(num_rob);
 }
 
-bool Mine::load(int x, int y, int num_rob, int ratio_rob, string inputFile) {
+bool Mine::load(int x, int y, int num_rob, int ratio_rob, string inputFile, int algorithm) {
 	//reset
 	grid.clear();
 	robots.clear();
@@ -78,6 +78,9 @@ bool Mine::load(int x, int y, int num_rob, int ratio_rob, string inputFile) {
 
 	//init robots
 	initHomeRobots(num_rob, ratio_rob);
+
+	//algorithm
+	alg = algorithm;
 
 	return success;
 }
@@ -101,7 +104,11 @@ Mine::Mine(int x, int y, int num_rob, int ratio_rob, string inputFile) {
 void Mine::initSink() {
 	//init sink
 	for (int i=0; i < size.y; i++) {
-		grid[0][i].type = SINK;
+		if ( i < size.y/2)
+			grid[0][i].type = G_SINK;
+		else {
+			grid[0][i].type = W_SINK;
+		}
 	}
 }
 
@@ -229,7 +236,10 @@ void Mine::output() {
 				case 1: {a = 'G'; gold++; break;}
 				case 2: {a = 'W'; waste++; break;}
 				case 3: {a = 'R';robots++; break;}
-				default: {a = 'S'; sink_num += (grid[i][j].type-4); break;}
+				case 4: {a = 'S'; break;}
+				case 5: {a = 'g'; break;}
+				case 6: {a = 'w'; break;}
+				default: cout << "invalid type" << endl;
 			}
 			cout << a << " ";
 		}
@@ -252,7 +262,10 @@ void Mine::outputAdvanced() {
 				case 1: {a = 'G'; gold++; break;}
 				case 2: {a = 'W'; waste++; break;}
 				case 3: {a = ('a' + grid[i][j].index);robs++; break;}
-				default: {a = 'S'; sink_num += (grid[i][j].type-3); break;}
+				case 4: {a = 'S'; break;}
+				case 5: {a = 'g'; break;}
+				case 6: {a = 'w'; break;}
+				default: cout << "invalid type" << endl;
 			}
 			cout << a << " ";
 		}
@@ -280,7 +293,10 @@ void Mine::outputAdvanced(int option) {
 				case 1: {a = 'G'; gold++; break;}
 				case 2: {a = 'W'; waste++; break;}
 				case 3: {a = determineCharacter(option, grid[i][j].index);robs++; break;}
-				default: {a = 'S'; sink_num += (grid[i][j].type-4); break;}
+				case 4: {a = 'S'; break;}
+				case 5: {a = 'g'; break;}
+				case 6: {a = 'w'; break;}
+				default: cout << "invalid type" << endl;
 			}
 			cout << a << " ";
 		}
@@ -315,7 +331,10 @@ void Mine::fileOutput(string fname) {
 				case 1: {a = 'G'; gold++; break;}
 				case 2: {a = 'W'; waste++; break;}
 				case 3: {a = 'R';robots++; break;}
-				default: {a = 'S'; sink_num += (grid[i][j].type-4); break;}
+				case 4: {a = 'S'; sink_num += (grid[i][j].type-4); break;}
+				case 5: {a = 'g'; sink_num += (grid[i][j].type-4); break;}
+				case 6: {a = 'w'; sink_num += (grid[i][j].type-4); break;}
+				default: cout << "invalid type" << endl;
 			}
 			f << a << " ";
 		}
@@ -358,7 +377,8 @@ bool Mine::fileInput(string fname) {
 				case 'G': {type = GOLD; gold++; break;}
 				case 'W': {type = WASTE; waste++; break;}
 				case 'R': {type = ROBOT; robots++; break;}
-				default: {type = SINK; sink_num++; break;}
+				case 'g': {type = G_SINK; sink_num++; break;}
+				case 'w': {type = W_SINK;  sink_num++; break;}
 			}
 			
 			//create and save block
@@ -431,7 +451,39 @@ void Mine::recruitmentAlgorithm() {
 	
 }
 
+void Mine::algorithmStep() {
+
+}
 void Mine::recruitmentAlgorithmStep() {
+	if (cnt < MAX_ITERATIONS) {
+		for (unsigned int j=0; j < robots.size(); j++) {
+			robots[j].doStep();
+		}
+		cnt++;
+	}
+}
+
+void Mine::antCemetaryAlgorithmStep() {
+	
+	//set activity
+	for (unsigned int i=0; i < robots.size(); i++) {
+		robots[i].setActivity(CLUSTER);
+	}
+
+	if (cnt < MAX_ITERATIONS) {
+		for (unsigned int j=0; j < robots.size(); j++) {
+			robots[j].doStep();
+		}
+		cnt++;
+	}
+}
+
+void Mine::foragingAlgorithmStep() {
+	//set activity
+	for (unsigned int i=0; i < robots.size(); i++) {
+		robots[i].setActivity(CLUSTER);
+	}
+
 	if (cnt < MAX_ITERATIONS) {
 		for (unsigned int j=0; j < robots.size(); j++) {
 			robots[j].doStep();

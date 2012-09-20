@@ -91,6 +91,7 @@
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="mt.cc" />
     <ClCompile Include="Robot.cpp" />
+    <ClCompile Include="RobotState.cpp" />
     <ClCompile Include="StatisticsHandler.cpp" />
     <ClCompile Include="Tools.cpp" />
     <ClCompile Include="Update.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="Mine.h" />
     <ClInclude Include="mt.h" />
     <ClInclude Include="Robot.h" />
+    <ClInclude Include="RobotState.h" />
     <ClInclude Include="TileRenderGraph.h" />
     <ClInclude Include="Tools.h" />
     <ClInclude Include="Types.h" />

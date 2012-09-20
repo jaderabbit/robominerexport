@@ -20,6 +20,7 @@ struct Block {
 };
 
 enum {STATE_OUTPUT, INDEX_OUTPUT, ACTIVITY_OUTPUT, LOADED_OUTPUT};
+enum {CLUSTERING, BASIC_FORAGE, CLUSTERED_FORAGE, CLUSTER_AND_FORAGE};
 
 class Mine
 {
@@ -37,7 +38,7 @@ public:
 	void initObjects( int num_objects, int num_item_types);
 
 	//load world
-	bool load(int x, int y, int num_rob, int ratio_rob, string inputFile);
+	bool load(int x, int y, int num_rob, int ratio_rob, string inputFile, int algorithm);
 	bool fileInput(string fname);
 
 	//output world
@@ -53,10 +54,14 @@ public:
 	void repeatRuns( int reps);
 
 	//experiments
+
 	void antCemeteryAlgorithm();
 	void foragingAlgorithm();
 	void recruitmentAlgorithm();
+	void algorithmStep();
 	void recruitmentAlgorithmStep();
+	void antCemetaryAlgorithmStep();
+	void foragingAlgorithmStep();
 
 	//Grid
 	vector<vector<Block>> grid;
@@ -73,6 +78,9 @@ public:
 
 	//iteration counter
 	int cnt;
+
+	//algorithm type
+	int alg;
 
 	//Constants
 	static const int MAX_WANDER_STEPS = 50;
