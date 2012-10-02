@@ -19,6 +19,21 @@
     <Filter Include="RobotState">
       <UniqueIdentifier>{8df6bcca-bb4a-42b3-a7cb-f4de5ae04afe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RobotState\ExplorerForager">
+      <UniqueIdentifier>{98516377-c7e4-4b98-81ef-fc5b5a2b4091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RobotState\UncollabForage">
+      <UniqueIdentifier>{31842c64-ca54-431c-a842-eaa0fa7719ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RobotState\Cluster">
+      <UniqueIdentifier>{79f2f43d-1c82-45e4-b515-0bbb8f2bf7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\New Mersenne Twister">
+      <UniqueIdentifier>{f752eaf4-89bc-447e-a378-10f47ef16206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Old Mersenne Twister">
+      <UniqueIdentifier>{7e7fa4de-aef0-4388-9a0c-534ef33d209a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Forager.cpp">
@@ -29,9 +44,6 @@
     </ClCompile>
     <ClCompile Include="Robot.cpp">
       <Filter>Robots</Filter>
-    </ClCompile>
-    <ClCompile Include="mt.cc">
-      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools.cpp">
       <Filter>Tools</Filter>
@@ -64,6 +76,18 @@
     <ClCompile Include="RobotState.cpp">
       <Filter>RobotState</Filter>
     </ClCompile>
+    <ClCompile Include="ExploreState.cpp">
+      <Filter>RobotState\ExplorerForager</Filter>
+    </ClCompile>
+    <ClCompile Include="mtrand.cpp">
+      <Filter>Tools\New Mersenne Twister</Filter>
+    </ClCompile>
+    <ClCompile Include="mt.cc">
+      <Filter>Tools\Old Mersenne Twister</Filter>
+    </ClCompile>
+    <ClCompile Include="ForageState.cpp">
+      <Filter>RobotState\ExplorerForager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -71,9 +95,6 @@
     </ClInclude>
     <ClInclude Include="Mine.h">
       <Filter>Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="mt.h">
-      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools.h">
       <Filter>Tools</Filter>
@@ -101,6 +122,18 @@
     </ClInclude>
     <ClInclude Include="RobotState.h">
       <Filter>RobotState</Filter>
+    </ClInclude>
+    <ClInclude Include="ExploreState.h">
+      <Filter>RobotState\ExplorerForager</Filter>
+    </ClInclude>
+    <ClInclude Include="mtrand.h">
+      <Filter>Tools\New Mersenne Twister</Filter>
+    </ClInclude>
+    <ClInclude Include="mt.h">
+      <Filter>Tools\Old Mersenne Twister</Filter>
+    </ClInclude>
+    <ClInclude Include="ForageState.h">
+      <Filter>RobotState\ExplorerForager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

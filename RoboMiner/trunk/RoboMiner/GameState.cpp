@@ -30,7 +30,7 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 bool GameState::LoadLevel( const char* filename, int width, int height, int num_robots, int ratio_foragers_to_explorers )
 {
 	//load input cluster file
-	if (!m.load(width,height,num_robots,ratio_foragers_to_explorers,filename)) FatalError(*pHWnd,"Grid was unsuccesfully loaded");
+	if (!m.load(width,height,num_robots,ratio_foragers_to_explorers,filename,0)) FatalError(*pHWnd,"Grid was unsuccesfully loaded");
 
 	//if render graph exists reset render graph 
 	if ( trg.pTiles != 0 )
