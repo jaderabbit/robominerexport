@@ -18,19 +18,6 @@ enum { HOMING, BEACON_HOMING, CHOOSE_ACTIVITY, 			//General States
 	   UNLOADED, LOADED						//Ant Cemetary States
 	  };
 
-//Forager States
-enum {};
-
-//Cemetery Builder States
-enum {  };
-
-/*typedef struct
-{
-    int x;
-    int y;
-}
-Coord;*/
-
 struct Coord {
 	int x;
 	int y;
@@ -50,7 +37,7 @@ struct Coord {
 	}
 };
 
-
+class RobotState;
 
 class Robot
 {
@@ -130,6 +117,10 @@ public:
 	//OutputMessages
 	void trackerOutput();
 
+	//getter and setters
+	void setPosition( int x, int y) { pos.x = x; pos.y = y; }
+	Coord getPosition( int x, int y) { return pos; }
+
 //Member Variables
 
 	//Members
@@ -185,6 +176,8 @@ public:
 	bool tracker;
 	string trackFile;
 	vector<Coord> track;
+
+	RobotState* robotState;
 	
 };
 

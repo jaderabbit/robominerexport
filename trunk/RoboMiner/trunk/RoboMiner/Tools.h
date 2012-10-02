@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mt.h"
+#include "mtrand.h"
 #include <limits>
 #include <random>
 #define round(x) int(x + 0.5)
@@ -14,19 +15,22 @@ public:
 	//* Today I changed the Randomizer back to using the MersenneTwister cause that is how it should be
 
 	int random(int low, int high) {
-		int t = mt->genrand_int31();
+		//int t = mt->genrand_int31();
 		//int t = rand();
-		return ( t % (high - low + 1) ) + low;
+		int t = irand();
+		return abs( t % (high - low + 1) ) + low;
 	}
 
 	double randomClosed() {
-		return mt->genrand_real1();
+		//return mt->genrand_real1();
 		//return rand()/RAND_MAX;
+		return crand();
 	}
 
 	double randomOpen() {
-		return mt->genrand_real3();
+		//return mt->genrand_real3();
 		//return rand()/RAND_MAX;
+		return orand();
 	}
 
 	double gaussianDistribution( double location, double scale ) {
@@ -98,5 +102,10 @@ public:
 
 	//Random Object
 	MersenneTwister *mt;
+
+	MTRand_int32 irand; // 32-bit int generator
+	MTRand drand; // double in [0, 1) generator
+	MTRand_open orand; // (0,1)
+	MTRand_closed crand; // [0,1]
 };
 

@@ -38,6 +38,9 @@ Mine::Mine(int x, int y, int num_rob, int num_items, int num_item_types) {
 	sink_items[GOLD-1] = 0; 
 	sink_items[WASTE-1] = 0; 
 
+	//initialize sink positions
+	//goldSinkBoundaries[0]
+
 	//init grid world
 	for (int i=0; i < x; i++) {
 		vector<Block> t;

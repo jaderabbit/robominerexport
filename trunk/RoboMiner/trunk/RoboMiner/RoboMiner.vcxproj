@@ -83,13 +83,16 @@
     <ClCompile Include="Clusterer.cpp" />
     <ClCompile Include="DXRenderer.cpp" />
     <ClCompile Include="Explorer.cpp" />
+    <ClCompile Include="ExploreState.cpp" />
     <ClCompile Include="Forager.cpp" />
+    <ClCompile Include="ForageState.cpp" />
     <ClCompile Include="FrequencyHistogramTool.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="mt.cc" />
+    <ClCompile Include="mtrand.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="RobotState.cpp" />
     <ClCompile Include="StatisticsHandler.cpp" />
@@ -99,11 +102,14 @@
   <ItemGroup>
     <ClInclude Include="CoordinateConversions.h" />
     <ClInclude Include="DXRenderer.h" />
+    <ClInclude Include="ExploreState.h" />
     <ClInclude Include="FatalError.h" />
+    <ClInclude Include="ForageState.h" />
     <ClInclude Include="FrequencyHistogramTool.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Mine.h" />
     <ClInclude Include="mt.h" />
+    <ClInclude Include="mtrand.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotState.h" />
     <ClInclude Include="TileRenderGraph.h" />

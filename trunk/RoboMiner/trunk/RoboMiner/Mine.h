@@ -85,5 +85,9 @@ public:
 	//Constants
 	static const int MAX_WANDER_STEPS = 50;
 	static const int MAX_ITERATIONS = 2000;
+
+	//Sink Position
+	Coord goldSinkBoundaries[2];
+	Coord wasteSinkBoundaries[2];
 };
 

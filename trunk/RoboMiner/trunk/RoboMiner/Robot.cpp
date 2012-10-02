@@ -1,6 +1,8 @@
 #include "Robot.h"
 #include "Mine.h"
 #include <iostream>
+#include "RobotState.h"
+#include "ExploreState.h"
 
 Robot::Robot(void)
 {
@@ -164,6 +166,8 @@ Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, int 
 		tracker = true;
 		trackFile = track_file;
 	 }
+
+	 robotState = 0;
 }
 
 Robot::~Robot(void)
@@ -191,7 +195,11 @@ void Robot::doStep() {
 	}
 
 	switch (activity) {
-		case (EXPLORE): explore(); break;
+		case (EXPLORE): 
+			if (!robotState)  
+				robotState = new ExploreState(this);
+			robotState->doStep();
+			break;
 		case (FORAGE) : forage(); break;
 		case (CLUSTER) : cluster(); break;
 		default: cout << "Erroneous ACTIVITY" << endl; break;
@@ -306,7 +314,20 @@ void Robot::beaconHomingStep() {
 
 	//get direction home - HACK - cuz wer
 	dir.x = sgm(0 - pos.x);
-	dir.y = sgm(0);
+	if ( load_type == GOLD ) {
+		//gold is on the left
+		if (  pos.y >= mine->size.y/2 ) {
+			dir.y = -1;
+		} else {
+			dir.y = 0;
+		}
+	} else {
+		if ( pos.y <= mine->size.y/2 ) {
+			dir.y = 1;
+		} else {
+			dir.y = 0;
+		}
+	}
 
 	do {
 		//This hack is a LIE. this is a weird hack to check if the robot is home - need to also ensure that robot is in ACTIVITY = RECRUITING
@@ -355,16 +376,16 @@ int  Robot::sgm(int x) {
 }
 
 bool Robot::isHome() {
-	return (pos.x == 1);
-	//return (pos.x == 1 && directionYToSink());
+	//return (pos.x == 1);
+	return (pos.x == 1 && directionYToSink());
 }
 
 bool Robot::directionYToSink() {
 	if ( load_type == GOLD ) {
 		//gold is on the left
-		return pos.y < mine->size.y;
+		return pos.y < mine->size.y/2;
 	} else {
-		return pos.y <= mine->size.y;
+		return pos.y >= mine->size.y/2;
 	}
 
 	return true;
