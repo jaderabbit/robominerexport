@@ -34,6 +34,18 @@
     <Filter Include="Tools\Old Mersenne Twister">
       <UniqueIdentifier>{7e7fa4de-aef0-4388-9a0c-534ef33d209a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Experiment">
+      <UniqueIdentifier>{be8a2e6c-faed-4fa2-ad53-9477c50c80a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\ClusterForageExperiment">
+      <UniqueIdentifier>{7b248b50-017f-4705-833d-52635b9e0fbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\Descriptors">
+      <UniqueIdentifier>{94ecb0ae-4a4d-455c-b582-cd1f5bdb0f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\Performance Measures">
+      <UniqueIdentifier>{328a66c7-2742-477f-b940-299d460d9d40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Forager.cpp">
@@ -88,6 +100,21 @@
     <ClCompile Include="ForageState.cpp">
       <Filter>RobotState\ExplorerForager</Filter>
     </ClCompile>
+    <ClCompile Include="ClusterState.cpp">
+      <Filter>RobotState\Cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="Experiment.cpp">
+      <Filter>Experiment</Filter>
+    </ClCompile>
+    <ClCompile Include="ClusterForage.cpp">
+      <Filter>Experiment\ClusterForageExperiment</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceMeasure.cpp">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemsForagedOverTime.cpp">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -134,6 +161,24 @@
     </ClInclude>
     <ClInclude Include="ForageState.h">
       <Filter>RobotState\ExplorerForager</Filter>
+    </ClInclude>
+    <ClInclude Include="ClusterState.h">
+      <Filter>RobotState\Cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="Experiment.h">
+      <Filter>Experiment</Filter>
+    </ClInclude>
+    <ClInclude Include="ClusterForage.h">
+      <Filter>Experiment\ClusterForageExperiment</Filter>
+    </ClInclude>
+    <ClInclude Include="EXPERIMENT_DESC.h">
+      <Filter>Experiment\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceMeasure.h">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemsForagedOverTime.h">
+      <Filter>Experiment\Performance Measures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -81,12 +81,12 @@ bool Robot::findItem() {
 void Robot::recruitStep() {
 	if (state_counter < MAX_RECRUITMENT_REPS ) {
 		//search up and down the area by the sink for waiting robots
-		vector<int> waitingRobots = searchSink();
+		vector<int> waitingRobots = radiusSearchSink();
 
 		//send message to waiting robots
 		for (int i=0; i < waitingRobots.size(); i++) {
-			if ( mine->robots[waitingRobots[i]].state == WAITING ) {
-				mine->robots[waitingRobots[i]].addRecruiterMessage(clusterLocation,oldSinkPos,division);
+			if ( (*robots)[waitingRobots[i]].state == WAITING ) {
+				(*robots)[waitingRobots[i]].addRecruiterMessage(clusterLocation,oldSinkPos,division);
 			}
 		}
 		state_counter++;	
@@ -116,7 +116,7 @@ vector<int> Robot::radiusSearchSink() {
 		if ( pos.y-i > 0 && mine->grid[1][pos.y - i] == ROBOT ) {
 			waiting.push_back(mine->grid[1][pos.y - i].index);
 		}
-		if ( pos.y +i < mine->grid.size() && mine->grid[1][pos.y + i] == ROBOT ) {
+		if ( pos.y +i < mine->grid[1].size() && mine->grid[1][pos.y + i] == ROBOT ) {
 			waiting.push_back(mine->grid[1][pos.y + i].index);
 		}
 	}

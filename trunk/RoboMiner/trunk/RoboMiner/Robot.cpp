@@ -3,6 +3,8 @@
 #include <iostream>
 #include "RobotState.h"
 #include "ExploreState.h"
+#include "ForageState.h"
+#include "ClusterState.h"
 
 Robot::Robot(void)
 {
@@ -32,6 +34,33 @@ Robot::Robot(void)
 
 	 //home vector
 	 homeVector.x = 0; homeVector.y = 0;
+}
+
+Robot::Robot(Mine* _mine) : mine(_mine) {
+	
+	//Load
+	load_type = -1;
+	loaded = false;	//perhaps unnecessary
+	
+	//Repition counter
+	state_counter = 0;
+
+	//Ant Cemetery Building
+	 f = 0;
+
+	 //Set initial states
+	 init_states[CLUSTER] = UNLOADED;
+	 init_states[FORAGE] = WAITING;
+	 init_states[EXPLORE] = EXPLORING;
+
+	 //Initial path length
+	 chooseMaxPathLength();	
+	 
+	 //Recruiter Message and directions
+	 homeVector.x = 0; homeVector.y = 0;
+	 clusterLocation.x = 0; clusterLocation.y = 0;
+	 destination.x = 0; destination.y = 0;
+	 recruiterOriginalPos.x = 0; recruiterOriginalPos.y = 0;
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div,  string track_file){
@@ -195,13 +224,9 @@ void Robot::doStep() {
 	}
 
 	switch (activity) {
-		case (EXPLORE): 
-			if (!robotState)  
-				robotState = new ExploreState(this);
-			robotState->doStep();
-			break;
-		case (FORAGE) : forage(); break;
-		case (CLUSTER) : cluster(); break;
+		case (EXPLORE): explore();//if (!robotState) robotState = new ExploreState(this); robotState->doStep(); break;
+		case (FORAGE) : forage(); //if (!robotState) robotState = new ForageState(this); robotState->doStep(); break;
+		case (CLUSTER) : cluster();// if (!robotState) robotState = new ClusterState(this); robotState->doStep(); break;
 		default: cout << "Erroneous ACTIVITY" << endl; break;
 	}
 }
@@ -252,6 +277,16 @@ void Robot::makeMove() {
 		destination.x -= dir.x;
 		destination.y -= dir.y;
 	}
+}
+
+void Robot::setPosition( int x, int y) { 
+	mine->grid[pos.x][pos.y].type = EMPTY; //prev pos to empty 
+	mine->grid[x][y].type = ROBOT; //current pos to robot
+	mine->grid[x][y].index = mine->grid[pos.x][pos.y].index;
+
+	pos.x = x; pos.y = y;
+
+	reset();
 }
 
 void Robot::homingStep() {

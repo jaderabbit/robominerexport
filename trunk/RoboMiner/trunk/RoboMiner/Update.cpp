@@ -7,7 +7,7 @@ void GameState::Update()
 {	
 	
 	//Perform updates
-	m.recruitmentAlgorithmStep();
+	experiment->runStep();
 
 	/*if ( m.cnt >= m.MAX_ITERATIONS ) {
 		//Output Message

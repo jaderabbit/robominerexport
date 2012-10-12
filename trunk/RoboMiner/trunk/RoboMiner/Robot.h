@@ -45,6 +45,7 @@ public:
 //Methods
 	//Constructors
 	Robot(void);
+	Robot(Mine* _mine);
 	Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, string tracker = "");
 	Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div, string tracker = "");
 	Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, int _div, string tracker = "");
@@ -118,8 +119,28 @@ public:
 	void trackerOutput();
 
 	//getter and setters
-	void setPosition( int x, int y) { pos.x = x; pos.y = y; }
+	void setInitialPosition( int x, int y) { pos.x = x; pos.y = y;}
+	void setPosition( int x, int y); 
 	Coord getPosition( int x, int y) { return pos; }
+
+	void setDir( Coord _dir ) { dir = _dir;}
+	Coord getDir() { return dir; }
+
+	int getActivity() { return activity; }
+
+	void setState( int _state ) { state = _state; }
+	int getState() { return state; }
+
+	void setMaxPath( int _max_path ) { max_path = _max_path; }
+
+	void setStringTracker( string track_file ) { tracker = true;
+		trackFile = track_file;
+	}
+
+	void setMutualRobotAwareness( vector<Robot> * _robots ) { robots = _robots; }
+
+	void setDivision( int _div ) { division = _div;}
+	int getDivision() { return division;}
 
 //Member Variables
 
@@ -168,9 +189,9 @@ public:
 	//variables
 	const static int MAX_RECRUITMENT_REPS = 30;
 	const static int MAX_LOADING_REPS = 30;
-	const static int MAX_SEARCH_RANGE = 4;
-	const static int MAX_PATH_DEVIATION = 4;
 	const static int RADIUS_SIZE = 10;
+	const static int MAX_PATH_DEVIATION = 4;
+	const static int MAX_SEARCH_RANGE = 4;
 
 	//if robot has a tracker, then a file is saved with its total movements
 	bool tracker;
@@ -178,6 +199,9 @@ public:
 	vector<Coord> track;
 
 	RobotState* robotState;
+	vector<Robot>* robots;
+
+
 	
 };
 

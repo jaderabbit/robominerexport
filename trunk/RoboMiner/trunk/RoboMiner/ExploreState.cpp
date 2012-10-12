@@ -1,5 +1,6 @@
 #include "ExploreState.h"
 #include "Mine.h"
+#include "ForageState.h"
 
 #include <iostream>
 
@@ -130,7 +131,7 @@ void ExploreState::recruitStep() {
 
 		//send message to waiting robots
 		for (int i=0; i < waitingRobots.size(); i++) {
-			if ( robot->mine->robots[waitingRobots[i]].state == WAITING ) {
+			if ( robot->mine->robots[waitingRobots[i]].state == WAITING) {
 				robot->mine->robots[waitingRobots[i]].addRecruiterMessage(robot->clusterLocation,robot->oldSinkPos,robot->division);
 			}
 		}
@@ -265,11 +266,3 @@ void ExploreState::beaconHomingStep() {
 	minor_state_counter++;
 }
 
-void ExploreState::setMinorState(int _state) {
-	minor_state_counter = 0;
-	state = _state;
-}
-
-bool ExploreState::isFirstTime() { 
-	return minor_state_counter == 0; 
-}

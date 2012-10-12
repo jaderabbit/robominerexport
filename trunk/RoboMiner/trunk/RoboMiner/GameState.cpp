@@ -24,13 +24,26 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	//initialize renderer
 	if ( !renderer.Initialize(pWnd) ) return FatalError(*pWnd, "renderer init failed");		
 
+	EXPERIMENT_DESC d;
+	d.width = 80; d.height = 80;
+	d.number_objects = 300;
+	d.number_robots = 20;
+	d.forager_explorer_ratio = 0.8;
+	d.gold_waste_ratio = 0.5;
+	d.gold_waste_division_ratio = 0.5;
+	d.total_cluster_iterations = 2000;
+	d.total_forage_iterations = 2000;
+
+	experiment = new ClusterForage(d);
+
 	return true;
 }
 //load level
 bool GameState::LoadLevel( const char* filename, int width, int height, int num_robots, int ratio_foragers_to_explorers )
 {
 	//load input cluster file
-	if (!m.load(width,height,num_robots,ratio_foragers_to_explorers,filename,0)) FatalError(*pHWnd,"Grid was unsuccesfully loaded");
+	//if (!m.load(width,height,num_robots,ratio_foragers_to_explorers,filename,0)) FatalError(*pHWnd,"Grid was unsuccesfully loaded");
+	experiment->initialize();
 
 	//if render graph exists reset render graph 
 	if ( trg.pTiles != 0 )
@@ -97,12 +110,12 @@ bool GameState::LoadLevel( const char* filename, int width, int height, int num_
 void GameState::RenderScene()
 {
 	int count =0;
-	for ( unsigned int y=0; y <  m.size.y; y++ )
+	for ( unsigned int y=0; y <  experiment->mine.size.y; y++ )
 	{
-		for ( unsigned int x=0; x < m.size.x; x++ )
+		for ( unsigned int x=0; x < experiment->mine.size.x; x++ )
 		{
-			switch ( m.grid[x][y].type ) {
-				case ROBOT: trg.pTiles[count].color = rndColors[m.grid[x][y].index];
+			switch ( experiment->mine.grid[x][y].type ) {
+				case ROBOT: trg.pTiles[count].color = rndColors[experiment->mine.grid[x][y].index];
 							/*
 							switch ( m.robots[m.grid[x][y].index].activity ) {
 								case CLUSTER: trg.pTiles[count].color = float3(1,1,0); break;

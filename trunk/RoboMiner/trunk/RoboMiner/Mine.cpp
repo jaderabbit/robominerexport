@@ -63,6 +63,73 @@ Mine::Mine(int x, int y, int num_rob, int num_items, int num_item_types) {
 	initRandomPositionRobots(num_rob);
 }
 
+//initialization grid
+void Mine::initializeEmptyGrid( int x, int y ) {
+	//init size
+	size.x = x;
+	size.y = y;
+
+	//init grid world
+	for (int i=0; i < x; i++) {
+		vector<Block> t;
+		for (int j=0; j < y; j++) {
+			Block b;
+			b.index = -1;
+			b.type = EMPTY;
+			t.push_back(b);
+		}
+		grid.push_back(t);
+	}
+}
+
+//get cells and set cells
+bool Mine::setCell( int x, int y, int value, int index ) {
+	if ( isValid(x,y) ) {
+		grid[x][y].type = value;
+		if (index > -1 ) grid[x][y].index = index;
+		return true;
+	}
+	return false;
+}
+
+bool Mine::setCellIfEmpty( int x, int y, int value, int index ) {
+	if ( isEmpty(x,y) ) {
+		grid[x][y].type = value;
+		if (index > -1 ) grid[x][y].index = index;
+		return true;
+	}
+	return false;
+}
+
+int Mine::getCell( int x, int y, int value ) {
+	if ( isValid(x,y) ) return value;
+	else return -1;
+}
+
+bool Mine::isValid( int x, int y) {
+	if ( x > 0 && x < size.x && y > 0 && y < size.y ) {
+		return true;
+	}
+	return false;
+}
+
+bool Mine::isEmpty( int x, int y) {
+	if ( isValid(x,y) && grid[x][y] == EMPTY ) {
+		return true;
+	}
+	return false;
+}
+
+
+//cell index
+void Mine::setCellIndex( int x, int y, int index ) {
+	if (isValid(x,y)) grid[x][y].index = index;
+}
+
+int Mine::getCellIndex( int x, int y) {
+	if (isValid(x,y)) return grid[x][y].index;
+}
+
 bool Mine::load(int x, int y, int num_rob, int ratio_rob, string inputFile, int algorithm) {
 	//reset
 	grid.clear();
@@ -457,6 +524,7 @@ void Mine::recruitmentAlgorithm() {
 void Mine::algorithmStep() {
 
 }
+
 void Mine::recruitmentAlgorithmStep() {
 	if (cnt < MAX_ITERATIONS) {
 		for (unsigned int j=0; j < robots.size(); j++) {
