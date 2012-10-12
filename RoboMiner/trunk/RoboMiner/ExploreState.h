@@ -36,9 +36,6 @@ public:
 	//Movement
 	void makeMove();
 
-	//State methods
-	void setMinorState(int _state);
-	bool isFirstTime();
 
 protected:
 	 int MAX_RECRUITMENT_REPS;

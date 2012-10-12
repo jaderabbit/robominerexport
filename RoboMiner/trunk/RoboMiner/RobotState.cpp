@@ -12,3 +12,14 @@ RobotState::RobotState(void)
 RobotState::~RobotState(void)
 {
 }
+
+
+void RobotState::setMinorState(int _state) {
+	minor_state_counter = 0;
+	state = _state;
+	robot->state = _state;
+}
+
+bool RobotState::isFirstTime() { 
+	return minor_state_counter == 0; 
+}

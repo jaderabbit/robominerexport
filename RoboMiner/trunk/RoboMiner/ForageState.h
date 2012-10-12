@@ -17,6 +17,7 @@ public:
 	void loadStep();
 	void unloadStep();
 	void homingStep();
+	void beaconHomingStep();
 
 	//Helper FORAGING Methods
 	void addRecruiterMessage( Coord location, Coord recruiterPos, int type ); 
@@ -28,6 +29,7 @@ public:
 	bool directionYToSink();
 
 protected:
-
+	const static int MAX_PATH_DEVIATION = 4;
+	const static int MAX_SEARCH_RANGE = 4;
 };
 

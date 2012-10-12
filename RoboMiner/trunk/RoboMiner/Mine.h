@@ -28,10 +28,30 @@ public:
 	Mine(void);
 	~Mine(void);
 
+//NEW METHODS
+	//initialization grid
+	void initializeEmptyGrid( int x, int y );
+
+	//TODO: Move initialization to controller
+	void initializeObjectsRandomly( int num_objects, int item_ratio );
+	void initializeObjectsFromFile( string fileName);
+
+	//get cells and set cells
+	bool setCell( int x, int y, int value, int index = -1 );
+	bool setCellIfEmpty( int x, int y, int value, int index = -1 );
+	bool isValid( int x, int y);
+	bool isEmpty( int x, int y ); 
+	int getCell( int x, int y, int value );
+
+	//cell index
+	void setCellIndex( int x, int y, int index );
+	int getCellIndex( int x, int y);
+
+
+//OLD METHODS
 	Mine(int x, int y, int num_rob, int num_items, int num_item_types);
 	Mine(int x, int y, int num_rob, int ratio_rob, string inputFile);
 
-	//initialization helper methods
 	void initSink();
 	void initRandomPositionRobots( int num_robots);
 	void initHomeRobots( int num_robots, int ratio_rob);

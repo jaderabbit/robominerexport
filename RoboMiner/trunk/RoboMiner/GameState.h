@@ -6,7 +6,8 @@
 #include "DXRenderer.h"
 #include "TileRenderGraph.h"
 #include "Types.h"
-#include "Mine.h"
+//#include "Mine.h"
+#include "ClusterForage.h"
 
 //include STL
 #include <vector>
@@ -31,6 +32,9 @@ private:
 
 	//Mine
 	Mine m; 
+
+	//Experiment
+	Experiment* experiment;
 
 	//pathfinding search algorithm
 	int2 searchProblem;
