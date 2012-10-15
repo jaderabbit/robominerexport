@@ -4,7 +4,7 @@
 class ItemsForagedOverTime : public PerformanceMeasure
 {
 public:
-	ItemsForagedOverTime( Robot& _robot);
+	ItemsForagedOverTime();
 	virtual ~ItemsForagedOverTime(void);
 
 	virtual void takeMeasure( double measure );

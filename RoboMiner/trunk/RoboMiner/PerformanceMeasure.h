@@ -4,12 +4,12 @@
 class PerformanceMeasure
 {
 public:
-	PerformanceMeasure( Robot& _robot);
+	PerformanceMeasure();
 	virtual ~PerformanceMeasure(void);
 
-	virtual void takeMeasure( double measure) = 0;
+	virtual void takeMeasure( Robot& robot) = 0;
 protected:
-	Robot& robot;
+
 	vector<double> measurement;
 };
 
