@@ -115,6 +115,9 @@
     <ClCompile Include="ItemsForagedOverTime.cpp">
       <Filter>Experiment\Performance Measures</Filter>
     </ClCompile>
+    <ClCompile Include="PerformanceBed.cpp">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -178,6 +181,9 @@
       <Filter>Experiment\Performance Measures</Filter>
     </ClInclude>
     <ClInclude Include="ItemsForagedOverTime.h">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceBed.h">
       <Filter>Experiment\Performance Measures</Filter>
     </ClInclude>
   </ItemGroup>

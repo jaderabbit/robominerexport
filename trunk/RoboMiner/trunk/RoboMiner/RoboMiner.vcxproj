@@ -97,6 +97,7 @@
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="mt.cc" />
     <ClCompile Include="mtrand.cpp" />
+    <ClCompile Include="PerformanceBed.cpp" />
     <ClCompile Include="PerformanceMeasure.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="RobotState.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Mine.h" />
     <ClInclude Include="mt.h" />
     <ClInclude Include="mtrand.h" />
+    <ClInclude Include="PerformanceBed.h" />
     <ClInclude Include="PerformanceMeasure.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotState.h" />

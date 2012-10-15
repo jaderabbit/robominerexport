@@ -3,6 +3,7 @@
 #include <iostream>
 #include <assert.h>
 #include "RobotState.h"
+#include "PerformanceBed.h"
 
 using namespace std;
 
@@ -100,6 +101,16 @@ void Robot::unloadStep() {
 	if (loaded) {
 		loaded = false;
 		mine->sink_items[load_type-1]++;
+
+		//Performance Measures
+		if (load_type == WASTE ) {
+			wasteForaged++;
+		} else {
+			goldForaged++;
+		}
+
+		//trigger performance measurement at increase in items foraged ?
+		performanceBed->trigger(mine->grid[pos.x][pos.y].index);
 
 		//Old sink position
 		oldSinkPos.x = pos.x;

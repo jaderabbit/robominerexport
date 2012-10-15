@@ -1,7 +1,7 @@
 #include "ItemsForagedOverTime.h"
 
 
-ItemsForagedOverTime::ItemsForagedOverTime( Robot& _robot) : PerformanceMeasure(_robot)
+ItemsForagedOverTime::ItemsForagedOverTime() 
 {
 }
 

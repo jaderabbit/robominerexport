@@ -61,6 +61,12 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	 clusterLocation.x = 0; clusterLocation.y = 0;
 	 destination.x = 0; destination.y = 0;
 	 recruiterOriginalPos.x = 0; recruiterOriginalPos.y = 0;
+
+	 //Performance variable measures
+	foraged = false;
+	goldForaged = 0;
+	wasteForaged = 0;
+	time_to_forage = 0;
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div,  string track_file){

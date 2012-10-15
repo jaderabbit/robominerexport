@@ -7,6 +7,8 @@ using namespace std;
 
 class Mine;
 
+class PerformanceBed;
+
 enum { EMPTY, GOLD, WASTE, ROBOT, SINK, G_SINK, W_SINK };
 
 enum { CLUSTER, FORAGE, EXPLORE };
@@ -142,7 +144,11 @@ public:
 	void setDivision( int _div ) { division = _div;}
 	int getDivision() { return division;}
 
+	void setPerformanceBed( PerformanceBed* _performanceBed ) { performanceBed = _performanceBed; }
+
 //Member Variables
+	//Performance Measures
+	PerformanceBed* performanceBed;
 
 	//Members
 	Mine* mine;		//Reference to the mine	
@@ -200,6 +206,12 @@ public:
 
 	RobotState* robotState;
 	vector<Robot>* robots;
+
+	//Performance variable measures
+	bool foraged;
+	int goldForaged;
+	int wasteForaged;
+	int time_to_forage;
 
 
 	
