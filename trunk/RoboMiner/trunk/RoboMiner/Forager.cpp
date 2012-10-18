@@ -90,6 +90,9 @@ void Robot::loadStep() {
 		//update cluster location
 		clusterLocation.x = pos.x;
 		clusterLocation.y = pos.y;
+
+		foraged = true;
+		typeForaged = division;
 	} else {
 		//do loading
 		state_counter = 0;
@@ -101,16 +104,6 @@ void Robot::unloadStep() {
 	if (loaded) {
 		loaded = false;
 		mine->sink_items[load_type-1]++;
-
-		//Performance Measures
-		if (load_type == WASTE ) {
-			wasteForaged++;
-		} else {
-			goldForaged++;
-		}
-
-		//trigger performance measurement at increase in items foraged ?
-		performanceBed->trigger(mine->grid[pos.x][pos.y].index);
 
 		//Old sink position
 		oldSinkPos.x = pos.x;
@@ -208,6 +201,10 @@ void Robot::localClusterSearchMovement() {
 			//update cluster location - more accurate and closer
 			clusterLocation.x = pos.x;
 			clusterLocation.y = pos.y;
+
+			foraged = true;
+			typeForaged = load_type;
+
 		//if item has been located but not loaded
 		} else if (found) {
 			makeMove();

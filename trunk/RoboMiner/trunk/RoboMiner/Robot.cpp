@@ -5,6 +5,7 @@
 #include "ExploreState.h"
 #include "ForageState.h"
 #include "ClusterState.h"
+#include "PerformanceBed.h"
 
 Robot::Robot(void)
 {
@@ -63,10 +64,7 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	 recruiterOriginalPos.x = 0; recruiterOriginalPos.y = 0;
 
 	 //Performance variable measures
-	foraged = false;
-	goldForaged = 0;
-	wasteForaged = 0;
-	time_to_forage = 0;
+	resetPerformanceMeasures();
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div,  string track_file){
@@ -225,6 +223,7 @@ void Robot::setActivity( int _act) {
 }
 
 void Robot::doStep() {
+	//track movement of robot
 	if (tracker) {
 		trackMovement();
 	}
@@ -252,6 +251,11 @@ void Robot::chooseActivity() {
 
 }
 
+void Robot::resetPerformanceMeasures() {
+	foraged = false;
+	typeForaged = -1;
+	moved = false;
+}
 bool Robot::validMove() {
 	if ( (pos.x + dir.x >= 0) && (pos.x + dir.x < mine->size.x)  && (pos.y + dir.y < mine->size.y) && (pos.y + dir.y >= 0)) {
 		if (mine->grid[pos.x + dir.x][pos.y + dir.y] == EMPTY ) {		
@@ -283,6 +287,8 @@ void Robot::makeMove() {
 		destination.x -= dir.x;
 		destination.y -= dir.y;
 	}
+
+	moved = true;
 }
 
 void Robot::setPosition( int x, int y) { 

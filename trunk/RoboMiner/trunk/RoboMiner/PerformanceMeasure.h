@@ -7,7 +7,7 @@ public:
 	PerformanceMeasure();
 	virtual ~PerformanceMeasure(void);
 
-	virtual void takeMeasure( Robot& robot) = 0;
+	virtual void takeMeasure( vector<Robot>& robots) = 0;
 protected:
 
 	vector<double> measurement;

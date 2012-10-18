@@ -2,7 +2,6 @@
 #include "Tools.h"
 #include <vector>
 #include <fstream>
-
 using namespace std;
 
 class Mine;
@@ -56,6 +55,7 @@ public:
 	//Set activity and do activity
 	void doStep();
 	void setActivity( int _act);
+	void setIndex (int _index ) { index = _index; }
 
 	//Division of Labour
 	void chooseActivity();
@@ -157,6 +157,7 @@ public:
 
 	int activity;	//activity
 	int state;		//state
+	int index;
 
 	//Load
 	int load_type;
@@ -209,9 +210,10 @@ public:
 
 	//Performance variable measures
 	bool foraged;
-	int goldForaged;
-	int wasteForaged;
-	int time_to_forage;
+	int typeForaged;
+	bool moved;	//update in move
+	void resetPerformanceMeasures();
+
 
 
 	
