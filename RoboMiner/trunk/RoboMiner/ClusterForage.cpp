@@ -1,4 +1,5 @@
 #include "ClusterForage.h"
+#include "ItemsForagedOverTime.h"
 #include <sstream>
 
 ClusterForage::ClusterForage(void)
@@ -56,6 +57,12 @@ int ClusterForage::run() {
 }
 
 int ClusterForage::runStep() {
+
+	//reset performance measures
+	for (unsigned int j=0; j < robots.size(); j++) {
+			robots[j].resetPerformanceMeasures();
+	}
+
 	//CLUSTERING
 	if ( cnt == 0 ) {
 		for (unsigned int i=0; i < robots.size(); i++) {
@@ -89,6 +96,9 @@ int ClusterForage::runStep() {
 		}
 		cnt++;
 	}
+
+	//Add performance measure trigger ALL
+	pb->trigger();
 
 	return true;
 }
@@ -124,6 +134,10 @@ void ClusterForage::initializeObjects() {
 }
 
 void ClusterForage::initializeRobots() {
+	//Initialize Robots
+	pb = new PerformanceBed(robots);
+	pb->attach( new ItemsForagedOverTime() );
+
 	//TODO: Decide if initialize at sink or randomly
 	//TODO: Allow for robots to NOT choose what items to cluster. i.e. A robot can cluster any item.
 	for (int i=0; i < desc.number_robots ; i ++ ) {
@@ -156,6 +170,10 @@ void ClusterForage::initializeRobots() {
 		r.setActivity(CLUSTER);
 		r.setStringTracker(s.str());
 		r.setMutualRobotAwareness(&robots);
+		r.setIndex(i);
+
+		//Performance bed
+		r.setPerformanceBed(pb);
 
 		//push back robot
 		robots.push_back(r);

@@ -7,7 +7,10 @@ public:
 	ItemsForagedOverTime();
 	virtual ~ItemsForagedOverTime(void);
 
-	virtual void takeMeasure( double measure );
+	virtual void takeMeasure( vector<Robot>& robots);
 
+	vector<double> total;
+	vector<double> gold;
+	vector<double> waste;
 };
 

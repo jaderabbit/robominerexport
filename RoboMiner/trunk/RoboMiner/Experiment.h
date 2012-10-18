@@ -1,5 +1,6 @@
 #pragma once
 
+#include "PerformanceBed.h"
 #include "Mine.h"
 #include "Robot.h"
 
@@ -16,5 +17,7 @@ public:
 
 	Mine mine;
 	vector<Robot> robots;
+
+	PerformanceBed* pb;
 };
 
