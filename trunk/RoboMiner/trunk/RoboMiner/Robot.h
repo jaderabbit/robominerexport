@@ -199,6 +199,7 @@ public:
 	const static int RADIUS_SIZE = 10;
 	const static int MAX_PATH_DEVIATION = 4;
 	const static int MAX_SEARCH_RANGE = 4;
+	const static int MAX_STATE_COUNTER = 100;
 
 	//if robot has a tracker, then a file is saved with its total movements
 	bool tracker;

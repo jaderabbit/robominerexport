@@ -46,6 +46,9 @@
     <Filter Include="Experiment\Performance Measures">
       <UniqueIdentifier>{328a66c7-2742-477f-b940-299d460d9d40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Experiment\GoldOnlyBasicForage">
+      <UniqueIdentifier>{34db5c2d-6ebc-4093-9ef8-605b3f757152}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Forager.cpp">
@@ -118,6 +121,12 @@
     <ClCompile Include="PerformanceBed.cpp">
       <Filter>Experiment\Performance Measures</Filter>
     </ClCompile>
+    <ClCompile Include="BasicForageGoldOnly.cpp">
+      <Filter>Experiment\GoldOnlyBasicForage</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicForagingState.cpp">
+      <Filter>RobotState\UncollabForage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -185,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="PerformanceBed.h">
       <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicForageGoldOnly.h">
+      <Filter>Experiment\GoldOnlyBasicForage</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicForagingState.h">
+      <Filter>RobotState\UncollabForage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

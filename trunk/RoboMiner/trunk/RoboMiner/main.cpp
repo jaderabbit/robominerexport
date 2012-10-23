@@ -112,16 +112,16 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	if ( !game.Initialize(&hWnd, int2(windowWidth, windowHeight)) ) return FatalError(hWnd, "Game init failed!");
 	
 	//load map
-	//if ( !game.LoadLevel("..\\TestMaps\\RTS\\map - 512x512 - 0.bmp", NMD_MP_BMP) ) return FatalError(hWnd, "Level Load failed!");
-	//if ( !game.LoadLevel("..\\TestMaps\\BGMaps\\AR0701SR-512.map", NMD_MP_BGMAP) ) return FatalError(hWnd, "Level Load failed!");
-	//if ( !game.LoadLevel("..\\TestMaps\\starcraft\\theatreofwar.map", NMD_MP_BGMAP) ) return FatalError(hWnd, "Level Load failed!");
 	if ( !game.LoadLevel("clustered_test.txt",80,80,20,3) ) return FatalError(hWnd, "Level Load failed!");
-	//if ( !game.LoadLevel("..\\TestMaps\\coh\\2.bmp", NMD_MP_BMP) ) return FatalError(hWnd, "Level Load failed!");
-	//if ( !game.LoadLevel("..\\TestMaps\\test\\test1.bmp", NMD_MP_BMP) ) return FatalError(hWnd, "Level Load failed!");
 	
 	//main message loop
     MSG msg = {0};
 	long t = 0;
+
+	for (int i=0; i < 1950; i++) {
+		game.Update();
+	}
+
     while (WM_QUIT != msg.message)
     {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) == TRUE)

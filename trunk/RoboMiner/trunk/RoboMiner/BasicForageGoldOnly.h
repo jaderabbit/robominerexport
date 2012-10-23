@@ -1,17 +1,13 @@
 #pragma once
-
-#include "Tools.h"
 #include "experiment.h"
-
-class ClusterForage :
+class BasicForageGoldOnly :
 	public Experiment
 {
 public:
-	ClusterForage(void);
-	ClusterForage( EXPERIMENT_DESC _desc );
-	virtual ~ClusterForage(void);
+	BasicForageGoldOnly(void);
+	BasicForageGoldOnly(EXPERIMENT_DESC _desc);
+	virtual ~BasicForageGoldOnly(void);
 
-	//Main methods
 	virtual int initialize();
 	virtual int run();
 	virtual int runStep();
@@ -26,14 +22,9 @@ public:
 	//Chose robot position
 	Coord randomRobotPosition();
 
-
 	const static int SINK_BOUNDARY = 5;
 	static const int MAX_WANDER_STEPS = 50;
 
-
-
-	//Interation counter
 	int cnt;
-
 };
 

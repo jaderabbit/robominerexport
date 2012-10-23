@@ -281,6 +281,7 @@ void Robot::makeMove() {
 	pos.y += dir.y;
 
 	if (activity == EXPLORE) {
+		//TODO: Possibly irrelevant line of code. Optimize
 		destination.x += dir.x;
 		destination.y += dir.y;
 	} else if (activity == FORAGE) {
@@ -305,38 +306,33 @@ void Robot::homingStep() {
 	//set destination
 	if (state_counter == 0 && activity == EXPLORE ) {	
 		//set the location of the cluster
-		clusterLocation.x =  destination.x;
-		clusterLocation.y =  destination.y;
-
-		//set home vector
-		homeVector.x = -destination.x;
-		homeVector.y = -destination.y;
+		clusterLocation.x =  pos.x;
+		clusterLocation.y =  pos.y;
 
 		//set home as the destination
-		destination.x = homeVector.x;
-		destination.y = homeVector.y;
+		destination.x = oldSinkPos.x;
+		destination.y = oldSinkPos.y;
 	} else if (state_counter == 0 && activity == FORAGE) {
-		//clusterLocation.x = pos.x;
-		//clusterLocation.y = pos.y;
+		//set the location of the cluster
+		clusterLocation.x =  pos.x;
+		clusterLocation.y =  pos.y;
 
-		destination.x = homeVector.x;
-		destination.y = homeVector.y;
+		destination.x = oldSinkPos.x;
+		destination.y = oldSinkPos.y;
 	}
 
 	//increment state counter
 	state_counter++;
 
 	//need to use accumulated direction vector to guide homing instinct. 
-	dir.x = sgm(destination.x);
-	dir.y = sgm(destination.y);
+	dir.x = sgm(oldSinkPos.x - pos.x);
+	dir.y = sgm(oldSinkPos.y - pos.y);
 
 	//check if valid move
 	if (validMove()) {
 		//make the move
 		makeMove();
 
-		//if home  - not exactly correct is it?
-		/*28/06/2012 14:42*/
 		if ( isHome() ) { //this clause makes sure it is home
 			state_counter = 0;
 
@@ -377,8 +373,8 @@ void Robot::beaconHomingStep() {
 	}
 
 	do {
-		//This hack is a LIE. this is a weird hack to check if the robot is home - need to also ensure that robot is in ACTIVITY = RECRUITING
-		if ( isHome() ) { //this was wrong. 
+		
+		if ( isHome() ) { 
 			state_counter=0;
 
 			if (activity == EXPLORE ) {
@@ -428,7 +424,7 @@ bool Robot::isHome() {
 }
 
 bool Robot::directionYToSink() {
-	if ( load_type == GOLD ) {
+	if ( division == GOLD ) {
 		//gold is on the left
 		return pos.y < mine->size.y/2;
 	} else {

@@ -33,6 +33,7 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	d.gold_waste_division_ratio = 0.5;
 	d.total_cluster_iterations = 2000;
 	d.total_forage_iterations = 2000;
+	d.max_path = 50;
 
 	experiment = new ClusterForage(d);
 
@@ -115,14 +116,21 @@ void GameState::RenderScene()
 		for ( unsigned int x=0; x < experiment->mine.size.x; x++ )
 		{
 			switch ( experiment->mine.grid[x][y].type ) {
-				case ROBOT: trg.pTiles[count].color = rndColors[experiment->mine.grid[x][y].index];
+				case ROBOT:	{
+							int ind = experiment->mine.grid[x][y].index;
+							if ( experiment->robots[ind].activity == EXPLORE) {
+									trg.pTiles[count].color = float3(139.0/255.0,117.0/255.0,0);break;
+							} else {
+								trg.pTiles[count].color= float3(40.0/255.0,40.0/255.0,40.0/255.0);break;	
+							}
+						//trg.pTiles[count].color = rndColors[experiment->mine.grid[x][y].index];
 							/*
 							switch ( m.robots[m.grid[x][y].index].activity ) {
 								case CLUSTER: trg.pTiles[count].color = float3(1,1,0); break;
 								case EXPLORE: trg.pTiles[count].color = float3(0,1,1); break;
 								case FORAGE: trg.pTiles[count].color = rndColors[m.robots[m.grid[x][y].index].state]; break;
 							}*/
-							break;
+							break;}
 				case GOLD: trg.pTiles[count].color= float3(139.0/255.0,117.0/255.0,0);break; //gold colour
 				case WASTE: trg.pTiles[count].color= float3(40/255,40/255,40/255);break;				//waste colour
 				case SINK: trg.pTiles[count].color= float3(1,0,0);break;
