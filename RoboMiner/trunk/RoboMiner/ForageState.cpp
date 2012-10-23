@@ -252,7 +252,6 @@ void ForageState::beaconHomingStep() {
 	}
 
 	do {
-		//This hack is a LIE. this is a weird hack to check if the robot is home - need to also ensure that robot is in ACTIVITY = RECRUITING
 		if ( robot->isHome() ) { //this was wrong. 
 			setMinorState(UNLOADING);
 			success = true;

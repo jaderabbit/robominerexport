@@ -80,6 +80,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasicForageGoldOnly.cpp" />
+    <ClCompile Include="BasicForagingState.cpp" />
     <ClCompile Include="Clusterer.cpp" />
     <ClCompile Include="ClusterForage.cpp" />
     <ClCompile Include="ClusterState.cpp" />
@@ -106,6 +108,8 @@
     <ClCompile Include="Update.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicForageGoldOnly.h" />
+    <ClInclude Include="BasicForagingState.h" />
     <ClInclude Include="ClusterForage.h" />
     <ClInclude Include="ClusterState.h" />
     <ClInclude Include="CoordinateConversions.h" />

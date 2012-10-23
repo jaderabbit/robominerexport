@@ -16,4 +16,6 @@ struct EXPERIMENT_DESC {
 	//total cluster iterations
 	int total_cluster_iterations;
 	int total_forage_iterations;
+
+	int max_path;
 };

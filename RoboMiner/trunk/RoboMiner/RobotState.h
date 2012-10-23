@@ -13,6 +13,7 @@ public:
 	void setMinorState(int _state);
 	bool isFirstTime();
 
+
 	//Do Step
 	virtual void doStep() =0;
 protected:

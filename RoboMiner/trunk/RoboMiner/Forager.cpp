@@ -34,20 +34,26 @@ void Robot::locateStep() {
 	//follow cluster location. 
 	do { 
 		double r1 = t.randomOpen(), r2 = t.randomOpen();
-		dir.x = (t.randomOpen() < 0.5) ? sgm(destination.x) : 0;
-		dir.y = (t.randomOpen() < 0.5) ? sgm(destination.y) : 0;
+		dir.x = (t.randomOpen() < 0.5) ? sgm(clusterLocation.x - pos.x) : 0;
+		dir.y = (t.randomOpen() < 0.5) ? sgm(clusterLocation.y - pos.y) : 0;
 	} while ( dir.x == 0 && dir.y == 0 );
 
 	//assert(dir.x != 0 && dir.y != 0 );
 
 	state_counter++;
 	int rep_count =0;
+
+	if (state_counter > MAX_STATE_COUNTER ) {
+		clusterLocation.x = t.gaussianDistributionDiscrete(clusterLocation.x, MAX_PATH_DEVIATION);
+		clusterLocation.y = t.gaussianDistributionDiscrete(clusterLocation.y, MAX_PATH_DEVIATION);
+	} 
+
 	bool madeMove = false;
 	do { 
 		if (validMove()) {
 			makeMove();
 			madeMove =true;
-			if ( destination.x ==0 && destination.y ==0 ) {
+			if ( clusterLocation.x - pos.x ==0 && clusterLocation.y - pos.y ==0 ) {
 				state_counter = 0;
 				state = LOADING;
 			}
@@ -102,6 +108,7 @@ void Robot::loadStep() {
 
 void Robot::unloadStep() {
 	if (loaded) {
+		//unload
 		loaded = false;
 		mine->sink_items[load_type-1]++;
 
@@ -109,7 +116,7 @@ void Robot::unloadStep() {
 		oldSinkPos.x = pos.x;
 		oldSinkPos.y = pos.y;
 
-		Coord location;
+		/*Coord location;
 		
 		//Triangulate position - final direction = broadcasted location - (position of robot - position of recruiter)
 		location.x = recruiterClusterLocation.x - ( pos.x - recruiterOriginalPos.x);
@@ -129,7 +136,9 @@ void Robot::unloadStep() {
 
 		//set destination
 		destination.x = location.x;
-		destination.y = location.y;
+		destination.y = location.y;*/
+
+		destination = clusterLocation;
 
 		//Set state
 		state = LOCATING;
@@ -145,7 +154,33 @@ void Robot::unloadStep() {
 }
 
 void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type ) {
-	
+
+	//Global Location of cluster. 
+	clusterLocation = location;
+	destination = location;
+
+	clusterLocation.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
+	clusterLocation.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
+	destination = clusterLocation;
+
+	//check if in bounds
+	if (clusterLocation.x <= 0 ) clusterLocation.x = 1;
+	if (clusterLocation.y >= 79 ) clusterLocation.y = 78;
+
+	//Use recruiter position to determine whether to take it or not
+
+	//change state
+	state = LOCATING;
+	state_counter = 0;
+
+	//robotState->setMinorState(LOCATING);
+	//test to see how often recruited
+	activity_counter++;
+
+	//load
+	division = type;
+
+		/* //Move back to top
 	//Recruiter Message - use these later on
 	recruiterOriginalPos.x = recruiterPos.x;
 	recruiterOriginalPos.y = recruiterPos.y;
@@ -170,18 +205,11 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type ) 
 
 	//set destination
 	destination.x = location.x;
-	destination.y = location.y;
+	destination.y = location.y;*/
 
-	//Set state
-	state = LOCATING;
-	state_counter = 0;
+	//location
 
-	//robotState->setMinorState(LOCATING);
-	//test to see how often recruited
-	activity_counter++;
 
-	//load
-	division = type;
 
 }
 

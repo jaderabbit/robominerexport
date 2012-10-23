@@ -1,20 +1,25 @@
+#include "BasicForageGoldOnly.h"
+
+
+BasicForageGoldOnly::BasicForageGoldOnly(void)
+{
+}
+
+
+BasicForageGoldOnly::~BasicForageGoldOnly(void)
+{
+}
+
 #include "ClusterForage.h"
 #include "ItemsForagedOverTime.h"
 #include <sstream>
 
-ClusterForage::ClusterForage(void)
-{
-}
-
-ClusterForage::ClusterForage( EXPERIMENT_DESC _desc ) : Experiment(_desc) {
+BasicForageGoldOnly::BasicForageGoldOnly( EXPERIMENT_DESC _desc ) : Experiment(_desc) {
 }
 
 
-ClusterForage::~ClusterForage(void)
-{
-}
 
-int ClusterForage::initialize() {
+int BasicForageGoldOnly::initialize() {
 	initializeGrid();
 	initializeSink();
 	initializeObjects();
@@ -23,10 +28,10 @@ int ClusterForage::initialize() {
 	return true;
 }
 
-int ClusterForage::run() {
+int BasicForageGoldOnly::run() {
 	//CLUSTERING
 	for (unsigned int i=0; i < robots.size(); i++) {
-		robots[i].setActivity(CLUSTER);
+		robots[i].setActivity(FORAGE);
 	}
 
 	while (cnt < desc.total_cluster_iterations) {
@@ -56,7 +61,7 @@ int ClusterForage::run() {
 	return true;
 }
 
-int ClusterForage::runStep() {
+int BasicForageGoldOnly::runStep() {
 
 	//reset performance measures
 	for (unsigned int j=0; j < robots.size(); j++) {
@@ -103,19 +108,19 @@ int ClusterForage::runStep() {
 	return true;
 }
 
-int ClusterForage::cleanup() {
+int BasicForageGoldOnly::cleanup() {
 	//TODO: Certify that all clean up issues have been addressed. 
 	robots.clear();
 	mine.grid.clear();
 	return true;
 }
 
-void ClusterForage::initializeGrid() {
+void BasicForageGoldOnly::initializeGrid() {
 	//Initialize the empty grid
 	mine.initializeEmptyGrid(desc.width,desc.height);
 }
 
-void ClusterForage::initializeObjects() {
+void BasicForageGoldOnly::initializeObjects() {
 	//Randomly
 	for (int i=0; i < desc.number_objects; i++) {
 		bool empty = false;
@@ -133,7 +138,7 @@ void ClusterForage::initializeObjects() {
 	}
 }
 
-void ClusterForage::initializeRobots() {
+void BasicForageGoldOnly::initializeRobots() {
 	//Initialize Robots
 	pb = new PerformanceBed(robots);
 	pb->attach( new ItemsForagedOverTime() );
@@ -182,12 +187,12 @@ void ClusterForage::initializeRobots() {
 
 }
 
-void ClusterForage::initializeSink() {
+void BasicForageGoldOnly::initializeSink() {
 	//init sink
 	mine.initSink();
 }
 
-Coord ClusterForage::randomRobotPosition() {
+Coord BasicForageGoldOnly::randomRobotPosition() {
 	//choose position
 	Coord p;
 
@@ -201,3 +206,4 @@ Coord ClusterForage::randomRobotPosition() {
 	return p;
 
 }
+

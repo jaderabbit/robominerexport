@@ -58,6 +58,7 @@ void Robot::exploreStep() {
 		state = HOMING;
 		state_counter = 0;
 		activity_counter++;
+		clusterLocation = pos;
 	} 
 
 }
@@ -81,7 +82,7 @@ bool Robot::findItem() {
 void Robot::recruitStep() {
 	if (state_counter < MAX_RECRUITMENT_REPS ) {
 		//search up and down the area by the sink for waiting robots
-		vector<int> waitingRobots = radiusSearchSink();
+		vector<int> waitingRobots = searchSink();
 
 		//send message to waiting robots
 		for (int i=0; i < waitingRobots.size(); i++) {
