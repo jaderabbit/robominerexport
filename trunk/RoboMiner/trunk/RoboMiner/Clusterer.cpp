@@ -148,35 +148,41 @@ bool Robot::validPos(int x, int y) {
 }
 
 void Robot::calculateF() {
+	double divisor = 0;
+	for (int i=0; i < c; i++) {
+		divisor += i*8;
+	}
+	divisor -= 1;
+ 
 	if ( division == GOLD ) {
 			int gold_corpses = 0;
-			for (int i=-1; i <= 1; i++) {
-				for (int j=-1; j <= 1; j++) {
+			for (int i=-c; i <= c; i++) {
+				for (int j=-c; j <= c; j++) {
 					if ( validPos(pos.x+i,pos.y+j) && (mine->grid[pos.x +i][pos.y+j].type == GOLD)) {
 						gold_corpses++;
 					}
 				}
 			}
-			f = ((double)gold_corpses)/7.0;
+			f = ((double)gold_corpses)/divisor;
 		} else if ( division == WASTE ) {
 			int waste_corpses = 0;
-			for (int i=-1; i <= 1; i++) {
-				for (int j=-1; j <= 1; j++) {
+			for (int i=-c; i <= c; i++) {
+				for (int j=-c; j <= c; j++) {
 					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE ) {
 						waste_corpses++;
 					}
 				}
 			}
-			f = ((double)waste_corpses)/7.0;
+			f = ((double)waste_corpses)/divisor;
 		} else {
 			int total_corpses = 0;
-			for (int i=-1; i <= 1; i++) {
-				for (int j=-1; j <= 1; j++) {
+			for (int i=-c; i <= c; i++) {
+				for (int j=-c; j <= c; j++) {
 					if ( validPos(pos.x+i,pos.y+j) && (mine->grid[pos.x +i][pos.y+j] == GOLD || mine->grid[pos.x +i][pos.y+j] == WASTE )) {
 						total_corpses++;
 					}
 				}
 			}
-			f = ((double)total_corpses)/7.0;
+			f = ((double)total_corpses)/divisor;
 		}
 }
