@@ -1,5 +1,7 @@
 #include "Robot.h"
 #include "Mine.h"
+#include <assert.h>
+#include <math.h>
 
 void Robot::cluster() {
 	switch (state) {
@@ -98,6 +100,7 @@ void Robot::chooseMaxPathLength() {
 }
 
 bool Robot::load() {
+	assert ( f >= 0 );
 	double Pp = pow((f-1),4);
 	double r = t.randomOpen();
 	if ( r < Pp) {
@@ -153,27 +156,33 @@ void Robot::calculateF() {
 		divisor += i*8;
 	}
 	divisor -= 1;
- 
+	int gold_corpses = 0; int waste_corpses = 0;
+
 	if ( division == GOLD ) {
-			int gold_corpses = 0;
+			
 			for (int i=-c; i <= c; i++) {
 				for (int j=-c; j <= c; j++) {
 					if ( validPos(pos.x+i,pos.y+j) && (mine->grid[pos.x +i][pos.y+j].type == GOLD)) {
 						gold_corpses++;
 					}
-				}
-			}
-			f = ((double)gold_corpses)/divisor;
-		} else if ( division == WASTE ) {
-			int waste_corpses = 0;
-			for (int i=-c; i <= c; i++) {
-				for (int j=-c; j <= c; j++) {
 					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE ) {
 						waste_corpses++;
 					}
 				}
 			}
-			f = ((double)waste_corpses)/divisor;
+			f = max(0.0,(double)(gold_corpses-waste_corpses))/divisor;
+		} else if ( division == WASTE ) {
+			for (int i=-c; i <= c; i++) {
+				for (int j=-c; j <= c; j++) {
+					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE ) {
+						waste_corpses++;
+					}
+					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == GOLD ) {
+						gold_corpses++;
+					}
+				}
+			}
+			f = max(0.0,(double)(waste_corpses - gold_corpses))/divisor;
 		} else {
 			int total_corpses = 0;
 			for (int i=-c; i <= c; i++) {
