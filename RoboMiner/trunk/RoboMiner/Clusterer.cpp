@@ -156,33 +156,77 @@ void Robot::calculateF() {
 		divisor += i*8;
 	}
 	divisor -= 1;
-	int gold_corpses = 0; int waste_corpses = 0;
 
-	if ( division == GOLD ) {
+
+	int curr_corpses = 0; int opp_corpses = 0;
+	vector<int> curr_corpses_proximity; for (int i=0; i <= c; i++) { curr_corpses_proximity.push_back(0);}
+	vector<int> opp_corpses_proximity; for (int i=0; i <= c; i++) { opp_corpses_proximity.push_back(0);}
+
+	for (int i=-c; i <= c; i++) {
+		for (int j=-c; j <= c; j++) {
+			if ( validPos(pos.x+i,pos.y+j) && (mine->grid[pos.x +i][pos.y+j].type == division && i != 0 && j != 0)) {
+				curr_corpses++;
+				curr_corpses_proximity[abs(c)]++;
+			}
+			if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == opposite(division) && i != 0 && j != 0) {
+				opp_corpses++;
+				opp_corpses_proximity[abs(c)]++;
+			}
+		}
+	}
+
+	f = 0;
+	f = max(0.0,(double)(curr_corpses - opp_corpses))/divisor;
+	/*double total = c*(1+c)/2.0;
+	for (int i=1; i <= c; i++ ) {
+		divisor += i*8 - 1;
+		f += max(0.0,(double)(curr_corpses_proximity[i]-opp_corpses_proximity[i]))/divisor*((c-i+1)/total);
+	}*/
+
+
+	/*if ( division == GOLD ) {
 			
 			for (int i=-c; i <= c; i++) {
 				for (int j=-c; j <= c; j++) {
-					if ( validPos(pos.x+i,pos.y+j) && (mine->grid[pos.x +i][pos.y+j].type == GOLD)) {
+					if ( validPos(pos.x+i,pos.y+j) && (mine->grid[pos.x +i][pos.y+j].type == GOLD && i != 0 && j != 0)) {
 						gold_corpses++;
+						gold_corpses_proximity[abs(c)]++;
 					}
-					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE ) {
+					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE && i != 0 && j != 0) {
 						waste_corpses++;
+						waste_corpses_proximity[abs(c)]++;
 					}
 				}
 			}
+
 			f = max(0.0,(double)(gold_corpses-waste_corpses))/divisor;
+			f = 0;
+			double total = c*(1+c)/2.0;
+			for (int i=1; i <= c; i++ ) {
+				divisor = i*8 - 1;
+				f += max(0.0,(double)(gold_corpses_proximity[i]-waste_corpses_proximity[i]))/divisor*((c-i+1)/total);
+			}
+
 		} else if ( division == WASTE ) {
 			for (int i=-c; i <= c; i++) {
 				for (int j=-c; j <= c; j++) {
-					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE ) {
+					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE && i != 0 && j != 0) {
 						waste_corpses++;
+						waste_corpses_proximity[abs(c)]++;
 					}
-					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == GOLD ) {
+					if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == GOLD && i != 0 && j != 0) {
 						gold_corpses++;
+						gold_corpses_proximity[abs(c)]++;
 					}
 				}
 			}
 			f = max(0.0,(double)(waste_corpses - gold_corpses))/divisor;
+			f = 0;
+			/*double total = c*(1+c)/2.0;
+			for (int i=1; i <= c; i++ ) {
+				divisor = i*8 - 1;
+				f += max(0.0,(double)(gold_corpses_proximity[i]-waste_corpses_proximity[i]))/divisor*((c-i+1)/total);
+			}
 		} else {
 			int total_corpses = 0;
 			for (int i=-c; i <= c; i++) {
@@ -193,5 +237,9 @@ void Robot::calculateF() {
 				}
 			}
 			f = ((double)total_corpses)/divisor;
-		}
+		}*/
+}
+
+int Robot::opposite( int division ) {
+	return (division == GOLD) ? WASTE : GOLD;
 }
