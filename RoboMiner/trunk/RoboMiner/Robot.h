@@ -10,7 +10,7 @@ class PerformanceBed;
 
 enum { EMPTY, GOLD, WASTE, ROBOT, SINK, G_SINK, W_SINK };
 
-enum { CLUSTER, FORAGE, EXPLORE };
+enum { CLUSTER, FORAGE, EXPLORE, BASICFORAGE };
 
 
 enum { HOMING, BEACON_HOMING, CHOOSE_ACTIVITY, 			//General States
@@ -90,6 +90,7 @@ public:
 	void calculateF();
 	bool load();
 	bool unload();
+	int opposite( int division );
 
 	//Helper CLUSTERING Methods
 	void randomWalkStep();
@@ -100,6 +101,7 @@ public:
 	void makeMove();
 	bool validMove();
 	bool validPos(int x, int y);
+	bool isEmpty(int dirx, int diry );
 
 	//FORAGING Methods
 	void waitStep();
@@ -117,6 +119,10 @@ public:
 	bool walkingIntoAWall();
 	bool directionYToSink();
 
+	//Obstacle Avoidance Methods
+	void calculateDistanceFromSink();
+	void calculateFoV();
+
 	//OutputMessages
 	void trackerOutput();
 
@@ -132,6 +138,9 @@ public:
 
 	void setState( int _state ) { state = _state; }
 	int getState() { return state; }
+
+	void setRobotState( RobotState* _state ) { robotState = _state; }
+	RobotState* getRobotState() { return robotState; }
 
 	void setMaxPath( int _max_path ) { max_path = _max_path; }
 
@@ -177,8 +186,12 @@ public:
 	double f;//Explorer States
 
 	//initial state for each activity
-	int init_states[3];
-	int max_activity_counters[3];
+	int init_states[4];
+	int max_activity_counters[4];
+
+	//distance to sink
+	double max_distance_from_sink;
+	double distance_from_sink;
 
 	//Tools
 	Tools t;
@@ -198,6 +211,7 @@ public:
 	const static int MAX_LOADING_REPS = 30;
 	const static int RADIUS_SIZE = 10;
 	const static int MAX_PATH_DEVIATION = 4;
+	const static int c = 3; //max cluster deviation
 	const static int MAX_SEARCH_RANGE = 4;
 	const static int MAX_STATE_COUNTER = 100;
 
@@ -214,6 +228,8 @@ public:
 	int typeForaged;
 	bool moved;	//update in move
 	void resetPerformanceMeasures();
+	Coord FoV[5];
+	Coord dir_circle[8];
 
 
 
