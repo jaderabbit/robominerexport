@@ -12,6 +12,11 @@ public:
 	Tools(void);
 	~Tools(void);
 
+	double distance ( int x0, int x1, int y0, int y1 ) {
+		return sqrt( pow(x0 - x1,2.0) + pow(y0 - y1, 2.0) );
+	}
+
+
 	//* Today I changed the Randomizer back to using the MersenneTwister cause that is how it should be
 
 	int random(int low, int high) {
