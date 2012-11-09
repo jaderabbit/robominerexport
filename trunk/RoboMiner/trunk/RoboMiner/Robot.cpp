@@ -6,6 +6,7 @@
 #include "ForageState.h"
 #include "ClusterState.h"
 #include "PerformanceBed.h"
+#include "BasicForagingState.h"
 
 Robot::Robot(void)
 {
@@ -62,7 +63,10 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	 clusterLocation.x = 0; clusterLocation.y = 0;
 	 destination.x = 0; destination.y = 0;
 	 recruiterOriginalPos.x = 0; recruiterOriginalPos.y = 0;
-
+	
+	 //Distance from sink
+	 max_distance_from_sink = 0;
+	 distance_from_sink = 0;
 	 //Performance variable measures
 	resetPerformanceMeasures();
 }
@@ -99,6 +103,8 @@ Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _ma
 	 clusterLocation.x = 0; clusterLocation.y = 0;
 	 destination.x = 0; destination.y = 0;
 	 recruiterOriginalPos.x = 0; recruiterOriginalPos.y = 0;
+
+	 max_distance_from_sink = 0;
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, string track_file){
@@ -149,6 +155,8 @@ Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, stri
 		tracker = true;
 		trackFile = track_file;
 	 }
+
+	 max_distance_from_sink = 0;
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, int _div, string track_file){
@@ -201,6 +209,7 @@ Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, int 
 	 }
 
 	 robotState = 0;
+	 max_distance_from_sink = 0;
 }
 
 Robot::~Robot(void)
@@ -229,9 +238,10 @@ void Robot::doStep() {
 	}
 
 	switch (activity) {
-		case (EXPLORE): explore();//if (!robotState) robotState = new ExploreState(this); robotState->doStep(); break;
-		case (FORAGE) : forage(); //if (!robotState) robotState = new ForageState(this); robotState->doStep(); break;
-		case (CLUSTER) : cluster();// if (!robotState) robotState = new ClusterState(this); robotState->doStep(); break;
+		case (EXPLORE): explore();break;//if (!robotState) robotState = new ExploreState(this); robotState->doStep(); break;
+		case (FORAGE) : forage(); break;//if (!robotState) robotState = new ForageState(this); robotState->doStep(); break;
+		case (CLUSTER) : cluster();break;// if (!robotState) robotState = new ClusterState(this); robotState->doStep(); break;
+		case (BASICFORAGE) : robotState->doStep(); break;
 		default: cout << "Erroneous ACTIVITY" << endl; break;
 	}
 }
@@ -266,6 +276,10 @@ bool Robot::validMove() {
 	return false;
 }
 
+bool Robot::isEmpty(int dirx, int diry ) {
+	return mine->grid[pos.x + dirx][ pos.y+ diry] == EMPTY;
+}
+
 bool Robot::walkingIntoAWall(){
 	if ( (pos.x + dir.x >= 0) && (pos.x + dir.x < mine->size.x)  && (pos.y + dir.y < mine->size.y) && (pos.y + dir.y >= 0)) {
 		return false;
@@ -289,7 +303,107 @@ void Robot::makeMove() {
 		destination.y -= dir.y;
 	}
 
+
+	calculateDistanceFromSink();
+
 	moved = true;
+}
+
+void Robot::calculateDistanceFromSink() {
+	//Calculates distance from the sink
+	if ( division == GOLD ) {
+		//gold is on the left
+		if (  pos.y >= mine->size.y/2 ) {
+			distance_from_sink = t.distance( pos.x, 1, pos.y, mine->size.y/2 );
+		} else {
+			distance_from_sink = t.distance( pos.x, 1, pos.y, pos.y );
+		}
+	} else {
+		if ( pos.y <= mine->size.y/2 ) {
+			distance_from_sink = t.distance( pos.x, 1, pos.y, mine->size.y/2 );
+		} else {
+			distance_from_sink = t.distance( pos.x, 1, pos.y, pos.y );
+		}
+	}
+
+	//Determines maximum distance from sink
+	if ( distance_from_sink > max_distance_from_sink ) { max_distance_from_sink = distance_from_sink ; }
+}
+
+void Robot::calculateFoV() {
+
+/*	int tried_positions;
+	bool left = true;
+	int addedPos = 0;
+
+	//Temporary dir for rotation
+	Coord left_dir = dir;
+	Coord right_dir = dir;
+
+	//Forward direction
+	if ( validPos(pos.x + dir.x, pos.y + dir.y ) && isEmpty(dir.x,dir.y) ) {
+		FoV[addedPos] = dir;
+		addedPos++;
+	}
+	tried_positions++;
+
+	while ( tried_positions < 8 && addedPos < 5 ) {
+
+		if ( left_dir == right_dir ) {
+			//add frotn or back
+		} else {
+			
+			//generate both left & right versions. 
+			Coord option[2];
+			if ( left_dir.x == 0 || left_dir.y == 0) {
+				//left
+				option[0].x = left_dir.x + left_dir.y;
+				option[0].y = left_dir.y + left_dir.x;
+			} else if {
+				
+			}
+				//right
+				option[1].x = tmp_dir.x - tmp_dir.y;
+				option[1].y = tmp_dir.y - tmp_dir.x;
+			} else {
+				//option 1
+				option[0].x = tmp_dir.x;
+				option[0].y = 0;
+
+				//option 1
+				option[1].x = 0;
+				option[1].y = tmp_dir.y;
+			}
+
+		}
+
+
+		//generate both left & right versions. 
+		Coord option[2];
+		if ( tmp_dir.x == 0 || tmp_dir.y == 0) {
+			//left
+			option[0].x = tmp_dir.x + tmp_dir.y;
+			option[0].y = tmp_dir.y + tmp_dir.x;
+
+			//right
+			option[1].x = tmp_dir.x - tmp_dir.y;
+			option[1].y = tmp_dir.y - tmp_dir.x;
+		} else {
+			//option 1
+			option[0].x = tmp_dir.x;
+			option[0].y = 0;
+
+			//option 1
+			option[1].x = 0;
+			option[1].y = tmp_dir.y;
+		}
+
+	}
+
+	//choose to go LEFT or RIGHT
+	int d =  (t.randomClosed() >= 0.5 ) ? 1 : 0;
+	dir = option[d];
+}*/
 }
 
 void Robot::setPosition( int x, int y) { 
@@ -379,7 +493,6 @@ void Robot::beaconHomingStep() {
 
 			if (activity == EXPLORE ) {
 				state = RECRUITING;
-				//mine->output();
 			} else if (activity == FORAGE) {
 				state = UNLOADING;
 			}
