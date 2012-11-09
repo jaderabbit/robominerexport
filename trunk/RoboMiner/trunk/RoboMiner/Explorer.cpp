@@ -14,29 +14,29 @@ void Robot::explore() {
 }
 
 void Robot::avoidObstacle() {
-		Coord option[2];
-		if ( dir.x == 0 || dir.y == 0) {
-			//option 1
-			option[0].x = dir.x + dir.y;
-			option[0].y = dir.y + dir.x;
+	Coord option[2];
+	if ( dir.x == 0 || dir.y == 0) {
+		//option 1
+		option[0].x = dir.x + dir.y;
+		option[0].y = dir.y + dir.x;
 
-			//option 2
-			option[1].x = dir.x - dir.y;
-			option[1].y = dir.y - dir.x;
-		} else {
-			//option 1
-			option[0].x = dir.x;
-			option[0].y = 0;
+		//option 2
+		option[1].x = dir.x - dir.y;
+		option[1].y = dir.y - dir.x;
+	} else {
+		//option 1
+		option[0].x = dir.x;
+		option[0].y = 0;
 
-			//option 1
-			option[1].x = 0;
-			option[1].y = dir.y;
-		}
-
-		//choose to go LEFT or RIGHT
-		int d =  (t.randomClosed() >= 0.5 ) ? 1 : 0;
-		dir = option[d];
+		//option 1
+		option[1].x = 0;
+		option[1].y = dir.y;
 	}
+
+	//choose to go LEFT or RIGHT
+	int d =  (t.randomClosed() >= 0.5 ) ? 1 : 0;
+	dir = option[d];
+}
 
 void Robot::exploreStep() {
 
