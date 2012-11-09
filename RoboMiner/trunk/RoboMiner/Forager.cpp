@@ -36,7 +36,7 @@ void Robot::locateStep() {
 		double r1 = t.randomOpen(), r2 = t.randomOpen();
 		dir.x = (t.randomOpen() < 0.5) ? sgm(clusterLocation.x - pos.x) : 0;
 		dir.y = (t.randomOpen() < 0.5) ? sgm(clusterLocation.y - pos.y) : 0;
-	} while ( dir.x == 0 && dir.y == 0 );
+	} while ( dir.x == 0 && dir.y == 0 && ((clusterLocation.x - pos.x) != 0 &&  (clusterLocation.y - pos.y != 0)));
 
 	//assert(dir.x != 0 && dir.y != 0 );
 
