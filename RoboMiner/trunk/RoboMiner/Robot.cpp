@@ -7,6 +7,7 @@
 #include "ClusterState.h"
 #include "PerformanceBed.h"
 #include "BasicForagingState.h"
+#include <assert.h>
 
 Robot::Robot(void)
 {
@@ -69,6 +70,19 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	 distance_from_sink = 0;
 	 //Performance variable measures
 	resetPerformanceMeasures();
+
+	//Direction circle
+	dir_circle[0].x = 1; dir_circle[0].y = 0;
+	dir_circle[1].x = 1; dir_circle[1].y = 1;
+	dir_circle[2].x = 0; dir_circle[2].y = 1;
+	dir_circle[3].x = -1; dir_circle[3].y = 1;
+	dir_circle[4].x = -1; dir_circle[4].y = 0;
+	dir_circle[5].x = -1; dir_circle[5].y = -1;
+	dir_circle[6].x = 0; dir_circle[6].y = -1;
+	dir_circle[7].x = 1; dir_circle[7].y = -1;
+
+	lambda = 0.5;
+
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div,  string track_file){
@@ -277,7 +291,15 @@ bool Robot::validMove() {
 }
 
 bool Robot::isEmpty(int dirx, int diry ) {
-	return mine->grid[pos.x + dirx][ pos.y+ diry] == EMPTY;
+	if ( validPos( pos.x + dirx, pos.y + diry ) )
+		return mine->grid[pos.x + dirx][ pos.y+ diry] == EMPTY;
+	return false;
+}
+
+bool Robot::isEmpty(Coord p) {
+	if ( validPos( p.x, p.y ) )
+		return mine->grid[p.x][p.y] == EMPTY;
+	return false;
 }
 
 bool Robot::walkingIntoAWall(){
@@ -330,80 +352,126 @@ void Robot::calculateDistanceFromSink() {
 	if ( distance_from_sink > max_distance_from_sink ) { max_distance_from_sink = distance_from_sink ; }
 }
 
+double Robot::calculateDistanceFromSink(Coord new_dir) {
+	Coord new_pos;
+	new_pos.x = pos.x + new_dir.x;
+	new_pos.y = pos.y + new_dir.y;
+
+	//Calculates distance from the sink
+	if ( division == GOLD ) {
+		//gold is on the left
+		if ( pos.y >= mine->size.y/2 ) {
+			return t.distance( new_pos.x, 1, new_pos.y, mine->size.y/2 );
+		} else {
+			return t.distance( new_pos.x, 1, new_pos.y, new_pos.y );
+		}
+	} else {
+		if ( pos.y <= mine->size.y/2 ) {
+			return t.distance( new_pos.x, 1, new_pos.y, mine->size.y/2 );
+		} else {
+			return t.distance( new_pos.x, 1, new_pos.y, new_pos.y );
+		}
+	}
+}
+
+int Robot::getDirectionIndex( Coord c ) {
+	for (int i=0; i < 8; i++) {
+		if ( c.x == dir_circle[i].x && c.y == dir_circle[i].y ) {
+			return i;
+		}
+	}
+}
+
 void Robot::calculateFoV() {
+	//get index of current direction
+	int left, right, left_start, right_start;
+	left_start = right_start = left = right = getDirectionIndex(dir);
+	int curr = 0;
+	int i = 0;
 
-/*	int tried_positions;
-	bool left = true;
-	int addedPos = 0;
-
-	//Temporary dir for rotation
-	Coord left_dir = dir;
-	Coord right_dir = dir;
-
-	//Forward direction
-	if ( validPos(pos.x + dir.x, pos.y + dir.y ) && isEmpty(dir.x,dir.y) ) {
-		FoV[addedPos] = dir;
-		addedPos++;
-	}
-	tried_positions++;
-
-	while ( tried_positions < 8 && addedPos < 5 ) {
-
-		if ( left_dir == right_dir ) {
-			//add frotn or back
-		} else {
-			
-			//generate both left & right versions. 
-			Coord option[2];
-			if ( left_dir.x == 0 || left_dir.y == 0) {
-				//left
-				option[0].x = left_dir.x + left_dir.y;
-				option[0].y = left_dir.y + left_dir.x;
-			} else if {
-				
-			}
-				//right
-				option[1].x = tmp_dir.x - tmp_dir.y;
-				option[1].y = tmp_dir.y - tmp_dir.x;
-			} else {
-				//option 1
-				option[0].x = tmp_dir.x;
-				option[0].y = 0;
-
-				//option 1
-				option[1].x = 0;
-				option[1].y = tmp_dir.y;
-			}
-
-		}
-
-
-		//generate both left & right versions. 
-		Coord option[2];
-		if ( tmp_dir.x == 0 || tmp_dir.y == 0) {
-			//left
-			option[0].x = tmp_dir.x + tmp_dir.y;
-			option[0].y = tmp_dir.y + tmp_dir.x;
-
-			//right
-			option[1].x = tmp_dir.x - tmp_dir.y;
-			option[1].y = tmp_dir.y - tmp_dir.x;
-		} else {
-			//option 1
-			option[0].x = tmp_dir.x;
-			option[0].y = 0;
-
-			//option 1
-			option[1].x = 0;
-			option[1].y = tmp_dir.y;
-		}
-
+	//add current direction to list
+	if ( validPos(pos.x + dir.x, pos.y + dir.y) &&  isEmpty(dir.x, dir.y ) ) {
+		FoV[curr] = dir;
+		curr++;
 	}
 
-	//choose to go LEFT or RIGHT
-	int d =  (t.randomClosed() >= 0.5 ) ? 1 : 0;
-	dir = option[d];
-}*/
+	//iteration using method through directions and add if available, until all spots are used or you run out
+	while ( curr < 5 && i < 8/2 ) {
+		left = ( left_start + i + 8 ) % 8;
+		right = ( right_start - i + 8 ) % 8;
+
+		if ( validPos(pos.x + dir_circle[left].x, pos.y + dir_circle[left].y) &&  isEmpty(dir_circle[left].x, dir_circle[left].y) ) {
+			FoV[curr] = dir_circle[left];
+			curr++;
+		}
+
+		if (validPos(pos.x + dir_circle[right].x, pos.y + dir_circle[right].y) &&  isEmpty(dir_circle[right].x, dir_circle[right].y) && curr < 5) {
+			FoV[curr] = dir_circle[right];
+			curr++;
+		}
+
+		i++;
+	}
+
+	//FoV now contains a list of valid directions
+}
+
+double Robot::calculateClarity(Coord d) {
+	double u_max = DoV;
+	double u =0;
+	double beta;
+	Coord tmp_pos; tmp_pos.x = 0; tmp_pos.y = 0;
+
+	//Run through depth of view
+	for (int i=0; i < DoV; i++ ) {
+		//calc new pos
+		tmp_pos.x += d.x;
+		tmp_pos.y += d.y;
+
+		//if empty inc u else break out of loop
+		if (isEmpty(tmp_pos)) {
+			u += 1.0;
+		} else {
+			break;
+		}
+	}
+
+	//beta = clarity
+	beta = (u_max - u)/u_max;
+
+	return beta;
+}
+
+double Robot::calculateDesirability( Coord d ) {
+	//calculate distance
+	double alpha = calculateDistanceFromSink(d)/max_distance_from_sink;
+
+	//calculate clarity
+	double beta = calculateClarity(d);
+
+	//combine & return
+	double delta = lambda*alpha - (1-lambda)*beta;
+
+	return delta;
+}
+
+void  Robot::chooseHomingDirection() {
+	//calculate FoV
+	calculateFoV();
+
+	//calculate desirability
+	int min_desirability_index = 0;
+	double min_desirability = calculateDesirability(FoV[0]); //need to minimize
+	for (int i=1; i < 5; i++) {
+		double des = calculateDesirability(FoV[i]);
+		if ( des < min_desirability ) {
+			min_desirability_index = i;
+			min_desirability = des;
+		}
+	}
+
+	//direction is thus
+	dir = FoV[min_desirability_index];
 }
 
 void Robot::setPosition( int x, int y) { 
@@ -466,7 +534,26 @@ void Robot::homingStep() {
 }
 
 void Robot::beaconHomingStep() {
-	bool success = false;
+
+	//New method
+	chooseHomingDirection();
+
+
+	//make move
+	makeMove();
+
+	//check if home
+	if ( isHome() ) { 
+		state_counter=0;
+
+		if (activity == EXPLORE ) {
+			state = RECRUITING;
+		} else if (activity == FORAGE) {
+			state = UNLOADING;
+		}
+	}
+
+	/*bool success = false;
 	int rep_count = 0;
 
 	//get direction home - HACK - cuz wer
@@ -512,7 +599,7 @@ void Robot::beaconHomingStep() {
 			avoidObstacle();
 			rep_count++;
 		}
-	} while (!success && rep_count < 8); //rep count < 8 to try all sides
+	} while (!success && rep_count < 8); //rep count < 8 to try all sides*/
 
 	//increment state counter
 	state_counter++;
