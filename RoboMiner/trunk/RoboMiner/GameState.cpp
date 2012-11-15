@@ -24,7 +24,7 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	//initialize renderer
 	if ( !renderer.Initialize(pWnd) ) return FatalError(*pWnd, "renderer init failed");		
 
-	EXPERIMENT_DESC d;
+	/*EXPERIMENT_DESC d;
 	d.width = 80; d.height = 80;
 	d.number_objects = 300;
 	d.number_robots = 20;
@@ -33,7 +33,19 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	d.gold_waste_division_ratio = 0.5;
 	d.total_cluster_iterations = 2000;
 	d.total_forage_iterations = 2000;
-	d.max_path = 50;
+	d.max_path = 50;*/
+
+	EXPERIMENT_DESC d;
+	d.width = 80; d.height = 80;
+	d.number_objects = 700;
+	d.number_robots = 20;
+	d.gold_waste_ratio = 0.4;
+	d.forager_explorer_ratio = 0.7;
+	d.gold_waste_division_ratio_cluster = 0.5;
+	d.gold_waste_division_ratio_forage = 0.5;
+	d.total_cluster_iterations = 2000;
+	d.total_forage_iterations = 2000;
+	d.max_path = 10;
 
 	experiment = new ClusterForage(d);
 
@@ -118,12 +130,25 @@ void GameState::RenderScene()
 			switch ( experiment->mine.grid[x][y].type ) {
 				case ROBOT:	{
 							int ind = experiment->mine.grid[x][y].index;
+							switch (  experiment->robots[ind].state ) {
+								case HOMING: trg.pTiles[count].color = float3(220.0/255.0,20.0/255.0,60.0/255.0); break;
+								case BEACON_HOMING: trg.pTiles[count].color = float3(225.0/255.0,97.0/255.0,3.0/255.0); break;
+								case RECRUITING: trg.pTiles[count].color = float3(238.0/255.0,238.0/255.0,0.0/255.0); break;
+								case EXPLORING: trg.pTiles[count].color = float3(0,238.0/255.0,0); break;
+								case WAITING: trg.pTiles[count].color = float3(0,0,1); break;
+								case LOCATING: trg.pTiles[count].color = float3(0,245.0/255.0,1); break;
+								case LOCAL_CLUSTER_SEARCH: trg.pTiles[count].color = float3(128.0/255.0,0,128.0/255.0); break;
+								case LOADING: trg.pTiles[count].color = float3(0,0,0); break;
+								case UNLOADING: trg.pTiles[count].color = float3(1,0,1); break;
+								default :trg.pTiles[count].color = float3(0,0,0); break;
+							}
+							/*int ind = experiment->mine.grid[x][y].index;
 							if ( experiment->robots[ind].activity == EXPLORE) {
 									trg.pTiles[count].color = float3(139.0/255.0,117.0/255.0,0);break;
 							} else {
-								trg.pTiles[count].color= float3(40.0/255.0,40.0/255.0,40.0/255.0);break;	
+								trg.pTiles[count].color= float3(70.0/255.0,40.0/255.0,70.0/255.0);break;	
 							}
-						//trg.pTiles[count].color = rndColors[experiment->mine.grid[x][y].index];
+							trg.pTiles[count].color = rndColors[ind];
 							/*
 							switch ( m.robots[m.grid[x][y].index].activity ) {
 								case CLUSTER: trg.pTiles[count].color = float3(1,1,0); break;

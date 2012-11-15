@@ -1,5 +1,6 @@
 #include "Tools.h"
 #include <time.h>
+#include "Robot.h"
 
 Tools::Tools(void)
 {
@@ -24,4 +25,34 @@ Tools::Tools(void)
 Tools::~Tools(void)
 {
 	//delete mt;
+}
+
+void sortConcurrent( double num[], Coord a2[], int size ){
+	int i, j, flag = 1;    // set flag to 1 to start first pass
+	int temp;             // holding variable
+	int numLength = size;
+	Coord t;
+	for (i = 1; (i <= numLength) && flag; i++)
+	{
+		flag = 0;
+		for (j=0; j < (numLength -1); j++)
+		{
+			if (num[j+1] > num[j])      // ascending order simply changes to <
+			{ 
+					// swap elements
+                temp = num[j];             
+                num[j] = num[j+1];
+                num[j+1] = temp;
+
+				t = a2[j];
+				a2[j] = a2[j+1];
+				a2[j+1] = t;
+
+				//swap second set of elements
+                flag = 1;               // indicates that a swap occurred.
+            }
+        }
+	}
+
+	return;
 }

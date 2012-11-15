@@ -22,7 +22,6 @@ void ForageState::doStep()
 }
 
 void ForageState::forage() {
-
 	switch (state) {
 		case HOMING: homingStep(); break;
 		case BEACON_HOMING: beaconHomingStep(); break;

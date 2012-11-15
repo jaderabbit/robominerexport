@@ -5,6 +5,7 @@
 #include <limits>
 #include <random>
 #define round(x) int(x + 0.5)
+struct Coord;
 
 class Tools
 {
@@ -104,6 +105,9 @@ public:
 
 		return round( location + scale*v/u);
 	}
+
+	void sortConcurrent( double num[], Coord a2[], int size );
+
 
 	//Random Object
 	MersenneTwister *mt;

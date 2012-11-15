@@ -31,6 +31,36 @@ void Robot::waitStep() {
 }
 
 void Robot::locateStep() {
+	/*//Cluster location
+	clusterLocation.x = t.gaussianDistributionDiscrete(clusterLocation.x, MAX_PATH_DEVIATION);
+	clusterLocation.y = t.gaussianDistributionDiscrete(clusterLocation.y, MAX_PATH_DEVIATION);
+
+	//calculate center of FoV
+	dir.x = sgm(clusterLocation.x - pos.x);
+	dir.y = sgm(clusterLocation.y - pos.y);
+
+	//New method
+	chooseDirection();
+
+	//make move
+	makeMove();
+
+	//check if at location
+	if ( clusterLocation.x - pos.x ==0 && clusterLocation.y - pos.y ==0 ) {
+			state_counter = 0;
+			state = LOADING;
+	} else if (seeItem()) {
+		state = LOADING;
+		state_counter = 0;
+	} else if ( walkingIntoAWall() ) {
+		state = LOADING;
+		state_counter = 0;
+	}*/
+
+
+	//assert( validPos(pos.x + dir.x,pos.y + dir.y) );
+
+	
 	//follow cluster location. 
 	do { 
 		double r1 = t.randomOpen(), r2 = t.randomOpen();
@@ -72,7 +102,7 @@ void Robot::locateStep() {
 		}
 		rep_count++;
 	} while ( rep_count < 8 && madeMove==false);
-
+	
 }
 
 bool Robot::seeItem() {
