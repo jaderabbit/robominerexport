@@ -178,7 +178,6 @@ void ExploreState::makeMove() {
 
 	robot->destination.x += robot->dir.x;
 	robot->destination.y += robot->dir.y;
-
 }
 
 void ExploreState::homingStep() {

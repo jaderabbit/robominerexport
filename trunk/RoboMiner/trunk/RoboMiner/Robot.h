@@ -102,6 +102,7 @@ public:
 	bool validMove();
 	bool validPos(int x, int y);
 	bool isEmpty(int dirx, int diry );
+	bool isEmpty(Coord p);
 
 	//FORAGING Methods
 	void waitStep();
@@ -121,7 +122,13 @@ public:
 
 	//Obstacle Avoidance Methods
 	void calculateDistanceFromSink();
-	void calculateFoV();
+	double calculateDistanceFromSink(Coord new_dir);
+	double calculateDistanceFromLocation(Coord new_dir);
+	int calculateFoV();
+	double calculateClarity( Coord d );
+	double calculateDesirability( Coord d, double rank, double max_rank );
+	void chooseForagerDirection();
+	Coord directionToSink();
 
 	//OutputMessages
 	void trackerOutput();
@@ -154,6 +161,8 @@ public:
 	int getDivision() { return division;}
 
 	void setPerformanceBed( PerformanceBed* _performanceBed ) { performanceBed = _performanceBed; }
+
+	int getDirectionIndex( Coord c );
 
 //Member Variables
 	//Performance Measures
@@ -214,6 +223,7 @@ public:
 	const static int c = 3; //max cluster deviation
 	const static int MAX_SEARCH_RANGE = 4;
 	const static int MAX_STATE_COUNTER = 100;
+	const static int DoV = 5;
 
 	//if robot has a tracker, then a file is saved with its total movements
 	bool tracker;
@@ -228,7 +238,9 @@ public:
 	int typeForaged;
 	bool moved;	//update in move
 	void resetPerformanceMeasures();
-	Coord FoV[5];
+	Coord FoV[5]; //field of view
+	double lambda;
+
 	Coord dir_circle[8];
 
 

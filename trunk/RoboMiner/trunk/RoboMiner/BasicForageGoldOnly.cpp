@@ -1,5 +1,7 @@
 #include "BasicForageGoldOnly.h"
-
+#include "BasicForagingState.h"
+#include "ItemsForagedOverTime.h"
+#include <sstream>
 
 BasicForageGoldOnly::BasicForageGoldOnly(void)
 {
@@ -10,13 +12,9 @@ BasicForageGoldOnly::~BasicForageGoldOnly(void)
 {
 }
 
-#include "ClusterForage.h"
-#include "ItemsForagedOverTime.h"
-#include <sstream>
-
 BasicForageGoldOnly::BasicForageGoldOnly( EXPERIMENT_DESC _desc ) : Experiment(_desc) {
-}
 
+}
 
 
 int BasicForageGoldOnly::initialize() {
@@ -29,27 +27,14 @@ int BasicForageGoldOnly::initialize() {
 }
 
 int BasicForageGoldOnly::run() {
-	//CLUSTERING
+	
 	for (unsigned int i=0; i < robots.size(); i++) {
-		robots[i].setActivity(FORAGE);
-	}
+		//Set Foraging
+		robots[i].setActivity(BASICFORAGE);
 
-	while (cnt < desc.total_cluster_iterations) {
-		for (unsigned int j=0; j < robots.size(); j++) {
-			robots[j].doStep();
-		}
-		cnt++;
+		//Set states
+		robots[i].setRobotState( new BasicForagingState( &robots[i], GOLD ) );
 	}
-
-	//FORAGE/EXPLORING
-	for (unsigned int i=0; i < robots.size(); i++) {
-		if ( i < desc.number_robots*desc.forager_explorer_ratio ) 
-			robots[i].setActivity(FORAGE);
-		else {
-			robots[i].setActivity(EXPLORE);
-		}
-	}
-	cnt=0;
 
 	while (cnt < desc.total_forage_iterations) {
 		for (unsigned int j=0; j < robots.size(); j++) {
@@ -71,31 +56,16 @@ int BasicForageGoldOnly::runStep() {
 	//CLUSTERING
 	if ( cnt == 0 ) {
 		for (unsigned int i=0; i < robots.size(); i++) {
-			robots[i].setActivity(CLUSTER);
+			//Set Foraging
+			robots[i].setActivity(BASICFORAGE);
+
+			//Set states
+			robots[i].setRobotState( new BasicForagingState( &robots[i], GOLD,1,1) );
 		}
+
 	}
 
 	if (cnt < desc.total_cluster_iterations) {
-		for (unsigned int j=0; j < robots.size(); j++) {
-			robots[j].doStep();
-		}
-		cnt++;
-	}
-
-	if (cnt == desc.total_cluster_iterations) {
-		for (unsigned int i=0; i < robots.size(); i++) {
-			Coord p = randomRobotPosition();
-			robots[i].setPosition(p.x,p.y);
-			if ( i < desc.number_robots*desc.forager_explorer_ratio ) 
-				robots[i].setActivity(FORAGE);
-			else {
-				robots[i].setActivity(EXPLORE);
-			}
-		}
-
-	}
-
-	if ( cnt >= desc.total_cluster_iterations && cnt < desc.total_cluster_iterations + desc.total_forage_iterations) {
 		for (unsigned int j=0; j < robots.size(); j++) {
 			robots[j].doStep();
 		}
@@ -158,10 +128,7 @@ void BasicForageGoldOnly::initializeRobots() {
 		mine.setCell(p.x,p.y,ROBOT,i);
 				
 		//All need to cluster 
-		int activity = CLUSTER;
-
-		//Division
-		int division = ( i < desc.gold_waste_division_ratio*desc.number_robots) ? GOLD : WASTE;
+		int activity = BASICFORAGE;
 
 		//string stream for file name
 		stringstream s;
@@ -171,14 +138,16 @@ void BasicForageGoldOnly::initializeRobots() {
 		Robot r(&mine);
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
-		r.setDivision(division);
-		r.setActivity(CLUSTER);
+		r.setDivision(GOLD);
+		r.setActivity(BASICFORAGE);
 		r.setStringTracker(s.str());
 		r.setMutualRobotAwareness(&robots);
 		r.setIndex(i);
 
 		//Performance bed
 		r.setPerformanceBed(pb);
+
+		r.setMaxPath(50);
 
 		//push back robot
 		robots.push_back(r);

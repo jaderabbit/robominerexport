@@ -78,14 +78,30 @@ int ClusterForage::runStep() {
 	}
 
 	if (cnt == desc.total_cluster_iterations) {
+		int forager_count = 0, explorer_count = 0;
 		for (unsigned int i=0; i < robots.size(); i++) {
+			//Set random position by sink
 			Coord p = randomRobotPosition();
 			robots[i].setPosition(p.x,p.y);
-			if ( i < desc.number_robots*desc.forager_explorer_ratio ) 
+
+			//forager to explorer ratio
+			if ( i <= desc.number_robots*desc.forager_explorer_ratio ) {
 				robots[i].setActivity(FORAGE);
-			else {
-				robots[i].setActivity(EXPLORE);
+				forager_count++;
+			} else {
+				robots[i].setActivity(EXPLORE); //explorers need to alternate type
+				explorer_count++;
 			}
+		}
+
+		for (unsigned int i=0; i < forager_count; i++) {
+			int division = ( i <= desc.gold_waste_division_ratio_forage*forager_count) ? GOLD : WASTE;
+			robots[i].setDivision(division);
+		}
+
+		for (unsigned int i=forager_count; i < explorer_count; i++) {
+			int division = ( i <= desc.gold_waste_division_ratio_forage*explorer_count) ? GOLD : WASTE;
+			robots[i].setDivision(division);
 		}
 
 	}
@@ -156,7 +172,7 @@ void ClusterForage::initializeRobots() {
 		int activity = CLUSTER;
 
 		//Division
-		int division = ( i < desc.gold_waste_division_ratio*desc.number_robots) ? GOLD : WASTE;
+		int division = ( i < desc.gold_waste_division_ratio_cluster*desc.number_robots) ? GOLD : WASTE;
 
 		//string stream for file name
 		stringstream s;

@@ -6,8 +6,8 @@
 #include "DXRenderer.h"
 #include "TileRenderGraph.h"
 #include "Types.h"
-//#include "Mine.h"
 #include "ClusterForage.h"
+#include "BasicForageGoldOnly.h"
 
 //include STL
 #include <vector>

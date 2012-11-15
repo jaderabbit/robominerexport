@@ -310,25 +310,27 @@ bool Robot::walkingIntoAWall(){
 }
 
 void Robot::makeMove() {
-	mine->grid[pos.x][pos.y].type = EMPTY; //prev pos to empty 
-	mine->grid[pos.x + dir.x][pos.y + dir.y].type = ROBOT; //current pos to robot
-	mine->grid[pos.x + dir.x][pos.y + dir.y].index = mine->grid[pos.x][pos.y].index;
-	pos.x += dir.x;
-	pos.y += dir.y;
+	if (validMove()){
+		mine->grid[pos.x][pos.y].type = EMPTY; //prev pos to empty 
+		mine->grid[pos.x + dir.x][pos.y + dir.y].type = ROBOT; //current pos to robot
+		mine->grid[pos.x + dir.x][pos.y + dir.y].index = mine->grid[pos.x][pos.y].index;
+		pos.x += dir.x;
+		pos.y += dir.y;
 
-	if (activity == EXPLORE) {
-		//TODO: Possibly irrelevant line of code. Optimize
-		destination.x += dir.x;
-		destination.y += dir.y;
-	} else if (activity == FORAGE) {
-		destination.x -= dir.x;
-		destination.y -= dir.y;
+		if (activity == EXPLORE) {
+			//TODO: Possibly irrelevant line of code. Optimize
+			destination.x += dir.x;
+			destination.y += dir.y;
+		} else if (activity == FORAGE) {
+			destination.x -= dir.x;
+			destination.y -= dir.y;
+		}
+
+
+		calculateDistanceFromSink();
+
+		moved = true;
 	}
-
-
-	calculateDistanceFromSink();
-
-	moved = true;
 }
 
 void Robot::calculateDistanceFromSink() {
@@ -374,6 +376,16 @@ double Robot::calculateDistanceFromSink(Coord new_dir) {
 	}
 }
 
+double Robot::calculateDistanceFromLocation(Coord new_dir) {
+	Coord new_pos;
+	new_pos.x = pos.x + new_dir.x;
+	new_pos.y = pos.y + new_dir.y;
+
+	//Calculates distance from the location
+	return t.distance( new_pos.x, clusterLocation.x, new_pos.y, clusterLocation.y );
+
+}
+
 int Robot::getDirectionIndex( Coord c ) {
 	for (int i=0; i < 8; i++) {
 		if ( c.x == dir_circle[i].x && c.y == dir_circle[i].y ) {
@@ -382,7 +394,7 @@ int Robot::getDirectionIndex( Coord c ) {
 	}
 }
 
-void Robot::calculateFoV() {
+int Robot::calculateFoV() {
 	//get index of current direction
 	int left, right, left_start, right_start;
 	left_start = right_start = left = right = getDirectionIndex(dir);
@@ -399,21 +411,38 @@ void Robot::calculateFoV() {
 	while ( curr < 5 && i < 8/2 ) {
 		left = ( left_start + i + 8 ) % 8;
 		right = ( right_start - i + 8 ) % 8;
-
-		if ( validPos(pos.x + dir_circle[left].x, pos.y + dir_circle[left].y) &&  isEmpty(dir_circle[left].x, dir_circle[left].y) ) {
-			FoV[curr] = dir_circle[left];
-			curr++;
+		
+		//randomly choose LEFT or RIGHT
+		if (t.randomOpen() < 0.5 ) {
+			if ( validPos(pos.x + dir_circle[left].x, pos.y + dir_circle[left].y) &&  isEmpty(dir_circle[left].x, dir_circle[left].y) ) {
+				FoV[curr] = dir_circle[left];
+				assert( validPos(pos.x + FoV[curr].x, pos.y + FoV[curr].y) );
+				curr++;
+			}
+			if (validPos(pos.x + dir_circle[right].x, pos.y + dir_circle[right].y) &&  isEmpty(dir_circle[right].x, dir_circle[right].y) && curr < 5) {
+				FoV[curr] = dir_circle[right];
+				assert( validPos(pos.x + FoV[curr].x, pos.y + FoV[curr].y) );
+				curr++;
+			}
+		} else {
+			if (validPos(pos.x + dir_circle[right].x, pos.y + dir_circle[right].y) &&  isEmpty(dir_circle[right].x, dir_circle[right].y) ) {
+				FoV[curr] = dir_circle[right];
+				assert( validPos(pos.x +FoV[curr].x, pos.y + FoV[curr].y) );
+				curr++;
+			}
+			if ( validPos(pos.x + dir_circle[left].x, pos.y + dir_circle[left].y) &&  isEmpty(dir_circle[left].x, dir_circle[left].y) && curr < 5) {
+				FoV[curr] = dir_circle[left];
+				assert( validPos(pos.x + FoV[curr].x, pos.y + FoV[curr].y) );
+				curr++;
+			}
 		}
-
-		if (validPos(pos.x + dir_circle[right].x, pos.y + dir_circle[right].y) &&  isEmpty(dir_circle[right].x, dir_circle[right].y) && curr < 5) {
-			FoV[curr] = dir_circle[right];
-			curr++;
-		}
+		
 
 		i++;
 	}
 
-	//FoV now contains a list of valid directions
+	//FoV now contains a list of valid directions, returns number of valid dir in FoV
+	return curr;
 }
 
 double Robot::calculateClarity(Coord d) {
@@ -442,28 +471,54 @@ double Robot::calculateClarity(Coord d) {
 	return beta;
 }
 
-double Robot::calculateDesirability( Coord d ) {
+double Robot::calculateDesirability( Coord d , double rank , double max_rank ){
+
+	double alpha = 0;
+	if ( state == BEACON_HOMING ) 
+		alpha = calculateDistanceFromSink(d)/max_distance_from_sink;
+	else 
+		alpha = calculateDistanceFromLocation(d)/max_distance_from_sink;
+
 	//calculate distance
-	double alpha = calculateDistanceFromSink(d)/max_distance_from_sink;
+	/*double alpha = 0;
+	if ( state == BEACON_HOMING ) 
+		alpha = calculateDistanceFromSink(d)/max_distance_from_sink;
+	else 
+		alpha = calculateDistanceFromLocation(d)/max_distance_from_sink;*/
+
 
 	//calculate clarity
 	double beta = calculateClarity(d);
 
 	//combine & return
-	double delta = lambda*alpha - (1-lambda)*beta;
+	double delta = lambda*alpha + (1-lambda)*beta;
 
+	//assert( delta >= 0 && delta <= 1 );
 	return delta;
 }
 
-void  Robot::chooseHomingDirection() {
+void  Robot::chooseForagerDirection() {
+	//choose initial direction
+	dir = directionToSink();
+
 	//calculate FoV
-	calculateFoV();
+	int num = calculateFoV();
+
+	//calc max distance
+	double dist[5];
+	double max_distance = 0;
+	for (int i=1; i < num; i++) {
+		dist[i] = calculateDistanceFromSink(FoV[i]);
+	}
+
+	t.sortConcurrent(dist,FoV,num);
 
 	//calculate desirability
 	int min_desirability_index = 0;
-	double min_desirability = calculateDesirability(FoV[0]); //need to minimize
-	for (int i=1; i < 5; i++) {
-		double des = calculateDesirability(FoV[i]);
+	double min_desirability = calculateDesirability(FoV[0],0); //need to minimize
+	for (int i=1; i < num; i++) {
+		assert( validPos(pos.x + FoV[i].x,pos.y + FoV[i].y) );
+		double des = calculateDesirability(FoV[i],i);
 		if ( des < min_desirability ) {
 			min_desirability_index = i;
 			min_desirability = des;
@@ -472,6 +527,7 @@ void  Robot::chooseHomingDirection() {
 
 	//direction is thus
 	dir = FoV[min_desirability_index];
+	//assert( validPos(pos.x + dir.x,pos.y + dir.y) );
 }
 
 void Robot::setPosition( int x, int y) { 
@@ -534,10 +590,8 @@ void Robot::homingStep() {
 }
 
 void Robot::beaconHomingStep() {
-
 	//New method
-	chooseHomingDirection();
-
+	chooseForagerDirection();
 
 	//make move
 	makeMove();
@@ -632,5 +686,31 @@ bool Robot::directionYToSink() {
 	}
 
 	return true;
+}
+
+Coord Robot::directionToSink() {
+
+	Coord dirToSink;
+	if ( division == GOLD ) {
+		//gold is on the left
+		if (directionYToSink()) {
+			dirToSink.y = 0;
+			dirToSink.x =sgm(pos.x - 1);
+		} else {
+			dirToSink.y = sgm( mine->size.y/2 - pos.y);
+			dirToSink.x =sgm(pos.x - 1);
+		}
+	} else {
+		//waste on the right
+		if (directionYToSink()) {
+			dirToSink.y = 0;
+			dirToSink.x =sgm(1 -pos.x);
+		} else {
+			dirToSink.y = sgm( mine->size.y/2 - pos.y);
+			dirToSink.x =sgm(1 - pos.x);
+		}
+	}
+
+	return dirToSink;
 }
 
