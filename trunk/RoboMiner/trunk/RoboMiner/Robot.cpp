@@ -68,6 +68,7 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	 //Distance from sink
 	 max_distance_from_sink = 0;
 	 distance_from_sink = 0;
+
 	 //Performance variable measures
 	resetPerformanceMeasures();
 
@@ -81,7 +82,7 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	dir_circle[6].x = 0; dir_circle[6].y = -1;
 	dir_circle[7].x = 1; dir_circle[7].y = -1;
 
-	lambda = 0.5;
+	lambda = 0.2;
 
 }
 
@@ -297,8 +298,10 @@ bool Robot::isEmpty(int dirx, int diry ) {
 }
 
 bool Robot::isEmpty(Coord p) {
-	if ( validPos( p.x, p.y ) )
-		return mine->grid[p.x][p.y] == EMPTY;
+	if ( validPos( p.x, p.y ) ) {
+		bool tmp =  mine->grid[p.x][p.y].type == EMPTY;
+		return tmp;
+	}
 	return false;
 }
 
@@ -399,7 +402,7 @@ int Robot::calculateFoV() {
 	int left, right, left_start, right_start;
 	left_start = right_start = left = right = getDirectionIndex(dir);
 	int curr = 0;
-	int i = 0;
+	int i = 1;
 
 	//add current direction to list
 	if ( validPos(pos.x + dir.x, pos.y + dir.y) &&  isEmpty(dir.x, dir.y ) ) {
@@ -449,7 +452,7 @@ double Robot::calculateClarity(Coord d) {
 	double u_max = DoV;
 	double u =0;
 	double beta;
-	Coord tmp_pos; tmp_pos.x = 0; tmp_pos.y = 0;
+	Coord tmp_pos; tmp_pos.x = pos.x; tmp_pos.y = pos.y;
 
 	//Run through depth of view
 	for (int i=0; i < DoV; i++ ) {
@@ -473,25 +476,26 @@ double Robot::calculateClarity(Coord d) {
 
 double Robot::calculateDesirability( Coord d , double rank , double max_rank ){
 
-	double alpha = 0;
-	if ( state == BEACON_HOMING ) 
-		alpha = calculateDistanceFromSink(d)/max_distance_from_sink;
-	else 
-		alpha = calculateDistanceFromLocation(d)/max_distance_from_sink;
+	double alpha = 0; 
+	alpha = rank/max_rank;
 
 	//calculate distance
 	/*double alpha = 0;
 	if ( state == BEACON_HOMING ) 
 		alpha = calculateDistanceFromSink(d)/max_distance_from_sink;
 	else 
-		alpha = calculateDistanceFromLocation(d)/max_distance_from_sink;*/
-
+		alpha = calculateDistanceFromLocation(d)/max_distance_from_sink;
+		*/
 
 	//calculate clarity
 	double beta = calculateClarity(d);
 
+	double delta=0;
 	//combine & return
-	double delta = lambda*alpha + (1-lambda)*beta;
+	if ( pos.x < 4 ) 
+		delta = alpha;
+	else
+		delta = lambda*alpha + (1-lambda)*beta;
 
 	//assert( delta >= 0 && delta <= 1 );
 	return delta;
@@ -505,20 +509,20 @@ void  Robot::chooseForagerDirection() {
 	int num = calculateFoV();
 
 	//calc max distance
-	double dist[5];
-	double max_distance = 0;
-	for (int i=1; i < num; i++) {
-		dist[i] = calculateDistanceFromSink(FoV[i]);
-	}
+	//double dist[5];
+	//double max_distance = 0;
+	//for (int i=1; i < num; i++) {
+	//	dist[i] = calculateDistanceFromSink(FoV[i]);
+	//}
 
-	t.sortConcurrent(dist,FoV,num);
+	//t.sortConcurrent(dist,FoV,num);
 
 	//calculate desirability
 	int min_desirability_index = 0;
-	double min_desirability = calculateDesirability(FoV[0],0); //need to minimize
+	double min_desirability = calculateDesirability(FoV[0],0,num); //need to minimize
 	for (int i=1; i < num; i++) {
 		assert( validPos(pos.x + FoV[i].x,pos.y + FoV[i].y) );
-		double des = calculateDesirability(FoV[i],i);
+		double des = calculateDesirability(FoV[i],i,num);
 		if ( des < min_desirability ) {
 			min_desirability_index = i;
 			min_desirability = des;
@@ -590,12 +594,6 @@ void Robot::homingStep() {
 }
 
 void Robot::beaconHomingStep() {
-	//New method
-	chooseForagerDirection();
-
-	//make move
-	makeMove();
-
 	//check if home
 	if ( isHome() ) { 
 		state_counter=0;
@@ -606,6 +604,12 @@ void Robot::beaconHomingStep() {
 			state = UNLOADING;
 		}
 	}
+
+	//New method
+	chooseForagerDirection();
+
+	//make move
+	makeMove();
 
 	/*bool success = false;
 	int rep_count = 0;
@@ -680,7 +684,7 @@ bool Robot::isHome() {
 bool Robot::directionYToSink() {
 	if ( division == GOLD ) {
 		//gold is on the left
-		return pos.y < mine->size.y/2;
+		return pos.y <= mine->size.y/2;
 	} else {
 		return pos.y >= mine->size.y/2;
 	}
@@ -695,10 +699,10 @@ Coord Robot::directionToSink() {
 		//gold is on the left
 		if (directionYToSink()) {
 			dirToSink.y = 0;
-			dirToSink.x =sgm(pos.x - 1);
+			dirToSink.x =sgm(1 -pos.x);
 		} else {
 			dirToSink.y = sgm( mine->size.y/2 - pos.y);
-			dirToSink.x =sgm(pos.x - 1);
+			dirToSink.x =sgm(1 -pos.x);
 		}
 	} else {
 		//waste on the right

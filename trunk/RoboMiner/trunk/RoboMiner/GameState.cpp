@@ -131,15 +131,15 @@ void GameState::RenderScene()
 				case ROBOT:	{
 							int ind = experiment->mine.grid[x][y].index;
 							switch (  experiment->robots[ind].state ) {
-								case HOMING: trg.pTiles[count].color = float3(220.0/255.0,20.0/255.0,60.0/255.0); break;
-								case BEACON_HOMING: trg.pTiles[count].color = float3(225.0/255.0,97.0/255.0,3.0/255.0); break;
-								case RECRUITING: trg.pTiles[count].color = float3(238.0/255.0,238.0/255.0,0.0/255.0); break;
-								case EXPLORING: trg.pTiles[count].color = float3(0,238.0/255.0,0); break;
-								case WAITING: trg.pTiles[count].color = float3(0,0,1); break;
-								case LOCATING: trg.pTiles[count].color = float3(0,245.0/255.0,1); break;
-								case LOCAL_CLUSTER_SEARCH: trg.pTiles[count].color = float3(128.0/255.0,0,128.0/255.0); break;
-								case LOADING: trg.pTiles[count].color = float3(0,0,0); break;
-								case UNLOADING: trg.pTiles[count].color = float3(1,0,1); break;
+								case HOMING: trg.pTiles[count].color = float3(220.0/255.0,20.0/255.0,60.0/255.0); break; //RED
+								case BEACON_HOMING: trg.pTiles[count].color = float3(225.0/255.0,97.0/255.0,3.0/255.0); break; //ORANGE
+								case RECRUITING: trg.pTiles[count].color = float3(238.0/255.0,238.0/255.0,0.0/255.0); break; //YELLOW
+								case EXPLORING: trg.pTiles[count].color = float3(0,238.0/255.0,0); break; //GREEN
+								case WAITING: trg.pTiles[count].color = float3(0,0,1); break; //BLUE
+								case LOCATING: trg.pTiles[count].color = float3(0,245.0/255.0,1); break; //CYAN
+								case LOCAL_CLUSTER_SEARCH: trg.pTiles[count].color = float3(128.0/255.0,0,128.0/255.0); break; //PURPLE
+								case LOADING: trg.pTiles[count].color = float3(0,0,0); break; //BLACK
+								case UNLOADING: trg.pTiles[count].color = float3(1,0,1); break; //MAGENTA
 								default :trg.pTiles[count].color = float3(0,0,0); break;
 							}
 							/*int ind = experiment->mine.grid[x][y].index;

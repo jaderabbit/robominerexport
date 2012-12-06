@@ -27,7 +27,7 @@ Tools::~Tools(void)
 	//delete mt;
 }
 
-void sortConcurrent( double num[], Coord a2[], int size ){
+void Tools::sortConcurrent( double num[], Coord a2[], int size ){
 	int i, j, flag = 1;    // set flag to 1 to start first pass
 	int temp;             // holding variable
 	int numLength = size;

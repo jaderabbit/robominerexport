@@ -99,8 +99,8 @@ int ClusterForage::runStep() {
 			robots[i].setDivision(division);
 		}
 
-		for (unsigned int i=forager_count; i < explorer_count; i++) {
-			int division = ( i <= desc.gold_waste_division_ratio_forage*explorer_count) ? GOLD : WASTE;
+		for (unsigned int i=forager_count; i < forager_count+explorer_count; i++) {
+			int division = ( i-forager_count <= desc.gold_waste_division_ratio_forage*explorer_count) ? GOLD : WASTE;
 			robots[i].setDivision(division);
 		}
 
@@ -187,6 +187,7 @@ void ClusterForage::initializeRobots() {
 		r.setStringTracker(s.str());
 		r.setMutualRobotAwareness(&robots);
 		r.setIndex(i);
+		r.setLambda(0.5);
 
 		//Performance bed
 		r.setPerformanceBed(pb);
