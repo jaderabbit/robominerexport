@@ -164,6 +164,8 @@ public:
 
 	int getDirectionIndex( Coord c );
 
+	void setLambda( double _lambda ) { lambda = _lambda; }
+
 //Member Variables
 	//Performance Measures
 	PerformanceBed* performanceBed;

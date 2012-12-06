@@ -105,6 +105,9 @@ vector<int> Robot::searchSink() {
 		if ( mine->grid[1][i] == ROBOT ) {
 			waiting.push_back(mine->grid[1][i].index);
 		}
+		if ( mine->grid[2][i] == ROBOT ) {
+			waiting.push_back(mine->grid[2][i].index);
+		}
 	}
 
 	return waiting;

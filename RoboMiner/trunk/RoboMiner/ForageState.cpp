@@ -243,7 +243,7 @@ void ForageState::beaconHomingStep() {
 			robot->dir.y = 0;
 		}
 	} else {
-		if ( robot->pos.y <= robot->mine->size.y/2 ) {
+		if ( robot->pos.y < robot->mine->size.y/2 ) {
 			robot->dir.y = 1;
 		} else {
 			robot->dir.y = 0;
