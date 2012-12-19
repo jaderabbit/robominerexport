@@ -6,7 +6,11 @@
 #include "mtrand.h"
 #include <limits>
 #include <random>
+#include <cmath>
 #include "Coord.h"
+#include <algorithm>
+
+using namespace std;
 
 #define round(x) int(x + 0.5)
 
@@ -19,9 +23,6 @@ public:
 	double distance ( int x0, int x1, int y0, int y1 ) {
 		return sqrt( pow(x0 - x1,2.0) + pow(y0 - y1, 2.0) );
 	}
-
-
-	//* Today I changed the Randomizer back to using the MersenneTwister cause that is how it should be
 
 	int random(int low, int high) {
 		//int t = mt->genrand_int31();
@@ -68,7 +69,7 @@ public:
 	    /*  Reject P if outside outer ellipse, or outside acceptance region */
         } while ((q > 0.27846) || (v * v > -4.0 * log(u) * u * u));
 
-		return ( location + scale*v/u);
+		return max(( location + scale*v/u),0.0);
 	}
 
 	int gaussianDistributionDiscrete( double location, double scale ) {
