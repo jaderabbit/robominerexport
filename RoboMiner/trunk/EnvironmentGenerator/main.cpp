@@ -1,10 +1,11 @@
 #include <iostream>
 #include <string>
-#include "Tools.h"
-#include "Robot.h"
+#include "../Helper/Tools.h"
 #include <sstream>
+#include <fstream>
 
 using namespace std;
+using namespace RoboMiner;
 
 //Parameters
 const int num_grid_sizes = 5;
