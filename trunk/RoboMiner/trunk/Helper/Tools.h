@@ -1,5 +1,7 @@
 #pragma once
 
+#include "RoboMiner.h"
+
 #include "mt.h"
 #include "mtrand.h"
 #include <limits>
