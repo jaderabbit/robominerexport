@@ -153,41 +153,108 @@ vector<vector<int>> gaussianDistribution(int _num_objects, double _ratio_gold, i
 
 vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _grid_size, Tools &t, int SINK_BOUNDARY) {
 
+	//Generate Gold
+	int sides[4][2]= { {0,1} , {1,0}, {1,60}, {60,1} };
+
 	//initialize grid of specified grid size
 	vector<vector<int>> grid = initializeGrid(_grid_size);
 
-	//Generate line
-	int m = t.random(-4,4);
-	int b = ( m > 0 ) ? t.random(-_grid_size/2,0) : t.random(_grid_size/2,_grid_size);
-	int sigma = t.random(0,floor(0.4*_grid_size));
+	//Randomly choose line points
+	int lowerbound = _grid_size/3;
+	int upperbound = 2*lowerbound;
 
-	//Generate points around the line
-	for (int i=0; i < _ratio_gold*_num_objects; i++) {
+	//2 random numbers
+	int a1 = t.random(lowerbound,upperbound);
+	int b1 = t.random(lowerbound,upperbound);
 
-		bool empty = false;
-		int count = 0;
-		while (!empty) {
-			//Choose position on line
-			int x_intercept = floor(-1*b/(1.0*m));
-			int x_new = (m > 0 ) ? t.random( max(SINK_BOUNDARY,x_intercept),_grid_size) :  t.random(0, min(x_intercept,_grid_size));
-			int y_new = (int) m*x_new + b;
-
-			//Add gassian noise to it
-			x_new = t.gaussianDistribution(x_new,sigma);
-			y_new = t.gaussianDistribution(y_new,sigma);
-
-			//Check if valid position
-			if ( x_new >= 0 && x_new < _grid_size && y_new >= 0 && y_new < _grid_size) {
-				//check if new position is empty. If so place
-				if (grid[x_new][y_new] == EMPTY )  {
-						grid[x_new][y_new] = GOLD;
-						empty = true;
-							
-				} 
-			}
-		}
+	//Choose 2 random sides
+	Coord a, b;
+	int side1 = t.random(0,4); 
+	int side2 = side1;
+	while (side1 == side2 ) {
+		side2 = t.random(0,4); 
 	}
 
+	//Generate coordinate
+	a.x = ( sides[side1][0] == 0 || sides[side1][0] == 60 ) ?  sides[side1][0] : a1;
+	a.y = ( sides[side1][1] == 0 || sides[side1][1] == 60 ) ?  sides[side1][1] : a1;
+
+	b.x = ( sides[side2][0] == 0 || sides[side2][0] == 60 ) ?  sides[side2][0] : b1;
+	b.y = ( sides[side2][1] == 0 || sides[side2][1] == 60 ) ?  sides[side2][1] : b1;
+
+	//Generate line
+	int k = abs(a.x - b.x);
+
+	//deviation
+	int deviation = 1;
+
+	//If NOT undefined slope
+	if ( k > 0 ) {
+		//Calculate M
+		double m = (1.0*(a.y - b.y ))/(1.0*(a.x - b.x));
+
+		//Calculate C
+		int c = a.y - m*a.x;
+
+		//Boundaries
+		int xbounds[2];
+		xbounds[0] = min(a.x, b.x);
+		xbounds[1] = max(a.x,b.x);
+
+		//Generate Points
+		for (int i=0; i < _ratio_gold*_num_objects; i++) {
+
+			bool empty = false;
+			int count = 0;
+			while (!empty) {
+
+				//Choose x as part of valid domain
+				int x_new = t.random(xbounds[0],xbounds[1]-1);
+				int y_new = (int) m*x_new + c;
+
+				//Add gassian noise to it
+				x_new = t.gaussianDistribution(x_new,deviation);
+				y_new = t.gaussianDistribution(y_new,deviation);
+
+				//Check if valid position
+				if ( x_new >= 0 && x_new < _grid_size && y_new >= 0 && y_new < _grid_size) {
+					//check if new position is empty. If so place
+					if (grid[x_new][y_new] == EMPTY )  {
+							grid[x_new][y_new] = GOLD;
+							empty = true;							
+					} 
+				}
+			}
+		}
+	} else { //k=0
+		//Generate Points
+		//Generate Points
+		for (int i=0; i < _ratio_gold*_num_objects; i++) {
+
+			bool empty = false;
+			int count = 0;
+			while (!empty) {
+
+				//Add guassian noise to a.x to get x_new
+				int x_new = t.gaussianDistribution(a.x,deviation);
+
+				//Randomly choose y_new on valid domain
+				int y_new = t.random(0,_grid_size-1);
+
+
+				//Check if valid position
+				if ( x_new >= 0 && x_new < _grid_size && y_new >= 0 && y_new < _grid_size) {
+					//check if new position is empty. If so place
+					if (grid[x_new][y_new] == EMPTY )  {
+							grid[x_new][y_new] = GOLD;
+							empty = true;							
+					} 
+				}
+			}
+
+	}
+	
+	//Generate Waste
 	for (int i =  _ratio_gold*_num_objects; i < _num_objects; i++) {
 		bool empty = false;
 		while (!empty) {
@@ -203,8 +270,6 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 			} 
 		}
 	}
-
-	
 
 	return grid;
 }
