@@ -1,12 +1,12 @@
 #include "BasicForageGoldOnly.h"
 #include "BasicForagingState.h"
 #include "ItemsForagedOverTime.h"
+#include "AverageTimeInState.h"
 #include <sstream>
 
 BasicForageGoldOnly::BasicForageGoldOnly(void)
 {
 }
-
 
 BasicForageGoldOnly::~BasicForageGoldOnly(void)
 {
@@ -16,12 +16,17 @@ BasicForageGoldOnly::BasicForageGoldOnly( EXPERIMENT_DESC _desc ) : Experiment(_
 
 }
 
-
 int BasicForageGoldOnly::initialize() {
 	initializeGrid();
 	initializeSink();
 	initializeObjects();
 	initializeRobots();
+
+	//Initialize Performance measures
+	pb = new PerformanceBed(robots);
+	pb->attach( new ItemsForagedOverTime() );
+	pb->attach( new AverageTimeInState());
+
 	cnt = 0;
 	return true;
 }
@@ -110,8 +115,6 @@ void BasicForageGoldOnly::initializeObjects() {
 
 void BasicForageGoldOnly::initializeRobots() {
 	//Initialize Robots
-	pb = new PerformanceBed(robots);
-	pb->attach( new ItemsForagedOverTime() );
 
 	//TODO: Decide if initialize at sink or randomly
 	//TODO: Allow for robots to NOT choose what items to cluster. i.e. A robot can cluster any item.
