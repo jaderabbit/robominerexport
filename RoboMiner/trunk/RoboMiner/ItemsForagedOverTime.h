@@ -12,5 +12,6 @@ public:
 	vector<double> total;
 	vector<double> gold;
 	vector<double> waste;
+	int time;
 };
 

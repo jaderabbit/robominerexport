@@ -3,6 +3,7 @@
 
 ItemsForagedOverTime::ItemsForagedOverTime() 
 {
+	time = 0;
 }
 
 
@@ -25,5 +26,5 @@ void ItemsForagedOverTime::takeMeasure( vector<Robot>& robots)
 	total.push_back(sum);
 	gold.push_back(goldSum);
 	waste.push_back(wasteSum);
-
+	time++;
 }

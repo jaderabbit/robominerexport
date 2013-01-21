@@ -11,7 +11,7 @@ public:
 
 	virtual void trigger();
 	virtual void attach( PerformanceMeasure* _pm );
-
+	virtual void finalize();
 
 private:
 	vector<Robot>& robots;
