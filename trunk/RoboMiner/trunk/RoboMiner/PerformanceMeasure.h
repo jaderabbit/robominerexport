@@ -8,6 +8,7 @@ public:
 	virtual ~PerformanceMeasure(void);
 
 	virtual void takeMeasure( vector<Robot>& robots) = 0;
+	virtual void finalize() {}
 protected:
 
 	vector<double> measurement;
