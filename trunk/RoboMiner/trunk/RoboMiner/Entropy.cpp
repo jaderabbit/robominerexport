@@ -41,7 +41,7 @@ Entropy::~Entropy(void)
 void Entropy::takeMeasure( vector<Robot>& robots) 
 {
 	//Calculate measure
-	for (int i=0; robots.size(); i ++ ) {
+	for (int i=0; i < robots.size(); i ++ ) {
 		if ( robotGrids[i][robots[i].pos.x][robots[i].pos.y] == 0 ) {
 			uniquePosPerRobot[i]++;
 		}
@@ -55,6 +55,13 @@ void Entropy::takeMeasure( vector<Robot>& robots)
 void Entropy::finalize() 
 {
 	//Calculate average spent at any position
+	double totalEntropy = 0;
+	for (int i=0; i < uniquePosPerRobot.size(); i++) {
+		totalEntropy += entropyPerRobot( robotGrids[i], uniquePosPerRobot[i]);
+	}
+
+	totalEntropy/=(1.0*robotGrids.size());
+	measurement.push_back(totalEntropy);
 }
 
 double Entropy::entropyPerRobot( Grid g, int uniquePositions ) 
