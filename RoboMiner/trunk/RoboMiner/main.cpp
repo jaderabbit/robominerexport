@@ -118,7 +118,7 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
     MSG msg = {0};
 	long t = 0;
 
-	for (int i=0; i < 1950; i++) {
+	for (int i=0; i < 3950; i++) {
 		game.Update();
 	}
 
