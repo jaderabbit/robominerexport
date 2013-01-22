@@ -1,6 +1,7 @@
 #include "ClusterForage.h"
 #include "ItemsForagedOverTime.h"
 #include "AverageTimeInState.h"
+#include "Entropy.h"
 
 #include <sstream>
 
@@ -26,6 +27,7 @@ int ClusterForage::initialize() {
 	pb = new PerformanceBed(robots);
 	pb->attach( new ItemsForagedOverTime() );
 	pb->attach( new AverageTimeInState(PM_FORAGE));
+	pb->attach( new Entropy(desc.height,desc.number_robots) );
 
 	cnt = 0;
 	return true;

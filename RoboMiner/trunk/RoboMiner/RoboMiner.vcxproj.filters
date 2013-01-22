@@ -130,6 +130,10 @@
     <ClCompile Include="AverageTimeInState.cpp">
       <Filter>Experiment\Performance Measures</Filter>
     </ClCompile>
+    <ClCompile Include="Entropy.cpp">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageDistance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -207,5 +211,9 @@
     <ClInclude Include="AverageTimeInState.h">
       <Filter>Experiment\Performance Measures</Filter>
     </ClInclude>
+    <ClInclude Include="Entropy.h">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageDistance.h" />
   </ItemGroup>
 </Project>
