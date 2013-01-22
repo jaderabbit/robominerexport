@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AverageDistance.cpp" />
     <ClCompile Include="AverageTimeInState.cpp" />
     <ClCompile Include="BasicForageGoldOnly.cpp" />
     <ClCompile Include="BasicForagingState.cpp" />
@@ -87,6 +88,7 @@
     <ClCompile Include="ClusterForage.cpp" />
     <ClCompile Include="ClusterState.cpp" />
     <ClCompile Include="DXRenderer.cpp" />
+    <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="Experiment.cpp" />
     <ClCompile Include="Explorer.cpp" />
     <ClCompile Include="ExploreState.cpp" />
@@ -109,6 +111,7 @@
     <ClCompile Include="Update.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AverageDistance.h" />
     <ClInclude Include="AverageTimeInState.h" />
     <ClInclude Include="BasicForageGoldOnly.h" />
     <ClInclude Include="BasicForagingState.h" />
@@ -116,6 +119,7 @@
     <ClInclude Include="ClusterState.h" />
     <ClInclude Include="CoordinateConversions.h" />
     <ClInclude Include="DXRenderer.h" />
+    <ClInclude Include="Entropy.h" />
     <ClInclude Include="Experiment.h" />
     <ClInclude Include="EXPERIMENT_DESC.h" />
     <ClInclude Include="ExploreState.h" />
