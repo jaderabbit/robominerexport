@@ -25,7 +25,7 @@ int BasicForageGoldOnly::initialize() {
 	//Initialize Performance measures
 	pb = new PerformanceBed(robots);
 	pb->attach( new ItemsForagedOverTime() );
-	pb->attach( new AverageTimeInState());
+	pb->attach( new AverageTimeInState(PM_FORAGE));
 
 	cnt = 0;
 	return true;
