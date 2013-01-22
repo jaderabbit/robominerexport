@@ -1,5 +1,7 @@
 #include "ClusterForage.h"
 #include "ItemsForagedOverTime.h"
+#include "AverageTimeInState.h"
+
 #include <sstream>
 
 ClusterForage::ClusterForage(void)
@@ -19,6 +21,12 @@ int ClusterForage::initialize() {
 	initializeSink();
 	initializeObjects();
 	initializeRobots();
+
+	//Initialize Performance measures
+	pb = new PerformanceBed(robots);
+	pb->attach( new ItemsForagedOverTime() );
+	pb->attach( new AverageTimeInState(PM_FORAGE));
+
 	cnt = 0;
 	return true;
 }
@@ -115,6 +123,11 @@ int ClusterForage::runStep() {
 
 	//Add performance measure trigger ALL
 	pb->trigger();
+
+	//Final iteration
+	if ( desc.total_cluster_iterations + desc.total_forage_iterations==cnt+1) {
+		pb->finalize();
+	}
 
 	return true;
 }
