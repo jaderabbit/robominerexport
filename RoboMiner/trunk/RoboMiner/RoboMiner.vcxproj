@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AverageTimeInState.cpp" />
     <ClCompile Include="BasicForageGoldOnly.cpp" />
     <ClCompile Include="BasicForagingState.cpp" />
     <ClCompile Include="Clusterer.cpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="Update.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AverageTimeInState.h" />
     <ClInclude Include="BasicForageGoldOnly.h" />
     <ClInclude Include="BasicForagingState.h" />
     <ClInclude Include="ClusterForage.h" />

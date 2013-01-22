@@ -127,6 +127,9 @@
     <ClCompile Include="BasicForagingState.cpp">
       <Filter>RobotState\UncollabForage</Filter>
     </ClCompile>
+    <ClCompile Include="AverageTimeInState.cpp">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="BasicForagingState.h">
       <Filter>RobotState\UncollabForage</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageTimeInState.h">
+      <Filter>Experiment\Performance Measures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
