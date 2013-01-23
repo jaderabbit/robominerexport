@@ -6,7 +6,7 @@ Entropy::Entropy(void)
 	time = 0;
 }
 
-Entropy::Entropy( int _gridSize, int _numRobots ) : gridSize(_gridSize)
+Entropy::Entropy( int _gridSize, int _numRobots ) : PerformanceMeasure(),gridSize(_gridSize)
 {
 	//Initialize time
 	time = 0;
@@ -89,4 +89,22 @@ double Entropy::entropyPerRobot( Grid g, int uniquePositions )
 
 	//Return entropy
 	return uniquenessRatio*stdDev;
+}
+
+
+bool Entropy::isNext() {
+	return ( timer >= time ) ? false : true;
+}
+
+string Entropy::getNext() {
+
+	if (timer < time - 1 ) {
+		timer++;
+		return "";
+	} else {		
+		s.clear();
+		s << measurement[0];
+		timer++;
+		return s.str();
+	}
 }
