@@ -82,7 +82,7 @@ vector<vector<int>> uniformDistribution(int _num_objects, double _ratio_gold, in
 		bool empty = false;
 		while (!empty) {
 			//generate random position.
-			int x_new = t.random(SINK_BOUNDARY,_grid_size-1);
+			int x_new = t.random(0,_grid_size-1);
 			int y_new = t.random(0,_grid_size-1);
 
 			//set new position
