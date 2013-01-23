@@ -92,6 +92,6 @@ string AverageTimeInState::getStateName( int _state) {
 
 string AverageTimeInState::getName() { 
 	string s = "ItemsForagedOverTime";
-	s += getStateName();
+	s += getStateName(getState(state));
 	return s;
 }

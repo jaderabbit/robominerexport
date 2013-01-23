@@ -49,6 +49,9 @@
     <Filter Include="Experiment\GoldOnlyBasicForage">
       <UniqueIdentifier>{34db5c2d-6ebc-4093-9ef8-605b3f757152}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Results">
+      <UniqueIdentifier>{59123268-d48e-4aa4-8b14-9211bb3398a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Forager.cpp">
@@ -136,6 +139,9 @@
     <ClCompile Include="AverageDistance.cpp">
       <Filter>Experiment\Performance Measures</Filter>
     </ClCompile>
+    <ClCompile Include="ResultWriter.cpp">
+      <Filter>Results</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -218,6 +224,12 @@
     </ClInclude>
     <ClInclude Include="AverageDistance.h">
       <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
+    <ClInclude Include="ENVIRONMENT_DESC.h">
+      <Filter>Experiment\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultWriter.h">
+      <Filter>Results</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
