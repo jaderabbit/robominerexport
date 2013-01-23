@@ -1,6 +1,8 @@
 #pragma once
 
 #include "EXPERIMENT_DESC.h"
+#include "ENVIRONMENT_DESC.h"
+
 #include "PerformanceBed.h"
 #include "Mine.h"
 #include "Robot.h"
@@ -26,6 +28,7 @@ public:
 	
 	//Experiment desc
 	EXPERIMENT_DESC desc;
+	ENVIRONMENT_DESC env_desc;
 
 	//Random tools
 	Tools t;
