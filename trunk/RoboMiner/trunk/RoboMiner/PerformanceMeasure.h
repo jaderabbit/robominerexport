@@ -9,8 +9,11 @@ public:
 
 	virtual void takeMeasure( vector<Robot>& robots) = 0;
 	virtual void finalize() {}
+//Methods required for outputting results
+	virtual bool isNext() = 0;
+	virtual string getNext() = 0;
+	virtual string getName() = 0;
 
-	virtual string getName() { return "not implemented"; }
 protected:
 
 	vector<double> measurement;
