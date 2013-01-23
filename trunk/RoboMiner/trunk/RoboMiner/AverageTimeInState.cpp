@@ -2,7 +2,7 @@
 
 
 
-AverageTimeInState::AverageTimeInState(void)
+AverageTimeInState::AverageTimeInState(void) : PerformanceMeasure()
 {
 }
 
@@ -11,7 +11,7 @@ AverageTimeInState::~AverageTimeInState(void)
 {
 }
 
-AverageTimeInState::AverageTimeInState( int _state) : state(_state)
+AverageTimeInState::AverageTimeInState( int _state) : PerformanceMeasure(), state(_state)
 {
 	time = 0;
 }
@@ -77,4 +77,21 @@ int AverageTimeInState::getState(int _state) {
 		//default
 		default: return PM_OTHER;
 	}
+}
+
+string AverageTimeInState::getStateName( int _state) {
+	switch (_state) {
+		case PM_EXPLORE: return "EXPLORE"; 
+		case PM_FORAGE: return "FORAGE"; 
+		case PM_RECRUIT: return "RECRUIT";
+		case PM_RETURN: return "RETURN";
+		case PM_WAIT: return "WAIT"; 
+		default: return "OTHER";
+	}
+}
+
+string AverageTimeInState::getName() { 
+	string s = "ItemsForagedOverTime";
+	s += getStateName();
+	return s;
 }

@@ -13,7 +13,7 @@ public:
 	virtual void attach( PerformanceMeasure* _pm );
 	virtual void finalize();
 
-private:
+
 	vector<Robot>& robots;
 	vector<PerformanceMeasure*> pm;
 

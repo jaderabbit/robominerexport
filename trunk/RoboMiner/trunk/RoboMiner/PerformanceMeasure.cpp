@@ -2,7 +2,7 @@
 
 
 PerformanceMeasure::PerformanceMeasure() {
-
+	timer = 0;
 }
 
 
