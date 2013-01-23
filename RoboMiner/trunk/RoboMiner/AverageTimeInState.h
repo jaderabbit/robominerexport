@@ -12,9 +12,10 @@ public:
 	virtual ~AverageTimeInState(void);
 
 	virtual void takeMeasure( vector<Robot>& robots);
+	virtual string getName();
 
-	int getState(int _state);
-
+	int getState(int _old_state);
+	string getStateName( int _state);
 	void finalize();
 
 private:

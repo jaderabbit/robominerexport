@@ -1,7 +1,7 @@
 #include "ItemsForagedOverTime.h"
 
 
-ItemsForagedOverTime::ItemsForagedOverTime() 
+ItemsForagedOverTime::ItemsForagedOverTime() : PerformanceMeasure()
 {
 	time = 0;
 }

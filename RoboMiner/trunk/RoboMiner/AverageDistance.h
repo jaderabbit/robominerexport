@@ -6,5 +6,7 @@ class AverageDistance :
 public:
 	AverageDistance(void);
 	virtual ~AverageDistance(void);
+
+	virtual string getName() { return "AverageDistance"; }
 };
 
