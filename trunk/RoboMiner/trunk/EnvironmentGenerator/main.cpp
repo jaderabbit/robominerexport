@@ -3,6 +3,7 @@
 #include "../Helper/Tools.h"
 #include <sstream>
 #include <fstream>
+#include <assert.h>
 
 using namespace std;
 using namespace RoboMiner;
@@ -109,7 +110,7 @@ vector<vector<int>> gaussianDistribution(int _num_objects, double _ratio_gold, i
 	vector<vector<int>> grid = initializeGrid(_grid_size);
 
 	//get center
-	int center_x = SINK_BOUNDARY+((_grid_size-SINK_BOUNDARY)/2);
+	int center_x = ((_grid_size)/2);
 	int center_y = _grid_size/2;
 
 	//gaussian
@@ -118,7 +119,7 @@ vector<vector<int>> gaussianDistribution(int _num_objects, double _ratio_gold, i
 		bool empty = false;
 		while (!empty) {
 			//Choose type
-			int x_new = t.gaussianDistribution(center_x, (_grid_size-SINK_BOUNDARY)/2*_ratio_gold);
+			int x_new = t.gaussianDistribution(center_x, (_grid_size)/2*_ratio_gold);
 			int y_new = t.gaussianDistribution(center_y, _grid_size/2*_ratio_gold);
 
 			if ( x_new > 0 && x_new < _grid_size && y_new > 0 && y_new < _grid_size ) {
@@ -133,10 +134,12 @@ vector<vector<int>> gaussianDistribution(int _num_objects, double _ratio_gold, i
 
 	for (int i =  _ratio_gold*_num_objects; i < _num_objects; i++) {
 		bool empty = false;
+		int count = 0;
 		while (!empty) {
-
+			if ( count >= 2000 ) break;
+			count++;
 			//generate random position.
-			int x_new = t.random(SINK_BOUNDARY,_grid_size-1);
+			int x_new = t.random(0,_grid_size-1);
 			int y_new = t.random(0,_grid_size-1);
 
 			//check if new position is empty. If so place
@@ -154,7 +157,7 @@ vector<vector<int>> gaussianDistribution(int _num_objects, double _ratio_gold, i
 vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _grid_size, Tools &t, int SINK_BOUNDARY) {
 
 	//Generate Gold
-	int sides[4][2]= { {0,1} , {1,0}, {1,60}, {60,1} };
+	int sides[4][2]= { {0,1} , {1,0}, {1,_grid_size}, {_grid_size,1} };
 
 	//initialize grid of specified grid size
 	vector<vector<int>> grid = initializeGrid(_grid_size);
@@ -169,29 +172,35 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 
 	//Choose 2 random sides
 	Coord a, b;
-	int side1 = t.random(0,4); 
+	int side1 = t.random(0,3); 
 	int side2 = side1;
 	while (side1 == side2 ) {
-		side2 = t.random(0,4); 
+		side2 = t.random(0,3); 
 	}
 
 	//Generate coordinate
-	a.x = ( sides[side1][0] == 0 || sides[side1][0] == 60 ) ?  sides[side1][0] : a1;
-	a.y = ( sides[side1][1] == 0 || sides[side1][1] == 60 ) ?  sides[side1][1] : a1;
+	a.x = ( sides[side1][0] != 1 ) ?  sides[side1][0] : a1;
+	a.y = ( sides[side1][1] != 1 ) ?  sides[side1][1] : a1;
 
-	b.x = ( sides[side2][0] == 0 || sides[side2][0] == 60 ) ?  sides[side2][0] : b1;
-	b.y = ( sides[side2][1] == 0 || sides[side2][1] == 60 ) ?  sides[side2][1] : b1;
+	b.x = ( sides[side2][0] != 1 ) ?  sides[side2][0] : b1;
+	b.y = ( sides[side2][1] != 1 ) ?  sides[side2][1] : b1;
 
-	//Generate line
+	assert(!( a.x == _grid_size && b.x == _grid_size ));
+	assert(!( a.x == 0 && b.x == 0 ));
+	assert( a.x >= 0 && b.x >= 0 );
+
+	//--Generate line--
+
+	//run of slope
 	int k = abs(a.x - b.x);
 
-	//deviation
-	int deviation = 1;
+	//Deviation specifies gaussian deviation of items around original line position
+	int deviation = t.random(2,5);
 
 	//If NOT undefined slope
 	if ( k > 0 ) {
 		//Calculate M
-		double m = (1.0*(a.y - b.y ))/(1.0*(a.x - b.x));
+		double m = (1.0*(a.y - b.y ))/(1.0*(a.x - b.x ));
 
 		//Calculate C
 		int c = a.y - m*a.x;
@@ -209,8 +218,8 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 			while (!empty) {
 
 				//Choose x as part of valid domain
-				int x_new = t.random(xbounds[0],xbounds[1]-1);
-				int y_new = (int) m*x_new + c;
+				int x_new = t.random(xbounds[0], xbounds[1]-1);
+				int y_new = (int) (m*x_new + c);
 
 				//Add gassian noise to it
 				x_new = t.gaussianDistribution(x_new,deviation);
@@ -224,10 +233,12 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 							empty = true;							
 					} 
 				}
-			}
-		}
-	} else { //k=0
-		//Generate Points
+				count++;
+			} //while
+		} //for
+
+	} //if 
+	else { //k=0
 		//Generate Points
 		for (int i=0; i < _ratio_gold*_num_objects; i++) {
 
@@ -251,7 +262,7 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 					} 
 				}
 			}
-
+		}
 	}
 	
 	//Generate Waste
@@ -277,6 +288,111 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 vector<vector<int>> clusteredDistribution(int _num_objects, double _ratio_gold, int _grid_size, Tools &t, int SINK_BOUNDARY) {
 	//initialize grid of specified grid size
 	vector<vector<int>> grid = initializeGrid(_grid_size);
+	vector<Coord> centroids;
+	vector<int> radii;
+
+	//Generate random number of centroids
+	int C = t.random(3,10);
+
+	//Calculate maximum cluster size radius
+	int s = ceil(sqrt(_grid_size*_grid_size/pow(2.0*C,2.0)));
+
+	int itemCount = 0; int centroidCount = 0;
+
+	while ( itemCount < _ratio_gold*_num_objects && centroidCount < C ) {
+		//Generate a centroid, inc counter
+		Coord c; 
+		c.x = t.random(0, _grid_size);
+		c.y = t.random(0, _grid_size);
+
+		//Check if valid centroid
+		bool valid = true;
+		for (int i=0; i < centroids.size(); i++) {
+			if ( c.x < (centroids[i].x + radii[i]) &&  c.x > (centroids[i].x - radii[i] ) ) { 
+				if ( c.y < (centroids[i].y + radii[i]) &&  c.y > (centroids[i].y - radii[i] ) ) {
+					valid = false;
+					break;
+				}
+			}
+		}
+
+		//Generate deviation/centriod radius
+		int r = t.random(2,s);
+
+		//save centroid
+		centroids.push_back(c);
+		radii.push_back(r);
+
+		if (valid) { 
+			//Increment number of centroids
+			centroidCount++;
+
+			//Calculate number of objects in cluster	
+			int n = _num_objects*2*r/_grid_size;
+
+			for (int i=0; i < n; i++) {
+				//Add gaussian noise to centroid to get point p
+				Coord p;
+				p.x = t.gaussianDistribution(c.x,r);
+				p.y = t.gaussianDistribution(c.y,r);
+
+				//If an empty legitimate position then place gold item and increment itemCount
+				if ( p.x > 0 && p.x < _grid_size && p.y > 0 && p.y < _grid_size && grid[p.x][p.y] == EMPTY ) {
+					grid[p.x][p.y] = GOLD;
+					itemCount++;
+				} else {
+					i--;
+				}
+			}
+		}
+	}
+
+	while ( itemCount < _num_objects && centroidCount < C*2 ) {
+		//Generate a centroid, inc counter
+		Coord c; 
+		c.x = t.random(0, _grid_size);
+		c.y = t.random(0, _grid_size);
+
+		//Check if valid centroid
+		bool valid = true;
+		for (int i=0; i < centroids.size(); i++) {
+			if ( c.x < (centroids[i].x + radii[i]) &&  c.x > (centroids[i].x - radii[i] ) ) { 
+				if ( c.y < (centroids[i].y + radii[i]) &&  c.y > (centroids[i].y - radii[i] ) ) {
+					break;
+				}
+			}
+		}
+
+		//Generate deviation/centriod radius
+		int r = t.random(2,s);
+
+		//save centroid
+		centroids.push_back(c);
+		radii.push_back(r);
+
+		if (valid) { 
+			//Increment number of centroids
+			centroidCount++;
+
+			//Calculate number of objects in cluster	
+			int n = _num_objects*2*s/_grid_size;
+
+			for (int i=0; i < n; i++) {
+				//Add gaussian noise to centroid to get point p
+				Coord p;
+				p.x = t.gaussianDistribution(c.x,r);
+				p.y = t.gaussianDistribution(c.y,r);
+
+				//If an empty legitimate position then place gold item and increment itemCount
+				if ( p.x > 0 && p.x < _grid_size && p.y > 0 && p.y < _grid_size && grid[p.x][p.y] == EMPTY ) {
+					grid[p.x][p.y] = WASTE;
+					itemCount++;
+				} else {
+					i--;
+				}
+			}
+		}
+	}
 
 	return grid;
 }
@@ -317,7 +433,7 @@ void generateGaussianEnvironments() {
 			for (int k=0; k < num_gold_ratios; k++) {
 				for (int l=0; l < num_sims; l++ ) {
 					//create name
-					string name = createFileName("gaussian",(0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],l);
+					string name = createFileName("gaussian",percentage_objects[j],gold_ratios[k],grid_sizes[i],l);
 
 					//create environment
 					vector<vector<int>> grid = gaussianDistribution((0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],t,sink_boundary);
@@ -369,7 +485,7 @@ void generateClusteredEnvironments() {
 					string name = createFileName("clustered",(0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],l);
 
 					//create environment
-					vector<vector<int>> grid = uniformDistribution((0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],t,sink_boundary);
+					vector<vector<int>> grid = clusteredDistribution((0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],t,sink_boundary);
 
 					//output file
 					outputFile( name, grid );
@@ -381,9 +497,8 @@ void generateClusteredEnvironments() {
 }
 
 int main() {
-
-	//generateUniformDistributionEnvironments();
-	//generateGaussianEnvironments();
+	generateUniformDistributionEnvironments();
 	generateVeinEnvironments();
 	generateClusteredEnvironments();
+	generateGaussianEnvironments();
 }
