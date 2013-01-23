@@ -52,6 +52,7 @@ void AverageTimeInState::finalize() {
 	}
 
 	finalStatistic = totalTimeInState/totalItemsForaged/30.0;
+	measurement.push_back(finalStatistic);
 }
 
 int AverageTimeInState::getState(int _state) {
@@ -94,4 +95,21 @@ string AverageTimeInState::getName() {
 	string s = "ItemsForagedOverTime";
 	s += getStateName(getState(state));
 	return s;
+}
+
+
+bool AverageTimeInState::isNext() {
+	return ( timer >= time ) ? false : true;
+}
+
+string AverageTimeInState::getNext() {
+	if (timer < time - 1 ) {
+		timer++;
+		return "";
+	} else {		
+		s.clear();
+		s << measurement[0];
+		timer++;
+		return s.str();
+	}
 }

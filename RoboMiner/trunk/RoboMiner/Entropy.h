@@ -17,6 +17,10 @@ public:
 	virtual void takeMeasure( vector<Robot>& robots);
 	virtual void finalize();
 
+	virtual string getName() { return "Entropy";}
+	virtual bool isNext();
+	virtual string getNext();
+
 private:
 	//Entropy per robot
 	double entropyPerRobot( Grid g, int uniquePositions );

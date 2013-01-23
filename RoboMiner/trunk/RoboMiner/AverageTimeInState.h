@@ -18,6 +18,9 @@ public:
 	string getStateName( int _state);
 	void finalize();
 
+	virtual bool isNext();
+	virtual string getNext();
+
 private:
 	int state;
 	int time;

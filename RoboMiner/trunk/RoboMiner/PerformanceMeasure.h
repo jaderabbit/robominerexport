@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Robot.h"
+#include <sstream>
+
 class PerformanceMeasure
 {
 public:
@@ -18,5 +20,6 @@ protected:
 
 	vector<double> measurement;
 	int timer;
+	stringstream s; 
 };
 

@@ -1,5 +1,5 @@
 #include "ItemsForagedOverTime.h"
-
+#include <sstream>
 
 ItemsForagedOverTime::ItemsForagedOverTime() : PerformanceMeasure()
 {
@@ -27,4 +27,15 @@ void ItemsForagedOverTime::takeMeasure( vector<Robot>& robots)
 	gold.push_back(goldSum);
 	waste.push_back(wasteSum);
 	time++;
+}
+
+bool ItemsForagedOverTime::isNext() {
+	return ( timer >= total.size() ) ? false : true;
+}
+
+string ItemsForagedOverTime::getNext() {
+	s.clear();
+	s << total[timer];
+	timer++;
+	return s.str();
 }
