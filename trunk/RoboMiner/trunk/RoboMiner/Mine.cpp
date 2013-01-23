@@ -120,7 +120,6 @@ bool Mine::isEmpty( int x, int y) {
 	return false;
 }
 
-
 //cell index
 void Mine::setCellIndex( int x, int y, int index ) {
 	if (isValid(x,y)) grid[x][y].index = index;
