@@ -25,7 +25,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -104,6 +104,7 @@
     <ClCompile Include="mtrand.cpp" />
     <ClCompile Include="PerformanceBed.cpp" />
     <ClCompile Include="PerformanceMeasure.cpp" />
+    <ClCompile Include="ResultWriter.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="RobotState.cpp" />
     <ClCompile Include="StatisticsHandler.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="CoordinateConversions.h" />
     <ClInclude Include="DXRenderer.h" />
     <ClInclude Include="Entropy.h" />
+    <ClInclude Include="ENVIRONMENT_DESC.h" />
     <ClInclude Include="Experiment.h" />
     <ClInclude Include="EXPERIMENT_DESC.h" />
     <ClInclude Include="ExploreState.h" />
@@ -133,6 +135,7 @@
     <ClInclude Include="mtrand.h" />
     <ClInclude Include="PerformanceBed.h" />
     <ClInclude Include="PerformanceMeasure.h" />
+    <ClInclude Include="ResultWriter.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotState.h" />
     <ClInclude Include="TileRenderGraph.h" />
