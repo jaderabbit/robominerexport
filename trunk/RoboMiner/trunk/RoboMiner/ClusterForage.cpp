@@ -18,7 +18,7 @@ ClusterForage::~ClusterForage(void)
 }
 
 int ClusterForage::initialize() {
-	initializeGrid();
+	initializeGrid(); //TODO: Initialize based on experiment descriptor and environment descriptor. 
 	initializeSink();
 	initializeObjects();
 	initializeRobots();
@@ -144,6 +144,7 @@ int ClusterForage::cleanup() {
 void ClusterForage::initializeGrid() {
 	//Initialize the empty grid
 	mine.initializeEmptyGrid(desc.width,desc.height);
+	mine.load(
 }
 
 void ClusterForage::initializeObjects() {
@@ -232,4 +233,28 @@ Coord ClusterForage::randomRobotPosition() {
 
 	return p;
 
+}
+
+int ClusterForage::runAllSamplesStep() {
+	if ( cnt >= desc.total_cluster_iterations + desc.total_forage_iterations==cnt+1 && sampleCount < samples ) {
+		//save previous results
+		pbs.push_back(pb);
+
+		//reinitialize grid
+		initialize();
+
+		//reset counter
+		cnt = 0;
+
+		//increment sample count
+		sampleCount++;
+	} else if ( sampleCount >= samples ) {
+		//Save all experiments in the reader. 
+		resultWriter.setResults(pbs,desc,env_desc);
+		resultWriter.writeResultFile();
+	}
+
+	runStep();
+
+	return true;
 }

@@ -3,6 +3,8 @@
 #include <vector>
 #include "Robot.h" 
 #include "Tools.h"
+#include "EXPERIMENT_DESC.h"
+#include "ENVIRONMENT_DESC.h"
 
 using namespace std;
 
@@ -58,6 +60,7 @@ public:
 	void initObjects( int num_objects, int num_item_types);
 
 	//load world
+	bool load( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc, string fileName );
 	bool load(int x, int y, int num_rob, int ratio_rob, string inputFile, int algorithm);
 	bool fileInput(string fname);
 
