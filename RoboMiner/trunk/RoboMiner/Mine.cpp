@@ -63,6 +63,19 @@ Mine::Mine(int x, int y, int num_rob, int num_items, int num_item_types) {
 	initRandomPositionRobots(num_rob);
 }
 
+bool Mine::load( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc, string fileName ) {
+	//initialize sink
+	sink_items[GOLD-1] = 0; 
+	sink_items[WASTE-1] = 0; 
+
+	//init size
+	size.x = _desc.width;
+	size.y = _desc.height;
+
+	//read in file
+	fileInput(fileName);
+}
+
 //initialization grid
 void Mine::initializeEmptyGrid( int x, int y ) {
 	//init size
@@ -458,6 +471,10 @@ bool Mine::fileInput(string fname) {
 		//create grid
 		grid.push_back(row);
 	}
+
+	//Add the sink
+
+	//Wipe the 
 
 	return true;
 }

@@ -1,5 +1,6 @@
 #include "ResultWriter.h"
 #include <sstream>
+#include <fstream>
 
 ResultWriter::ResultWriter(void)
 {
@@ -45,4 +46,40 @@ string ResultWriter::generateFileHeader( PerformanceBed *pb, int num_samples ) {
 		}
 	}
 	return fileHeader.str();
+}
+
+//outputs file
+bool ResultWriter::writeResultFile() {
+	//Generate name
+	string fileName = generateFileName(exp_desc, env_desc);
+
+	//Open File
+	ofstream f; 
+	f.open(fileName.c_str());
+
+	//Generate header
+	string header = generateFileHeader(samples[0],samples.size());
+
+	//Output header
+	f << header;
+
+	//for each iteration, for each performance measure, write out the value for each sample, for each iteration
+	int num_pm = samples[0]->pm.size();
+	int it = 0;
+	while( samples[0]->pm[0]->isNext() ) {
+		f << it;
+		for (int i=0; i < num_pm; i++) {
+			for (int j=0; j < samples.size(); j++) {
+				f << samples[j]->pm[i]->getNext() << ",";
+			}
+		}
+		f << endl;
+		it++;
+	}
+
+	//Close file
+	f.close();
+
+	//TODO: Change function to return result of opening the file
+	return true;
 }
