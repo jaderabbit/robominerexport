@@ -497,8 +497,8 @@ void generateClusteredEnvironments() {
 }
 
 int main() {
+	generateClusteredEnvironments();
 	generateUniformDistributionEnvironments();
 	generateVeinEnvironments();
-	generateClusteredEnvironments();
 	generateGaussianEnvironments();
 }
