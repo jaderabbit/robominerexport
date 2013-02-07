@@ -17,7 +17,6 @@ BeeForage::~BeeForage(void)
 {
 }
 
-
 int BeeForage::run() {
 
 	//FORAGE/EXPLORING

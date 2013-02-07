@@ -33,15 +33,15 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	d.total_iterations = 4000;
 	d.gold_waste_division_ratio = 0.5;
 	d.max_path = 50;
+	d.samples = 19;
 
 	ENVIRONMENT_DESC e;
 	e.grid_size = 50;
-	e.num_objects = 1250;
-	e.ratio_gold = 0.666666667;
-	e.type = "uniform";
+	e.num_objects = 20;
+	e.ratio_gold = 0.2;
+	e.type = "clustered";
 	e.sink_boundary = 5;
-
-	experiment = new BasicForageGoldOnly(d,e);
+	experiment = new BeeForage(d,e);
 
 	return true;
 }
