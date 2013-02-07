@@ -7,7 +7,7 @@
 using namespace std;
 
 //constructor
-GameState::GameState() :	pHWnd(0), m(80,80,20,4,"single.txt")
+GameState::GameState() :	pHWnd(0)
 {
 }
 //destructor
@@ -24,19 +24,8 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	//initialize renderer
 	if ( !renderer.Initialize(pWnd) ) return FatalError(*pWnd, "renderer init failed");		
 
-	/*EXPERIMENT_DESC d;
-	d.width = 80; d.height = 80;
-	d.number_objects = 300;
-	d.number_robots = 20;
-	d.forager_explorer_ratio = 0.8;
-	d.gold_waste_ratio = 0.5;
-	d.gold_waste_division_ratio = 0.5;
-	d.total_cluster_iterations = 2000;
-	d.total_forage_iterations = 2000;
-	d.max_path = 50;*/
-
 	EXPERIMENT_DESC d;
-	d.width = 80; d.height = 80;
+	d.width = 50; d.height = 50;
 	d.number_objects = 700;
 	d.number_robots = 20;
 	d.gold_waste_ratio = 0.4;
@@ -47,7 +36,14 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	d.total_forage_iterations = 2000;
 	d.max_path = 10;
 
-	experiment = new ClusterForage(d);
+	ENVIRONMENT_DESC e;
+	e.grid_size = 50;
+	e.num_objects = 1250;
+	e.ratio_gold = 0.666666667;
+	e.type = "uniform";
+	e.sink_boundary = 5;
+
+	experiment = new BasicForageGoldOnly(d,e);
 
 	return true;
 }
@@ -68,8 +64,8 @@ bool GameState::LoadLevel( const char* filename, int width, int height, int num_
 
 	//calculate tile size fit to window
 	//TODO: Replace navgraph.height with gridsize.x and gridsize.y
-	int v = (int) ( (float) resolution.y / m.size.y );
-	int h = (int) ( (float) resolution.x / m.size.x );	
+	int v = (int) ( (float) resolution.y / experiment->mine.size.x );
+	int h = (int) ( (float) resolution.x / experiment->mine.size.y );	
 	int2 tileDimensions;
 
 	if ( v < 1 || h < 1 ) tileDimensions = int2(1,1);
@@ -78,7 +74,7 @@ bool GameState::LoadLevel( const char* filename, int width, int height, int num_
 
 	//create tile render graph	
 	trg.tileSize = ConvertDimensionsSSToCS(resolution.x, resolution.y, tileDimensions);
-	trg.numTiles =  m.size.y*m.size.x;		
+	trg.numTiles =  experiment->mine.size.x*experiment->mine.size.y;		
 	trg.pTiles = new Tile[trg.numTiles];
 	
 	//fill with tiles
@@ -87,9 +83,9 @@ bool GameState::LoadLevel( const char* filename, int width, int height, int num_
 	float tx=-1, ty=1;
 
 	//TODO: Replace navgraph with Mine.grid
-	for ( int y=0; y <  m.size.y; y++ )
+	for ( int y=0; y <  experiment->mine.size.y; y++ )
 	{
-		for ( unsigned int x=0; x < m.size.x; x++ )
+		for ( unsigned int x=0; x < experiment->mine.size.x; x++ )
 		{
 			trg.pTiles[cnt].topLeft = float2(tx,ty);
 			trg.pTiles[cnt++].color = float3(0,0,0);
@@ -114,7 +110,7 @@ bool GameState::LoadLevel( const char* filename, int width, int height, int num_
 	GenerateColoursFromFile("Colour Chart.txt");
 
 	//create vertex buffer
-	if ( !renderer.CreateVertexBuffer(sizeof(Tile),m.size.y*m.size.x) ) return FatalError(*pHWnd, "Vertex Buffer creation failed!");
+	if ( !renderer.CreateVertexBuffer(sizeof(Tile),experiment->mine.size.y*experiment->mine.size.x) ) return FatalError(*pHWnd, "Vertex Buffer creation failed!");
 
 	return true;
 }

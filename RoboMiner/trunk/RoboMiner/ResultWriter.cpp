@@ -37,6 +37,7 @@ string ResultWriter::generateFileName( EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DE
 string ResultWriter::generateFileHeader( PerformanceBed *pb, int num_samples ) {
 	stringstream fileHeader;
 	string descriptor;
+	fileHeader << "i,";
 	for (int i=0; i < pb->pm.size(); i++) {
 		descriptor =pb->pm[i]->getName();
 		
@@ -61,16 +62,17 @@ bool ResultWriter::writeResultFile() {
 	string header = generateFileHeader(samples[0],samples.size());
 
 	//Output header
-	f << header;
+	f << header << endl;
 
 	//for each iteration, for each performance measure, write out the value for each sample, for each iteration
 	int num_pm = samples[0]->pm.size();
 	int it = 0;
 	while( samples[0]->pm[0]->isNext() ) {
-		f << it;
+		f << it << ",";
 		for (int i=0; i < num_pm; i++) {
 			for (int j=0; j < samples.size(); j++) {
-				f << samples[j]->pm[i]->getNext() << ",";
+				string tmp = samples[j]->pm[i]->getNext(); 
+				f << tmp << ",";
 			}
 		}
 		f << endl;

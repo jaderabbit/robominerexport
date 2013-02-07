@@ -7,7 +7,7 @@ void GameState::Update()
 {	
 	
 	//Perform updates
-	experiment->runStep();
+	experiment->runAllSamplesStep();
 
 	/*if ( m.cnt >= m.MAX_ITERATIONS ) {
 		//Output Message

@@ -718,3 +718,7 @@ Coord Robot::directionToSink() {
 	return dirToSink;
 }
 
+void Robot::setIndex(int _index ) { 
+	index = _index; 
+	mine->grid[pos.x][pos.y].index = _index; 
+}

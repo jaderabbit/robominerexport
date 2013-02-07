@@ -11,10 +11,10 @@ Tools::Tools(void)
 	mt->init_genrand(time(0));
 
 	//New Mersenne
-	irand.seed(init,length);
-	drand.seed(init,length);
-	orand.seed(init,length);
-	crand.seed(init,length);
+	drand.seed(time(0));
+	orand.seed(time(0));
+	crand.seed(time(0));
+	irand.seed(time(0));
 
 
 	//Built in Random

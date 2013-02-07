@@ -69,11 +69,13 @@ bool Mine::load( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc, string fileN
 	sink_items[WASTE-1] = 0; 
 
 	//init size
-	size.x = _desc.width;
-	size.y = _desc.height;
+	size.x = _env_desc.grid_size;
+	size.y = _env_desc.grid_size;
 
 	//read in file
 	fileInput(fileName);
+
+	return true;
 }
 
 //initialization grid
@@ -444,10 +446,12 @@ bool Mine::fileInput(string fname) {
 	int robots = 0;
 	int sink_num = 0;
 
+	//initialize empty grid
+	initializeEmptyGrid(size.x, size.y);
+
 	//take input from file
-	for (int i=0; i < size.x; i++) {
-		vector<Block> row;
-		for (int j=0; j < size.y; j++) {
+	for (int i=0; i < size.y; i++) {
+		for (int j=0; j < size.x; j++) {
 			//read in type 
 			char a = 0;
 			int type = 0;
@@ -465,11 +469,9 @@ bool Mine::fileInput(string fname) {
 			
 			//create and save block
 			Block b; b.index = -1; b.type = type;
-			row.push_back(b);
+			grid[j][i] = b;
 		}
 
-		//create grid
-		grid.push_back(row);
 	}
 
 	//Add the sink

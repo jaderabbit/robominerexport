@@ -118,10 +118,6 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
     MSG msg = {0};
 	long t = 0;
 
-	for (int i=0; i < 3950; i++) {
-		game.Update();
-	}
-
     while (WM_QUIT != msg.message)
     {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) == TRUE)
@@ -131,9 +127,9 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 		}
 		else
 		{		
-			if ( t % 100 == 0 ) {
+			//if ( t % 100 == 0 ) {
 				game.Update();
-			}
+			//}
 			t++;
 			game.RenderScene();
 		}

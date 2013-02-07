@@ -8,33 +8,15 @@ class ClusterForage :
 {
 public:
 	ClusterForage(void);
-	ClusterForage( EXPERIMENT_DESC _desc );
+	ClusterForage( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc  );
 	virtual ~ClusterForage(void);
 
 	//Main methods
-	virtual int initialize();
 	virtual int run();
 	virtual int runStep();
 	virtual int runAllSamplesStep();
-	virtual int cleanup();
-
-	//Initialize
-	void initializeGrid();
-	void initializeObjects();
-	void initializeRobots();
-	void initializeSink();
-
-	//Chose robot position
+	void initializePerformanceMeasures();
+	virtual void initializeRobots();
 	Coord randomRobotPosition();
-
-
-	const static int SINK_BOUNDARY = 5;
-	static const int MAX_WANDER_STEPS = 50;
-
-
-
-	//Interation counter
-	int cnt;
-
 };
 

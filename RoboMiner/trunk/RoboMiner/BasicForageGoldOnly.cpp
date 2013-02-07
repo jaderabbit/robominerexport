@@ -1,6 +1,7 @@
 #include "BasicForageGoldOnly.h"
 #include "BasicForagingState.h"
 #include "ItemsForagedOverTime.h"
+#include "Entropy.h"
 #include "AverageTimeInState.h"
 #include <sstream>
 
@@ -12,27 +13,12 @@ BasicForageGoldOnly::~BasicForageGoldOnly(void)
 {
 }
 
-BasicForageGoldOnly::BasicForageGoldOnly( EXPERIMENT_DESC _desc ) : Experiment(_desc) {
+BasicForageGoldOnly::BasicForageGoldOnly( EXPERIMENT_DESC _desc , ENVIRONMENT_DESC _env_desc ) : Experiment(_desc,_env_desc) {
 
-}
-
-int BasicForageGoldOnly::initialize() {
-	initializeGrid();
-	initializeSink();
-	initializeObjects();
-	initializeRobots();
-
-	//Initialize Performance measures
-	pb = new PerformanceBed(robots);
-	pb->attach( new ItemsForagedOverTime() );
-	pb->attach( new AverageTimeInState(PM_FORAGE));
-
-	cnt = 0;
-	return true;
 }
 
 int BasicForageGoldOnly::run() {
-	
+
 	for (unsigned int i=0; i < robots.size(); i++) {
 		//Set Foraging
 		robots[i].setActivity(BASICFORAGE);
@@ -90,29 +76,6 @@ int BasicForageGoldOnly::cleanup() {
 	return true;
 }
 
-void BasicForageGoldOnly::initializeGrid() {
-	//Initialize the empty grid
-	mine.initializeEmptyGrid(desc.width,desc.height);
-}
-
-void BasicForageGoldOnly::initializeObjects() {
-	//Randomly
-	for (int i=0; i < desc.number_objects; i++) {
-		bool empty = false;
-		while (!empty) {
-			//generate random position.
-			int x_new = t.random(SINK_BOUNDARY,desc.width-1);
-			int y_new = t.random(0,desc.height-1);
-
-			//set new position
-			if ( i < (desc.number_objects*desc.gold_waste_ratio) )
-				empty = mine.setCellIfEmpty(x_new, y_new,GOLD);
-			else 
-				empty = mine.setCellIfEmpty(x_new, y_new,WASTE);
-		}
-	}
-}
-
 void BasicForageGoldOnly::initializeRobots() {
 	//Initialize Robots
 
@@ -131,7 +94,7 @@ void BasicForageGoldOnly::initializeRobots() {
 		mine.setCell(p.x,p.y,ROBOT,i);
 				
 		//All need to cluster 
-		int activity = BASICFORAGE;
+		int activity = FORAGE;
 
 		//string stream for file name
 		stringstream s;
@@ -142,26 +105,21 @@ void BasicForageGoldOnly::initializeRobots() {
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
 		r.setDivision(GOLD);
-		r.setActivity(BASICFORAGE);
+		r.setActivity(activity);
 		r.setStringTracker(s.str());
 		r.setMutualRobotAwareness(&robots);
 		r.setIndex(i);
+		r.setMaxPath(50);
 
 		//Performance bed
 		r.setPerformanceBed(pb);
 
-		r.setMaxPath(50);
 
 		//push back robot
 		robots.push_back(r);
 
 	}
 
-}
-
-void BasicForageGoldOnly::initializeSink() {
-	//init sink
-	mine.initSink();
 }
 
 Coord BasicForageGoldOnly::randomRobotPosition() {
@@ -179,3 +137,35 @@ Coord BasicForageGoldOnly::randomRobotPosition() {
 
 }
 
+void BasicForageGoldOnly::initializePerformanceMeasures() {
+	pb->attach( new ItemsForagedOverTime() );
+	pb->attach( new AverageTimeInState(PM_FORAGE));
+	pb->attach( new Entropy(desc.height,desc.number_robots) );
+ }
+
+int BasicForageGoldOnly::runAllSamplesStep() {
+	if (  desc.total_cluster_iterations ==cnt && sampleCount < samples ) {
+		//Finalize
+		pb->finalize();
+
+		//save previous results
+		pbs.push_back(pb);
+
+		//reinitialize grid
+		cleanup();
+		initialize();
+
+		//reset counter
+		cnt = 0;
+
+		//increment sample count
+		sampleCount++;
+	} else if ( sampleCount == samples ) {
+		//Save all experiments in the reader. 
+		resultWriter.setResults(pbs,desc,env_desc);
+		resultWriter.writeResultFile();
+	}
+
+	runStep();
+	return true;
+}

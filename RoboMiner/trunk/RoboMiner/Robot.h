@@ -55,7 +55,7 @@ public:
 	//Set activity and do activity
 	void doStep();
 	void setActivity( int _act);
-	void setIndex (int _index ) { index = _index; }
+	void setIndex (int _index );
 
 	//Division of Labour
 	void chooseActivity();
