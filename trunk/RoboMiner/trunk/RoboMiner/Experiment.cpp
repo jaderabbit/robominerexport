@@ -10,7 +10,7 @@ Experiment::~Experiment(void)
 {
 }
 
-Experiment::Experiment( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc ) : desc(_desc), env_desc(_env_desc), sampleCount(0), cnt(0){}
+Experiment::Experiment( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc ) : desc(_desc), env_desc(_env_desc), sampleCount(0), cnt(0), samples(_desc.samples){}
 
 int Experiment::initialize() {
 	initializeGrid(); //TODO: Have a "createEnvironmentFileName" method for a given environment descriptor.
@@ -35,7 +35,7 @@ int Experiment::cleanup() {
 void Experiment::initializeGrid() {
 	//Initialize the empty grid
 	mine.initializeEmptyGrid(desc.width,desc.height);
-	mine.load(desc, env_desc,"C:\\Users\\Jade\\Documents\\Visual Studio 2010\\Projects\\RoboMiner\\EnvironmentGenerator\\environments\\uniform\\uniform_size_50_obj_1250_ratio_0.666667_sim_14.txt");
+	mine.load(desc, env_desc,getEnvironmentFileName());
 }
 
 void Experiment::initializeObjects() {

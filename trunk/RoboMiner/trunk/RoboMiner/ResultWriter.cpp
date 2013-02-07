@@ -23,7 +23,7 @@ string ResultWriter::generateFileName( EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DE
 	stringstream name;
 
 	//Environments
-	name << _env_desc.type << "\\" << _env_desc.type
+	name << "results\\" <<_env_desc.type << "\\" << _env_desc.type
 		<< "_size_" << _env_desc.grid_size << "_obj_" << _env_desc.num_objects << "_ratio_" << _env_desc.ratio_gold;
 
 	//Experiment

@@ -47,7 +47,7 @@ public:
 	Tools t;
 
 	//Sample Count
-	static const int samples = 30;
+	int samples;
 	int sampleCount;
 
 	//ResultWriter

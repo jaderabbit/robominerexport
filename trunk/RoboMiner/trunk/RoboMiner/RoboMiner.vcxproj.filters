@@ -37,9 +37,6 @@
     <Filter Include="Experiment">
       <UniqueIdentifier>{be8a2e6c-faed-4fa2-ad53-9477c50c80a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Experiment\ClusterForageExperiment">
-      <UniqueIdentifier>{7b248b50-017f-4705-833d-52635b9e0fbd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Experiment\Descriptors">
       <UniqueIdentifier>{94ecb0ae-4a4d-455c-b582-cd1f5bdb0f40}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,9 @@
     </Filter>
     <Filter Include="Experiment\Performance Measures\PerSample">
       <UniqueIdentifier>{91f174b4-7cf7-4529-b269-0c07252f3542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\BeeForage Experiment">
+      <UniqueIdentifier>{7b248b50-017f-4705-833d-52635b9e0fbd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -146,7 +146,7 @@
       <Filter>Experiment\Performance Measures\PerIteration</Filter>
     </ClCompile>
     <ClCompile Include="BeeForage.cpp">
-      <Filter>Experiment\ClusterForageExperiment</Filter>
+      <Filter>Experiment\BeeForage Experiment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,7 +235,7 @@
       <Filter>Experiment\Performance Measures\PerIteration</Filter>
     </ClInclude>
     <ClInclude Include="BeeForage.h">
-      <Filter>Experiment\ClusterForageExperiment</Filter>
+      <Filter>Experiment\BeeForage Experiment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

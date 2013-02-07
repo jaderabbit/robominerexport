@@ -27,4 +27,6 @@ struct EXPERIMENT_DESC {
 
 	//Max path that robots are to be initialized with
 	int max_path;
+
+	int samples;
 };
