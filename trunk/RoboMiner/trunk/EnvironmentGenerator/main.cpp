@@ -408,7 +408,7 @@ void generateUniformDistributionEnvironments() {
 			for (int k=0; k < num_gold_ratios; k++) {
 				for (int l=0; l < num_sims; l++ ) {
 					//create name
-					string name = createFileName("uniform",(0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],l);
+					string name = createFileName("uniform",percentage_objects[j],gold_ratios[k],grid_sizes[i],l);
 
 					//create environment
 					vector<vector<int>> grid = uniformDistribution((0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],t,sink_boundary);
@@ -458,7 +458,7 @@ void generateVeinEnvironments() {
 			for (int k=0; k < num_gold_ratios; k++) {
 				for (int l=0; l < num_sims; l++ ) {
 					//create name
-					string name = createFileName("vein",(0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],l);
+					string name = createFileName("vein",percentage_objects[j],gold_ratios[k],grid_sizes[i],l);
 
 					//create environment
 					vector<vector<int>> grid = veinDistribution((0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],t,sink_boundary);
@@ -482,7 +482,7 @@ void generateClusteredEnvironments() {
 			for (int k=0; k < num_gold_ratios; k++) {
 				for (int l=0; l < num_sims; l++ ) {
 					//create name
-					string name = createFileName("clustered",(0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],l);
+					string name = createFileName("clustered",percentage_objects[j],gold_ratios[k],grid_sizes[i],l);
 
 					//create environment
 					vector<vector<int>> grid = clusteredDistribution((0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],t,sink_boundary);
