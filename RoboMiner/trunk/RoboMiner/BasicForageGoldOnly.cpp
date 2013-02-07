@@ -27,7 +27,7 @@ int BasicForageGoldOnly::run() {
 		robots[i].setRobotState( new BasicForagingState( &robots[i], GOLD ) );
 	}
 
-	while (cnt < desc.total_forage_iterations) {
+	while (cnt < desc.total_iterations) {
 		for (unsigned int j=0; j < robots.size(); j++) {
 			robots[j].doStep();
 		}
@@ -56,7 +56,7 @@ int BasicForageGoldOnly::runStep() {
 
 	}
 
-	if (cnt < desc.total_cluster_iterations) {
+	if (cnt < desc.total_iterations) {
 		for (unsigned int j=0; j < robots.size(); j++) {
 			robots[j].doStep();
 		}
@@ -142,30 +142,3 @@ void BasicForageGoldOnly::initializePerformanceMeasures() {
 	pb->attach( new AverageTimeInState(PM_FORAGE));
 	pb->attach( new Entropy(desc.height,desc.number_robots) );
  }
-
-int BasicForageGoldOnly::runAllSamplesStep() {
-	if (  desc.total_cluster_iterations ==cnt && sampleCount < samples ) {
-		//Finalize
-		pb->finalize();
-
-		//save previous results
-		pbs.push_back(pb);
-
-		//reinitialize grid
-		cleanup();
-		initialize();
-
-		//reset counter
-		cnt = 0;
-
-		//increment sample count
-		sampleCount++;
-	} else if ( sampleCount == samples ) {
-		//Save all experiments in the reader. 
-		resultWriter.setResults(pbs,desc,env_desc);
-		resultWriter.writeResultFile();
-	}
-
-	runStep();
-	return true;
-}

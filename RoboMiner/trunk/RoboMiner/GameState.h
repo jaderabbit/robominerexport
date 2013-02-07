@@ -6,7 +6,7 @@
 #include "DXRenderer.h"
 #include "TileRenderGraph.h"
 #include "Types.h"
-#include "ClusterForage.h"
+#include "BeeForage.h"
 #include "BasicForageGoldOnly.h"
 
 //include STL
