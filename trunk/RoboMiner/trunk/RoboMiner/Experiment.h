@@ -15,11 +15,18 @@ public:
 	Experiment( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc);
 	~Experiment(void);
 
-	virtual int runAllSamplesStep() = 0;
-	virtual int initialize() = 0;
+	virtual int initialize();
 	virtual int run() = 0;
 	virtual int runStep() = 0;
-	virtual int cleanup() = 0;
+	virtual int runAllSamplesStep() = 0;
+	virtual int cleanup();
+
+	//Initialization methods
+	virtual void initializeGrid();
+	virtual void initializeObjects();
+	virtual void initializeSink();
+	virtual void initializeRobots() =0;
+	virtual void initializePerformanceMeasures() = 0;
 
 	//Environment
 	Mine mine;
@@ -42,5 +49,12 @@ public:
 
 	//ResultWriter
 	ResultWriter resultWriter;
+
+	const static int SINK_BOUNDARY = 5;
+	static const int MAX_WANDER_STEPS = 50;
+
+	//Interation counter
+	int cnt;
+
 };
 

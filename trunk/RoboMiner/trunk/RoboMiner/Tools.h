@@ -6,6 +6,8 @@
 #include <random>
 #define round(x) int(x + 0.5)
 struct Coord;
+	
+enum { ENV_UNIFORM, ENV_GAUSSIAN, ENV_VEIN, ENV_CLUSTERED };
 
 class Tools
 {

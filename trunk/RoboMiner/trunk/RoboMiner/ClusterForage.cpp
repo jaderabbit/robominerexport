@@ -9,28 +9,12 @@ ClusterForage::ClusterForage(void)
 {
 }
 
-ClusterForage::ClusterForage( EXPERIMENT_DESC _desc ) : Experiment(_desc) {
+ClusterForage::ClusterForage( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc ) : Experiment(_desc,_env_desc) {
 }
 
 
 ClusterForage::~ClusterForage(void)
 {
-}
-
-int ClusterForage::initialize() {
-	initializeGrid(); //TODO: Initialize based on experiment descriptor and environment descriptor. 
-	initializeSink();
-	initializeObjects();
-	initializeRobots();
-
-	//Initialize Performance measures
-	pb = new PerformanceBed(robots);
-	pb->attach( new ItemsForagedOverTime() );
-	pb->attach( new AverageTimeInState(PM_FORAGE));
-	pb->attach( new Entropy(desc.height,desc.number_robots) );
-
-	cnt = 0;
-	return true;
 }
 
 int ClusterForage::run() {
@@ -134,44 +118,46 @@ int ClusterForage::runStep() {
 	return true;
 }
 
-int ClusterForage::cleanup() {
-	//TODO: Certify that all clean up issues have been addressed. 
-	robots.clear();
-	mine.grid.clear();
+int ClusterForage::runAllSamplesStep() {
+	if ( cnt >= desc.total_cluster_iterations + desc.total_forage_iterations==cnt+1 && sampleCount < samples ) {
+		//Finalize the current pb
+		pb->finalize();
+
+		//save previous results
+		pbs.push_back(pb);
+
+		//reinitialize grid
+		initialize();
+
+		//reset counter
+		cnt = 0;
+
+		//increment sample count
+		sampleCount++;
+	} else if ( sampleCount >= samples ) {
+		//Save all experiments in the reader. 
+		resultWriter.setResults(pbs,desc,env_desc);
+		resultWriter.writeResultFile();
+	}
+
+	runStep();
+
 	return true;
 }
 
-void ClusterForage::initializeGrid() {
-	//Initialize the empty grid
-	mine.initializeEmptyGrid(desc.width,desc.height);
-	mine.load(
-}
-
-void ClusterForage::initializeObjects() {
-	//Randomly
-	for (int i=0; i < desc.number_objects; i++) {
-		bool empty = false;
-		while (!empty) {
-			//generate random position.
-			int x_new = t.random(SINK_BOUNDARY,desc.width-1);
-			int y_new = t.random(0,desc.height-1);
-
-			//set new position
-			if ( i < (desc.number_objects*desc.gold_waste_ratio) )
-				empty = mine.setCellIfEmpty(x_new, y_new,GOLD);
-			else 
-				empty = mine.setCellIfEmpty(x_new, y_new,WASTE);
-		}
-	}
-}
-
-void ClusterForage::initializeRobots() {
-	//Initialize Robots
-	pb = new PerformanceBed(robots);
+ void ClusterForage::initializePerformanceMeasures() {
+	pb->attach( new ItemsForagedOverTime() );
+	pb->attach( new AverageTimeInState(PM_FORAGE));
+	pb->attach( new Entropy(desc.height,desc.number_robots) );
 	pb->attach( new ItemsForagedOverTime() );
 
-	//TODO: Decide if initialize at sink or randomly
+ }
+
+ 
+void ClusterForage::initializeRobots() {
+
 	//TODO: Allow for robots to NOT choose what items to cluster. i.e. A robot can cluster any item.
+
 	for (int i=0; i < desc.number_robots ; i ++ ) {
 		//choose position
 		Coord p = randomRobotPosition();
@@ -215,10 +201,6 @@ void ClusterForage::initializeRobots() {
 
 }
 
-void ClusterForage::initializeSink() {
-	//init sink
-	mine.initSink();
-}
 
 Coord ClusterForage::randomRobotPosition() {
 	//choose position
@@ -233,28 +215,4 @@ Coord ClusterForage::randomRobotPosition() {
 
 	return p;
 
-}
-
-int ClusterForage::runAllSamplesStep() {
-	if ( cnt >= desc.total_cluster_iterations + desc.total_forage_iterations==cnt+1 && sampleCount < samples ) {
-		//save previous results
-		pbs.push_back(pb);
-
-		//reinitialize grid
-		initialize();
-
-		//reset counter
-		cnt = 0;
-
-		//increment sample count
-		sampleCount++;
-	} else if ( sampleCount >= samples ) {
-		//Save all experiments in the reader. 
-		resultWriter.setResults(pbs,desc,env_desc);
-		resultWriter.writeResultFile();
-	}
-
-	runStep();
-
-	return true;
 }

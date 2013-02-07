@@ -51,7 +51,7 @@ void AverageTimeInState::finalize() {
 		totalItemsForaged+= itemsForagedPerRobot[i];
 	}
 
-	finalStatistic = totalTimeInState/totalItemsForaged/30.0;
+	finalStatistic = totalTimeInState/totalItemsForaged/30.0/timeSpentInStatePerRobot.size();
 	measurement.push_back(finalStatistic);
 }
 
@@ -92,7 +92,7 @@ string AverageTimeInState::getStateName( int _state) {
 }
 
 string AverageTimeInState::getName() { 
-	string s = "ItemsForagedOverTime";
+	string s = "AverageTimeInState";
 	s += getStateName(getState(state));
 	return s;
 }

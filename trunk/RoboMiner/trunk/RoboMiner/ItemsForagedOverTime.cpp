@@ -34,8 +34,8 @@ bool ItemsForagedOverTime::isNext() {
 }
 
 string ItemsForagedOverTime::getNext() {
-	s.clear();
-	s << total[timer];
+	stringstream s1;
+	s1 << total[timer];
 	timer++;
-	return s.str();
+	return s1.str();
 }
