@@ -18,7 +18,8 @@ public:
 	virtual int initialize();
 	virtual int run() = 0;
 	virtual int runStep() = 0;
-	virtual int runAllSamplesStep() = 0;
+	virtual int getTotalIterations();
+	virtual int runAllSamplesStep();
 	virtual int cleanup();
 
 	//Initialization methods
@@ -27,6 +28,8 @@ public:
 	virtual void initializeSink();
 	virtual void initializeRobots() =0;
 	virtual void initializePerformanceMeasures() = 0;
+
+	virtual string getEnvironmentFileName();
 
 	//Environment
 	Mine mine;

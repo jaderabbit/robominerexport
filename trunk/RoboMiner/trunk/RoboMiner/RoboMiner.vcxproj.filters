@@ -118,9 +118,6 @@
     <ClCompile Include="Experiment.cpp">
       <Filter>Experiment</Filter>
     </ClCompile>
-    <ClCompile Include="ClusterForage.cpp">
-      <Filter>Experiment\ClusterForageExperiment</Filter>
-    </ClCompile>
     <ClCompile Include="PerformanceMeasure.cpp">
       <Filter>Experiment\Performance Measures</Filter>
     </ClCompile>
@@ -147,6 +144,9 @@
     </ClCompile>
     <ClCompile Include="ItemsForagedOverTime.cpp">
       <Filter>Experiment\Performance Measures\PerIteration</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeForage.cpp">
+      <Filter>Experiment\ClusterForageExperiment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,9 +201,6 @@
     <ClInclude Include="Experiment.h">
       <Filter>Experiment</Filter>
     </ClInclude>
-    <ClInclude Include="ClusterForage.h">
-      <Filter>Experiment\ClusterForageExperiment</Filter>
-    </ClInclude>
     <ClInclude Include="EXPERIMENT_DESC.h">
       <Filter>Experiment\Descriptors</Filter>
     </ClInclude>
@@ -236,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="ItemsForagedOverTime.h">
       <Filter>Experiment\Performance Measures\PerIteration</Filter>
+    </ClInclude>
+    <ClInclude Include="BeeForage.h">
+      <Filter>Experiment\ClusterForageExperiment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -30,11 +30,9 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	d.number_robots = 20;
 	d.gold_waste_ratio = 0.4;
 	d.forager_explorer_ratio = 0.7;
-	d.gold_waste_division_ratio_cluster = 0.5;
-	d.gold_waste_division_ratio_forage = 0.5;
-	d.total_cluster_iterations = 2000;
-	d.total_forage_iterations = 2000;
-	d.max_path = 10;
+	d.total_iterations = 4000;
+	d.gold_waste_division_ratio = 0.5;
+	d.max_path = 50;
 
 	ENVIRONMENT_DESC e;
 	e.grid_size = 50;

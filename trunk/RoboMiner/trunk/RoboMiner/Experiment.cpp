@@ -61,3 +61,44 @@ void Experiment::initializeSink() {
 	mine.initSink();
 }
 
+int Experiment::runAllSamplesStep() {
+	if (  getTotalIterations() ==cnt-1 && sampleCount < samples ) {
+		//Finalize
+		pb->finalize();
+
+		//save previous results
+		pbs.push_back(pb);
+
+		//reinitialize grid
+		cleanup();
+		initialize();
+
+		//reset counter
+		cnt = 0;
+
+		//increment sample count
+		sampleCount++;
+	} else if ( sampleCount == samples ) {
+		//Save all experiments in the reader. 
+		resultWriter.setResults(pbs,desc,env_desc);
+		resultWriter.writeResultFile();
+	}
+
+	runStep();
+	return true;
+}
+
+int Experiment::getTotalIterations() {
+	return desc.total_iterations;
+}
+
+string Experiment::getEnvironmentFileName() {
+	stringstream fileName;
+	fileName << "environments\\" <<env_desc.type << "\\";
+	fileName << env_desc.type;
+	fileName << "_size_" << env_desc.grid_size;
+	fileName << "_obj_" << env_desc.num_objects;
+	fileName << "_ratio_" << env_desc.ratio_gold;
+	fileName << "_sim_" << sampleCount << ".txt";
+	return fileName.str();
+}

@@ -10,7 +10,6 @@ public:
 
 	virtual int run();
 	virtual int runStep();
-	virtual int runAllSamplesStep();
 	virtual int cleanup();
 
 	//Initialize
