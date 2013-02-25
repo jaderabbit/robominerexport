@@ -62,7 +62,8 @@ void Experiment::initializeSink() {
 }
 
 int Experiment::runAllSamplesStep() {
-	if (  getTotalIterations() ==cnt-1 && sampleCount < samples ) {
+	int k=0;
+	if (  getTotalIterations() ==cnt && sampleCount < samples ) {
 		//Finalize
 		pb->finalize();
 

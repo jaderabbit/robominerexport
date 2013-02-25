@@ -44,7 +44,7 @@ int BasicForageGoldOnly::runStep() {
 			robots[j].resetPerformanceMeasures();
 	}
 
-	//CLUSTERING
+	//Foraging
 	if ( cnt == 0 ) {
 		for (unsigned int i=0; i < robots.size(); i++) {
 			//Set Foraging
