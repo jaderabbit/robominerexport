@@ -24,7 +24,6 @@ public:
 
 	//Initialization methods
 	virtual void initializeGrid();
-	virtual void initializeObjects();
 	virtual void initializeSink();
 	virtual void initializeRobots() =0;
 	virtual void initializePerformanceMeasures() = 0;

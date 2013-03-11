@@ -75,6 +75,9 @@ bool Mine::load( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc, string fileN
 	//read in file
 	fileInput(fileName);
 
+	//Set the sink and Wipe sink boundary area
+	//initSink();
+
 	return true;
 }
 
@@ -192,6 +195,13 @@ void Mine::initSink() {
 			grid[0][i].type = G_SINK;
 		else {
 			grid[0][i].type = W_SINK;
+		}
+	}
+
+	//wipe the sink boundary
+	for (int i=1; i < SINK_BOUNDARY; i++) {
+		for (int j=0; j < size.y; j++) {
+			grid[i][j].type = EMPTY;
 		}
 	}
 }
@@ -473,10 +483,6 @@ bool Mine::fileInput(string fname) {
 		}
 
 	}
-
-	//Add the sink
-
-	//Wipe the 
 
 	return true;
 }
