@@ -38,24 +38,6 @@ void Experiment::initializeGrid() {
 	mine.load(desc, env_desc,getEnvironmentFileName());
 }
 
-void Experiment::initializeObjects() {
-	//Randomly
-	for (int i=0; i < desc.number_objects; i++) {
-		bool empty = false;
-		while (!empty) {
-			//generate random position.
-			int x_new = t.random(SINK_BOUNDARY,desc.width-1);
-			int y_new = t.random(0,desc.height-1);
-
-			//set new position
-			if ( i < (desc.number_objects*desc.gold_waste_ratio) )
-				empty = mine.setCellIfEmpty(x_new, y_new,GOLD);
-			else 
-				empty = mine.setCellIfEmpty(x_new, y_new,WASTE);
-		}
-	}
-}
-
 void Experiment::initializeSink() {
 	//init sink
 	mine.initSink();

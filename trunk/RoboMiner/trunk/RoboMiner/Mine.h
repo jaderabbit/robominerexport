@@ -77,7 +77,6 @@ public:
 	void repeatRuns( int reps);
 
 	//experiments
-
 	void antCemeteryAlgorithm();
 	void foragingAlgorithm();
 	void recruitmentAlgorithm();
@@ -108,6 +107,7 @@ public:
 	//Constants
 	static const int MAX_WANDER_STEPS = 50;
 	static const int MAX_ITERATIONS = 2000;
+	static const int SINK_BOUNDARY = 5;
 
 	//Sink Position
 	Coord goldSinkBoundaries[2];

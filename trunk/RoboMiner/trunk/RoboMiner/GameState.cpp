@@ -153,7 +153,8 @@ void GameState::RenderScene()
 				case GOLD: trg.pTiles[count].color= float3(139.0/255.0,117.0/255.0,0);break; //gold colour
 				case WASTE: trg.pTiles[count].color= float3(40/255,40/255,40/255);break;				//waste colour
 				case SINK: trg.pTiles[count].color= float3(1,0,0);break;
-				case G_SINK: trg.pTiles[count].color= float3(1,215.0/255,0);break;
+				case G_SINK: 
+					trg.pTiles[count].color= float3(1,215.0/255,0);break;
 				case W_SINK: trg.pTiles[count].color= float3(170/255,170/255,170/255);break;
 				case EMPTY:  trg.pTiles[count].color= float3(1,1,1);break;
 			}
