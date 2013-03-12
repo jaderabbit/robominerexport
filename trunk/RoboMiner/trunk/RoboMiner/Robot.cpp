@@ -316,9 +316,11 @@ void Robot::makeMove() {
 	if (validMove()){
 		mine->grid[pos.x][pos.y].type = EMPTY; //prev pos to empty 
 		mine->grid[pos.x + dir.x][pos.y + dir.y].type = ROBOT; //current pos to robot
-		mine->grid[pos.x + dir.x][pos.y + dir.y].index = mine->grid[pos.x][pos.y].index;
-		pos.x += dir.x;
-		pos.y += dir.y;
+		mine->grid[pos.x + dir.x][pos.y + dir.y].index = mine->grid[pos.x][pos.y].index; //set the index of mine position to that of current robot
+		
+		//Move robot in direction
+		pos.x += dir.x; 
+		pos.y += dir.y; 
 
 		if (activity == EXPLORE) {
 			//TODO: Possibly irrelevant line of code. Optimize
@@ -327,8 +329,11 @@ void Robot::makeMove() {
 		} else if (activity == FORAGE) {
 			destination.x -= dir.x;
 			destination.y -= dir.y;
+		} else if (activity == BASICFORAGE ) {
+			//Basic Forage behaves like the explore
+			destination.x += dir.x;
+			destination.y += dir.y;
 		}
-
 
 		calculateDistanceFromSink();
 
@@ -440,7 +445,6 @@ int Robot::calculateFoV() {
 			}
 		}
 		
-
 		i++;
 	}
 
@@ -492,12 +496,11 @@ double Robot::calculateDesirability( Coord d , double rank , double max_rank ){
 
 	double delta=0;
 	//combine & return
-	if ( pos.x < 4 ) 
+	if ( pos.x < mine->SINK_BOUNDARY )
 		delta = alpha;
 	else
 		delta = lambda*alpha + (1-lambda)*beta;
 
-	//assert( delta >= 0 && delta <= 1 );
 	return delta;
 }
 
@@ -534,6 +537,50 @@ void  Robot::chooseForagerDirection() {
 	//assert( validPos(pos.x + dir.x,pos.y + dir.y) );
 }
 
+void  Robot::chooseForagerLocatingDirection() {
+	//choose initial direction to Cluster
+	dir = directionToItem();
+
+	//calculate FoV
+	int num = calculateFoV();
+
+	//calculate desirability
+	int min_desirability_index = 0;
+	double min_desirability = calculateDesirability(FoV[0],0,num); //need to minimize
+	for (int i=1; i < num; i++) {
+		assert( validPos(pos.x + FoV[i].x,pos.y + FoV[i].y) );
+		double des = calculateDesirability(FoV[i],i,num);
+		if ( des < min_desirability ) {
+			min_desirability_index = i;
+			min_desirability = des;
+		}
+	}
+
+	//direction is thus
+	dir = FoV[min_desirability_index];
+	//assert( validPos(pos.x + dir.x,pos.y + dir.y) );
+}
+
+Coord  Robot::directionToItem() {
+	Coord dirToItem;
+
+	//Add gaussian noise to clusterLocation
+
+	//TODO: Determine whether a temporary should be used or the most current cluster location. 
+	//TODO: Determine whether gaussian noise should be added always.
+	if (state_counter > MAX_STATE_COUNTER ) {
+		clusterLocation.x = t.gaussianDistributionDiscrete(clusterLocation.x, MAX_PATH_DEVIATION);
+		clusterLocation.y = t.gaussianDistributionDiscrete(clusterLocation.y, MAX_PATH_DEVIATION);
+	}
+
+	//Calculate Direction to Items
+	dirToItem.x = sgm(clusterLocation.x - pos.x);
+	dirToItem.y = sgm(clusterLocation.y - pos.y);
+
+	return dirToItem;
+
+}
+
 void Robot::setPosition( int x, int y) { 
 	mine->grid[pos.x][pos.y].type = EMPTY; //prev pos to empty 
 	mine->grid[x][y].type = ROBOT; //current pos to robot
@@ -561,6 +608,14 @@ void Robot::homingStep() {
 
 		destination.x = oldSinkPos.x;
 		destination.y = oldSinkPos.y;
+	} else if (state_counter == 0 && activity == BASICFORAGE) {
+		//set the location of the cluster
+		clusterLocation.x =  pos.x;
+		clusterLocation.y =  pos.y;
+
+		//set home as the destination
+		destination.x = oldSinkPos.x;
+		destination.y = oldSinkPos.y;
 	}
 
 	//increment state counter
@@ -584,6 +639,8 @@ void Robot::homingStep() {
 			}
 			else if (activity == FORAGE) {
 				state = UNLOADING;
+			} else if (activity == BASICFORAGE) {
+				state = UNLOADING;
 			}
 		}
 	//if move is not valid - switch to beacon homing
@@ -602,6 +659,8 @@ void Robot::beaconHomingStep() {
 			state = RECRUITING;
 		} else if (activity == FORAGE) {
 			state = UNLOADING;
+		} else if ( activity == BASICFORAGE) {
+			state = UNLOADING;
 		}
 	}
 
@@ -610,54 +669,6 @@ void Robot::beaconHomingStep() {
 
 	//make move
 	makeMove();
-
-	/*bool success = false;
-	int rep_count = 0;
-
-	//get direction home - HACK - cuz wer
-	dir.x = sgm(0 - pos.x);
-	if ( load_type == GOLD ) {
-		//gold is on the left
-		if (  pos.y >= mine->size.y/2 ) {
-			dir.y = -1;
-		} else {
-			dir.y = 0;
-		}
-	} else {
-		if ( pos.y <= mine->size.y/2 ) {
-			dir.y = 1;
-		} else {
-			dir.y = 0;
-		}
-	}
-
-	do {
-		
-		if ( isHome() ) { 
-			state_counter=0;
-
-			if (activity == EXPLORE ) {
-				state = RECRUITING;
-			} else if (activity == FORAGE) {
-				state = UNLOADING;
-			}
-			success = true;
-			break;
-		}
-		//move is valid
-		if (validMove() ) {
-			//make move
-			makeMove();
-
-			//successfully moved
-			success = true;
-
-		} else {
-			//if something in the way avoid obstacle
-			avoidObstacle();
-			rep_count++;
-		}
-	} while (!success && rep_count < 8); //rep count < 8 to try all sides*/
 
 	//increment state counter
 	state_counter++;
