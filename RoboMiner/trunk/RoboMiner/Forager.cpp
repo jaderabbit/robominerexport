@@ -31,38 +31,16 @@ void Robot::waitStep() {
 }
 
 void Robot::locateStep() {
-	/*//Cluster location
-	clusterLocation.x = t.gaussianDistributionDiscrete(clusterLocation.x, MAX_PATH_DEVIATION);
-	clusterLocation.y = t.gaussianDistributionDiscrete(clusterLocation.y, MAX_PATH_DEVIATION);
-
-	//calculate center of FoV
-	dir.x = sgm(clusterLocation.x - pos.x);
-	dir.y = sgm(clusterLocation.y - pos.y);
-
-	//New method
-	chooseDirection();
-
-	//make move
-	makeMove();
-
-	//check if at location
-	if ( clusterLocation.x - pos.x ==0 && clusterLocation.y - pos.y ==0 ) {
-			state_counter = 0;
-			state = LOADING;
-	} else if (seeItem()) {
-		state = LOADING;
-		state_counter = 0;
-	} else if ( walkingIntoAWall() ) {
-		state = LOADING;
-		state_counter = 0;
-	}*/
-
-
-	//assert( validPos(pos.x + dir.x,pos.y + dir.y) );
-
+	//TODO: Add obstacle avoidance to locating
+	//set destination
+	if (state_counter == 0 && activity == FORAGE ) {	
+		//set home as the destination
+		destination.x = clusterLocation.x;
+		destination.y = clusterLocation.y;
+	}
 	
 	//follow cluster location. 
-	do { 
+	/*do { 
 		double r1 = t.randomOpen(), r2 = t.randomOpen();
 		dir.x = (t.randomOpen() < 0.5) ? sgm(clusterLocation.x - pos.x) : 0;
 		dir.y = (t.randomOpen() < 0.5) ? sgm(clusterLocation.y - pos.y) : 0;
@@ -70,39 +48,34 @@ void Robot::locateStep() {
 
 	//assert(dir.x != 0 && dir.y != 0 );
 
-	state_counter++;
-	int rep_count =0;
 
 	if (state_counter > MAX_STATE_COUNTER ) {
 		clusterLocation.x = t.gaussianDistributionDiscrete(clusterLocation.x, MAX_PATH_DEVIATION);
 		clusterLocation.y = t.gaussianDistributionDiscrete(clusterLocation.y, MAX_PATH_DEVIATION);
-	} 
+	} */
 
-	bool madeMove = false;
-	do { 
-		if (validMove()) {
-			makeMove();
-			madeMove =true;
-			if ( clusterLocation.x - pos.x ==0 && clusterLocation.y - pos.y ==0 ) {
-				state_counter = 0;
-				state = LOADING;
-			}
-		} else {
-			if (seeItem()) {
-				state = LOADING;
-				state_counter = 0;
-				madeMove =true;
-			} else if ( walkingIntoAWall() ) {
-				state = LOADING;
-				state_counter = 0;
-				madeMove =true;
-			} else {
-				avoidObstacle();
-			}
-		}
-		rep_count++;
-	} while ( rep_count < 8 && madeMove==false);
-	
+	//Choose the locating direction of the forager.
+	chooseForagerLocatingDirection();
+
+	//Increment state counter
+	state_counter++;
+
+	//Move making
+	//TODO: Optimize following piece of logic which determines what action to take.
+
+	//Make the move: Does validity check
+	makeMove();
+
+	if ( clusterLocation.x - pos.x ==0 && clusterLocation.y - pos.y ==0 ) {
+		state_counter = 0;
+		state = LOADING;
+	} else if (seeItem()) {
+		state = LOADING;
+		state_counter = 0;
+	} else if ( walkingIntoAWall() ) {
+		state = LOADING;
+		state_counter = 0;
+	} 
 }
 
 bool Robot::seeItem() {
@@ -146,28 +119,7 @@ void Robot::unloadStep() {
 		oldSinkPos.x = pos.x;
 		oldSinkPos.y = pos.y;
 
-		/*Coord location;
-		
-		//Triangulate position - final direction = broadcasted location - (position of robot - position of recruiter)
-		location.x = recruiterClusterLocation.x - ( pos.x - recruiterOriginalPos.x);
-		location.y = recruiterClusterLocation.y - ( pos.y - recruiterOriginalPos.y);
-
-		//Add gaussian noise to deviate a bit - MAY OR MAY NOT WORK! EEK!
-		location.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
-		location.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
-
-		//Cluster
-		clusterLocation.x = location.x;
-		clusterLocation.y = location.y;
-
-		//Set home vector
-		homeVector.x = -location.x;
-		homeVector.y = -location.y;
-
-		//set destination
-		destination.x = location.x;
-		destination.y = location.y;*/
-
+		//destination is set back to the location of the cluster
 		destination = clusterLocation;
 
 		//Set state
@@ -189,13 +141,14 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type ) 
 	clusterLocation = location;
 	destination = location;
 
+	//Set the destination to the cluster location
 	clusterLocation.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
 	clusterLocation.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
 	destination = clusterLocation;
 
 	//check if in bounds
 	if (clusterLocation.x <= 0 ) clusterLocation.x = 1;
-	if (clusterLocation.y >= 79 ) clusterLocation.y = 78;
+	if (clusterLocation.y >= mine->size.y ) clusterLocation.y = mine->size.y-1;
 
 	//Use recruiter position to determine whether to take it or not
 
