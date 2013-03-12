@@ -30,8 +30,8 @@ void BasicForagingState::doStep() {
 	major_state_counter++;
 
 	switch (state) {
-		case HOMING: homing(); break;
-		case BEACON_HOMING: beaconHoming(); break;
+		case HOMING: robot->setState(HOMING); robot->homingStep(); state = robot->getState(); break;
+		case BEACON_HOMING: robot->setState(BEACON_HOMING); robot->beaconHomingStep(); state = robot->getState(); break;
 		case LOCAL_CLUSTER_SEARCH: localClusterSearch(); break;
 		case LOADING: load(); break;
 		case UNLOADING: unload(); break;
@@ -83,16 +83,24 @@ void BasicForagingState::randomWalkStep() {
 }
 
 void BasicForagingState::makeMove() {
-	robot->mine->grid[robot->pos.x][robot->pos.y].type = EMPTY; //prev pos to empty 
-	robot->mine->grid[robot->pos.x + robot->dir.x][robot->pos.y + robot->dir.y].type = ROBOT; //current pos to robot
-	robot->mine->grid[robot->pos.x + robot->dir.x][robot->pos.y + robot->dir.y].index = robot->index;
-	robot->pos.x += robot->dir.x;
-	robot->pos.y += robot->dir.y;
+	if (robot->validMove()){
+		robot->mine->grid[robot->pos.x][robot->pos.y].type = EMPTY; //prev pos to empty 
+		robot->mine->grid[robot->pos.x + robot->dir.x][robot->pos.y + robot->dir.y].type = ROBOT; //current pos to robot
+		robot->mine->grid[robot->pos.x + robot->dir.x][robot->pos.y + robot->dir.y].index = robot->mine->grid[robot->pos.x][robot->pos.y].index; //set the index of mine position to that of current robot
+		
+		//Move robot in direction
+		robot->pos.x += robot->dir.x; 
+		robot->pos.y += robot->dir.y; 
 
-	robot->destination.x += robot->dir.x;
-	robot->destination.y += robot->dir.y;
 
-	robot->moved = true;
+		//Basic Forage behaves like the explore
+		robot->destination.x += robot->dir.x;
+		robot->destination.y += robot->dir.y;
+
+		robot->calculateDistanceFromSink();
+
+		robot->moved = true;
+	}
 }
 
 bool BasicForagingState::findItem() {
