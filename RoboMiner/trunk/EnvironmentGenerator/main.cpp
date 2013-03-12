@@ -337,7 +337,7 @@ vector<vector<int>> clusteredDistribution(int _num_objects, double _ratio_gold, 
 				p.y = t.gaussianDistribution(c.y,r);
 
 				//If an empty legitimate position then place gold item and increment itemCount
-				if ( p.x > 0 && p.x < _grid_size && p.y > 0 && p.y < _grid_size && grid[p.x][p.y] == EMPTY ) {
+				if ( p.x >= 0 && p.x < _grid_size && p.y >= 0 && p.y < _grid_size && grid[p.x][p.y] == EMPTY ) {
 					grid[p.x][p.y] = GOLD;
 					itemCount++;
 				} else {
