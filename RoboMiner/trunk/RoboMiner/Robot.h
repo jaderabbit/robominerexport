@@ -128,7 +128,9 @@ public:
 	double calculateClarity( Coord d );
 	double calculateDesirability( Coord d, double rank, double max_rank );
 	void chooseForagerDirection();
+	void chooseForagerLocatingDirection();
 	Coord directionToSink();
+	Coord directionToItem();
 
 	//OutputMessages
 	void trackerOutput();
