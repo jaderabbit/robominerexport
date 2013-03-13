@@ -12,11 +12,11 @@ AverageDistance::~AverageDistance(void)
 
 
 bool AverageDistance::isNext() {
-	return ( timer >= time ) ? false : true;
+	return ( timer > time ) ? false : true;
 }
 
 string AverageDistance::getNext() {
-	if (timer < time - 1 ) {
+	if (timer < time ) {
 		timer++;
 		return "";
 	} else {		

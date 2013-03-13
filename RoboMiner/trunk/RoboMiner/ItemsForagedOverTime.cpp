@@ -30,10 +30,15 @@ void ItemsForagedOverTime::takeMeasure( vector<Robot>& robots)
 }
 
 bool ItemsForagedOverTime::isNext() {
-	return ( timer >= total.size() ) ? false : true;
+	return ( timer > total.size() ) ? false : true;
 }
 
 string ItemsForagedOverTime::getNext() {
+	if (timer >= total.size() ) {
+		timer++;
+		return "";
+	}
+	
 	stringstream s1;
 	s1 << total[timer];
 	timer++;

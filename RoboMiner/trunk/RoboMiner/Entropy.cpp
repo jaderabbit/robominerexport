@@ -93,12 +93,12 @@ double Entropy::entropyPerRobot( Grid g, int uniquePositions )
 
 
 bool Entropy::isNext() {
-	return ( timer >= time ) ? false : true;
+	return ( timer > time ) ? false : true;
 }
 
 string Entropy::getNext() {
 
-	if (timer < time - 1 ) {
+	if (timer < time) {
 		timer++;
 		return "";
 	} else {		

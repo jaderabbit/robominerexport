@@ -8,6 +8,7 @@
 #include "Types.h"
 #include "BeeForage.h"
 #include "BasicForageGoldOnly.h"
+#include "BasicForage.h"
 
 //include STL
 #include <vector>

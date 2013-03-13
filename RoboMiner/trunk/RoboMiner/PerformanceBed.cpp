@@ -25,7 +25,7 @@ void PerformanceBed::attach( PerformanceMeasure* _pm ) {
 void PerformanceBed::finalize() {
 	//for each performance measure
 	for (int i(0); i < pm.size(); i++) {
-		pm[i]->finalize();;
+		pm[i]->finalize();
 	}	
 }
 

@@ -51,6 +51,9 @@ int Experiment::runAllSamplesStep() {
 
 		//save previous results
 		pbs.push_back(pb);
+	
+		//increment sample count
+		sampleCount++;
 
 		//reinitialize grid
 		cleanup();
@@ -59,16 +62,22 @@ int Experiment::runAllSamplesStep() {
 		//reset counter
 		cnt = 0;
 
-		//increment sample count
-		sampleCount++;
 	} else if ( sampleCount == samples ) {
 		//Save all experiments in the reader. 
 		resultWriter.setResults(pbs,desc,env_desc);
 		resultWriter.writeResultFile();
+
+		//To ensure termination
+		sampleCount++;
+
+		return true;
 	}
 
+	//This should not be run of sampleCount == samples
 	runStep();
-	return true;
+
+	//Return false to show that the experiment is not yet finished
+	return false;
 }
 
 int Experiment::getTotalIterations() {
