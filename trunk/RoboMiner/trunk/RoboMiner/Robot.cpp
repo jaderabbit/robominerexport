@@ -538,6 +538,7 @@ void  Robot::chooseForagerDirection() {
 }
 
 void  Robot::chooseForagerLocatingDirection() {
+
 	//choose initial direction to Cluster
 	dir = directionToItem();
 
@@ -550,6 +551,7 @@ void  Robot::chooseForagerLocatingDirection() {
 	for (int i=1; i < num; i++) {
 		assert( validPos(pos.x + FoV[i].x,pos.y + FoV[i].y) );
 		double des = calculateDesirability(FoV[i],i,num);
+
 		if ( des < min_desirability ) {
 			min_desirability_index = i;
 			min_desirability = des;

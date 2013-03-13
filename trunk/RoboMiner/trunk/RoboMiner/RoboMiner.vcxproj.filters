@@ -43,9 +43,6 @@
     <Filter Include="Experiment\Performance Measures">
       <UniqueIdentifier>{328a66c7-2742-477f-b940-299d460d9d40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Experiment\GoldOnlyBasicForage">
-      <UniqueIdentifier>{34db5c2d-6ebc-4093-9ef8-605b3f757152}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Results">
       <UniqueIdentifier>{59123268-d48e-4aa4-8b14-9211bb3398a0}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,12 @@
     </Filter>
     <Filter Include="Experiment\BeeForage Experiment">
       <UniqueIdentifier>{7b248b50-017f-4705-833d-52635b9e0fbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\BasicForage">
+      <UniqueIdentifier>{34db5c2d-6ebc-4093-9ef8-605b3f757152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\BasicForage\GoldOnly">
+      <UniqueIdentifier>{1eb1d6a6-2627-4036-b74d-584def973679}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -124,9 +127,6 @@
     <ClCompile Include="PerformanceBed.cpp">
       <Filter>Experiment\Performance Measures</Filter>
     </ClCompile>
-    <ClCompile Include="BasicForageGoldOnly.cpp">
-      <Filter>Experiment\GoldOnlyBasicForage</Filter>
-    </ClCompile>
     <ClCompile Include="BasicForagingState.cpp">
       <Filter>RobotState\UncollabForage</Filter>
     </ClCompile>
@@ -147,6 +147,12 @@
     </ClCompile>
     <ClCompile Include="BeeForage.cpp">
       <Filter>Experiment\BeeForage Experiment</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicForage.cpp">
+      <Filter>Experiment\BasicForage</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicForageGoldOnly.cpp">
+      <Filter>Experiment\BasicForage\GoldOnly</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +216,6 @@
     <ClInclude Include="PerformanceBed.h">
       <Filter>Experiment\Performance Measures</Filter>
     </ClInclude>
-    <ClInclude Include="BasicForageGoldOnly.h">
-      <Filter>Experiment\GoldOnlyBasicForage</Filter>
-    </ClInclude>
     <ClInclude Include="BasicForagingState.h">
       <Filter>RobotState\UncollabForage</Filter>
     </ClInclude>
@@ -236,6 +239,12 @@
     </ClInclude>
     <ClInclude Include="BeeForage.h">
       <Filter>Experiment\BeeForage Experiment</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicForage.h">
+      <Filter>Experiment\BasicForage</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicForageGoldOnly.h">
+      <Filter>Experiment\BasicForage\GoldOnly</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="AverageDistance.cpp" />
     <ClCompile Include="AverageTimeInState.cpp" />
+    <ClCompile Include="BasicForage.cpp" />
     <ClCompile Include="BasicForageGoldOnly.cpp" />
     <ClCompile Include="BasicForagingState.cpp" />
     <ClCompile Include="Clusterer.cpp" />
@@ -114,6 +115,7 @@
   <ItemGroup>
     <ClInclude Include="AverageDistance.h" />
     <ClInclude Include="AverageTimeInState.h" />
+    <ClInclude Include="BasicForage.h" />
     <ClInclude Include="BasicForageGoldOnly.h" />
     <ClInclude Include="BasicForagingState.h" />
     <ClInclude Include="BeeForage.h" />

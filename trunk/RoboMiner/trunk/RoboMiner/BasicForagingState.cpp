@@ -10,6 +10,7 @@ BasicForagingState::BasicForagingState(Robot* _robot) : RobotState(_robot)
 BasicForagingState::BasicForagingState(Robot* _robot, int _division, int max_search, int max_path) : RobotState(_robot), division(_division), MAX_PATH_DEVIATION(max_path), MAX_SEARCH_RANGE(max_search) {
 	setMinorState(EXPLORING);
 	major_state_counter = 0;
+	_robot->division= _division;
 }
 
 BasicForagingState::BasicForagingState(Robot* _robot, int _division) : RobotState(_robot), division(_division) {

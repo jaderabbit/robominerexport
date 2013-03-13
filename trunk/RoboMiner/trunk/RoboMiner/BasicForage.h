@@ -1,12 +1,12 @@
 #pragma once
 #include "Experiment.h"
-class BasicForageGoldOnly :
+class BasicForage :
 	public Experiment
 {
 public:
-	BasicForageGoldOnly(void);
-	BasicForageGoldOnly(EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc );
-	virtual ~BasicForageGoldOnly(void);
+	BasicForage(void);
+	BasicForage(EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc );
+	virtual ~BasicForage(void);
 
 	virtual int run();
 	virtual int runStep();

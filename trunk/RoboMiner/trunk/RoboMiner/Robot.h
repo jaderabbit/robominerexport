@@ -225,7 +225,7 @@ public:
 	const static int RADIUS_SIZE = 10;
 	const static int MAX_PATH_DEVIATION = 4;
 	const static int c = 3; //max cluster deviation
-	const static int MAX_SEARCH_RANGE = 4;
+	const static int MAX_SEARCH_RANGE = 5;
 	const static int MAX_STATE_COUNTER = 100;
 	const static int DoV = 5;
 
@@ -245,11 +245,7 @@ public:
 	Coord FoV[5]; //field of view
 	double lambda;
 
-	Coord dir_circle[8];
-
-
-
-	
+	Coord dir_circle[8];	
 };
 
 
