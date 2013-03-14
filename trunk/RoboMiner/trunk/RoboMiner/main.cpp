@@ -127,9 +127,9 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 		}
 		else
 		{		
-			//if ( t % 150 ==0 ) {
+			if ( t % 100 ==0 ) {
 				game.Update();
-			//}
+			}
 			t++;
 			game.RenderScene();
 		}

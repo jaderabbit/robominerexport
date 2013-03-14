@@ -1,6 +1,7 @@
 #pragma once
 #include "Tools.h"
 #include <vector>
+#include <deque>
 #include <fstream>
 using namespace std;
 
@@ -120,6 +121,7 @@ public:
 	bool walkingIntoAWall();
 	bool directionYToSink();
 
+
 	//Obstacle Avoidance Methods
 	void calculateDistanceFromSink();
 	double calculateDistanceFromSink(Coord new_dir);
@@ -131,6 +133,9 @@ public:
 	void chooseForagerLocatingDirection();
 	Coord directionToSink();
 	Coord directionToItem();
+	bool isStuck();
+	bool isEmptyVicinity();
+	void adaptLambda();
 
 	//OutputMessages
 	void trackerOutput();
@@ -228,6 +233,7 @@ public:
 	const static int MAX_SEARCH_RANGE = 5;
 	const static int MAX_STATE_COUNTER = 100;
 	const static int DoV = 5;
+	const static int STUCK_WINDOW_SIZE = 8;
 
 	//if robot has a tracker, then a file is saved with its total movements
 	bool tracker;
@@ -245,7 +251,10 @@ public:
 	Coord FoV[5]; //field of view
 	double lambda;
 
-	Coord dir_circle[8];	
+	//Obstacle avoidance
+	Coord dir_circle[8];
+	deque<Coord> stuck_window;
+	int one_stuck_mother_fucker;
 };
 
 
