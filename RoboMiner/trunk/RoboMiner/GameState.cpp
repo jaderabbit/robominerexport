@@ -41,7 +41,7 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	e.ratio_gold = 0.2;
 	e.type = "clustered";
 	e.sink_boundary = 5;
-	experiment = new BasicForage(d,e);
+	experiment = new BeeForage(d,e);
 
 	return true;
 }

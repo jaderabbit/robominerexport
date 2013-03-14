@@ -11,6 +11,8 @@
 
 Robot::Robot(void)
 {
+	one_stuck_mother_fucker = 0;
+
 	pos.x = 0; pos.y = 0;		//position
 	dir.x = 0; dir.y = 0;		//direction
 
@@ -82,8 +84,9 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	dir_circle[6].x = 0; dir_circle[6].y = -1;
 	dir_circle[7].x = 1; dir_circle[7].y = -1;
 
-	lambda = 0.2;
+	lambda = 0.5;
 
+	one_stuck_mother_fucker = 0;
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div,  string track_file){
@@ -259,6 +262,13 @@ void Robot::doStep() {
 		case (BASICFORAGE) : robotState->doStep(); break;
 		default: cout << "Erroneous ACTIVITY" << endl; break;
 	}
+
+	if ( moved == false && state == LOCATING  ) {
+		one_stuck_mother_fucker++;
+	} else {
+		one_stuck_mother_fucker = 0;
+	}
+
 }
 
 void Robot::chooseActivity() {
@@ -281,6 +291,7 @@ void Robot::resetPerformanceMeasures() {
 	typeForaged = -1;
 	moved = false;
 }
+
 bool Robot::validMove() {
 	if ( (pos.x + dir.x >= 0) && (pos.x + dir.x < mine->size.x)  && (pos.y + dir.y < mine->size.y) && (pos.y + dir.y >= 0)) {
 		if (mine->grid[pos.x + dir.x][pos.y + dir.y] == EMPTY ) {		
@@ -335,10 +346,11 @@ void Robot::makeMove() {
 			destination.y += dir.y;
 		}
 
+		//Calculate distance from sink. 
 		calculateDistanceFromSink();
 
 		moved = true;
-	}
+	} 
 }
 
 void Robot::calculateDistanceFromSink() {
@@ -416,7 +428,7 @@ int Robot::calculateFoV() {
 	}
 
 	//iteration using method through directions and add if available, until all spots are used or you run out
-	while ( curr < 5 && i < 8/2 ) {
+	while ( curr < 5 && i <= 8/2 ) {
 		left = ( left_start + i + 8 ) % 8;
 		right = ( right_start - i + 8 ) % 8;
 		
@@ -497,7 +509,8 @@ double Robot::calculateDesirability( Coord d , double rank , double max_rank ){
 	double delta=0;
 	//combine & return
 	if ( pos.x < mine->SINK_BOUNDARY )
-		delta = alpha;
+		delta = alpha; //Do not combine if within sink boundary as then there are no obstacles
+		//TODO: As soon as there exists no boundaries at any point, not only within the sink boundary, we have a problem.
 	else
 		delta = lambda*alpha + (1-lambda)*beta;
 
@@ -505,20 +518,14 @@ double Robot::calculateDesirability( Coord d , double rank , double max_rank ){
 }
 
 void  Robot::chooseForagerDirection() {
+	//Determine if stuck and empty vicinity. 
+	adaptLambda();
+
 	//choose initial direction
 	dir = directionToSink();
 
 	//calculate FoV
 	int num = calculateFoV();
-
-	//calc max distance
-	//double dist[5];
-	//double max_distance = 0;
-	//for (int i=1; i < num; i++) {
-	//	dist[i] = calculateDistanceFromSink(FoV[i]);
-	//}
-
-	//t.sortConcurrent(dist,FoV,num);
 
 	//calculate desirability
 	int min_desirability_index = 0;
@@ -537,7 +544,71 @@ void  Robot::chooseForagerDirection() {
 	//assert( validPos(pos.x + dir.x,pos.y + dir.y) );
 }
 
+bool Robot::isStuck() {
+	//Stuck 
+	if ( one_stuck_mother_fucker > 30 ) {
+		return true;
+	}
+
+	//push back previous direction and pop off oldest one
+	stuck_window.push_back(dir);
+
+	//Pop off oldest one if queue greater than the stuck window size. 
+	if (  stuck_window.size() >= STUCK_WINDOW_SIZE ) {
+		stuck_window.pop_front();
+	} else {
+		return false;
+	}
+
+	//add all coords
+	Coord total; total.x = 0; total.y = 0;
+	for (int i=0; i < stuck_window.size(); i++) {
+		//add the coordinates
+		total.x += stuck_window[i].x;
+		total.y += stuck_window[i].y;
+	}
+
+	//If all directions add up to  basically nothing then return true as robot has not really moved;
+	if ( (total.x >= -1 && total.x <= 1 ) && (total.y >= -1 && total.y <= 1)  ) {
+		return true;
+	}
+
+	//Return false
+	return false;
+}
+
+bool Robot::isEmptyVicinity() {
+	for (int i=0; i < 8; i++ ) {
+		if ( !isEmpty( pos.x + dir_circle[i].x, pos.y + dir_circle[i].y ) ) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void Robot::adaptLambda() {
+	bool stuck = isStuck();
+	bool empty =  isEmptyVicinity();
+
+	double lambdaDelta = 0.1;
+
+	if ( stuck && empty ) {
+		//decrement clarity thus increment lambda
+		if (lambda <= 2*lambda - lambdaDelta ) 
+			lambda += 2*lambdaDelta;
+	} else if ( stuck && !empty ) {
+		//increment clarity usage
+		if (lambda >=  lambdaDelta ) 
+			lambda -= lambdaDelta;
+	} else { //if not stuck, reset
+		lambda = 0.5;
+	}
+}
+
 void  Robot::chooseForagerLocatingDirection() {
+	//Determine if stuck and empty vicinity. 
+	adaptLambda();
 
 	//choose initial direction to Cluster
 	dir = directionToItem();
@@ -573,6 +644,7 @@ Coord  Robot::directionToItem() {
 	if (state_counter > MAX_STATE_COUNTER ) {
 		clusterLocation.x = t.gaussianDistributionDiscrete(clusterLocation.x, MAX_PATH_DEVIATION);
 		clusterLocation.y = t.gaussianDistributionDiscrete(clusterLocation.y, MAX_PATH_DEVIATION);
+		state_counter = MAX_STATE_COUNTER - state_counter;
 	}
 
 	//Calculate Direction to Items
