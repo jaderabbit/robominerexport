@@ -84,6 +84,7 @@ public:
 	void avoidObstacle();
 	vector<int> searchSink();
 	vector<int> radiusSearchSink();
+	double calculateDensity();
 
 	//CLUSTERING Methods
 	void unloadedStep();
@@ -113,14 +114,15 @@ public:
 	//void homingStep();
 
 	//Helper FORAGING Methods
-	void addRecruiterMessage( Coord location, Coord recruiterPos, int type ); 
+	void addRecruiterMessage( Coord location, Coord recruiterPos, int type, double location_density ); 
 	void localClusterSearchMovement();
 	bool findItem( int searchRange );
 	bool seeItem();
 	void reset();
 	bool walkingIntoAWall();
 	bool directionYToSink();
-
+	double calculateLocationDesirability( double distance, double density );
+	bool compareDesirability( double des1, double des2);
 
 	//Obstacle Avoidance Methods
 	void calculateDistanceFromSink();
@@ -255,6 +257,9 @@ public:
 	Coord dir_circle[8];
 	deque<Coord> stuck_window;
 	int one_stuck_mother_fucker;
+
+	//Density for Explroer recruitment
+	double density;
 };
 
 

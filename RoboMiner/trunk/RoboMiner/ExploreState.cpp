@@ -132,7 +132,7 @@ void ExploreState::recruitStep() {
 		//send message to waiting robots
 		for (int i=0; i < waitingRobots.size(); i++) {
 			if ( robot->mine->robots[waitingRobots[i]].state == WAITING) {
-				robot->mine->robots[waitingRobots[i]].addRecruiterMessage(robot->clusterLocation,robot->oldSinkPos,robot->division);
+				robot->mine->robots[waitingRobots[i]].addRecruiterMessage(robot->clusterLocation,robot->oldSinkPos,robot->division,robot->density);
 			}
 		}
 		minor_state_counter++;	

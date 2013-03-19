@@ -102,6 +102,8 @@ void Robot::loadStep() {
 
 		foraged = true;
 		typeForaged = division;
+
+		density = calculateDensity();
 	} else {
 		//do loading
 		state_counter = 0;
@@ -135,65 +137,81 @@ void Robot::unloadStep() {
 	}
 }
 
-void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type ) {
+void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, double location_density ) {
 
-	//Global Location of cluster. 
-	clusterLocation = location;
-	destination = location;
+	//First want to calculate desirability, then use that desirability to determine whether recruiter message is added or not
+	
+	//If the maximum distance from the sink is 0, then this robot has never been recruited.
+	if (max_distance_from_sink > 0 ) {
+		//Calculate distance of new cluster location. 
+		double dist_new = t.distance(pos.x,pos.y,location.x, location.y)/max_distance_from_sink; //TODO: Max distance from sink is initially zero, so that case should be catered for. 
 
-	//Set the destination to the cluster location
-	clusterLocation.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
-	clusterLocation.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
-	destination = clusterLocation;
+		//Calculate distance of old cluster location
+		double dist_old = t.distance(pos.x,pos.y,clusterLocation.x, clusterLocation.y)/max_distance_from_sink; //TODO: Max distance from sink is initially zero, so that case should be catered for. 
+	
+		//Calculate desirability
+		double desire_new = calculateLocationDesirability(dist_new,location_density);
+		double desire_old = calculateLocationDesirability(dist_old,density);
 
-	//check if in bounds
-	if (clusterLocation.x <= 0 ) clusterLocation.x = 1;
-	if (clusterLocation.y >= mine->size.y ) clusterLocation.y = mine->size.y-1;
+		//Compare desirability of new item zone to desirability of old one and choose based
+		//If desirability of new one is less than that of old one then replace. 
+		if (compareDesirability( dist_new, dist_old)) {
+			//Do same as in the else. 
+			
+			//Global Location of cluster. 
+			clusterLocation = location;
+			destination = location;
 
-	//Use recruiter position to determine whether to take it or not
+			//Set the destination to the cluster location
+			clusterLocation.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
+			clusterLocation.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
+			destination = clusterLocation;
 
-	//change state
-	state = LOCATING;
-	state_counter = 0;
+			//check if in bounds
+			if (clusterLocation.x <= 0 ) clusterLocation.x = 1;
+			if (clusterLocation.y >= mine->size.y ) clusterLocation.y = mine->size.y-1;
 
-	//robotState->setMinorState(LOCATING);
-	//test to see how often recruited
-	activity_counter++;
+			//Use recruiter position to determine whether to take it or not
 
-	//load
-	division = type;
+			//change state
+			state = LOCATING;
+			state_counter = 0;
 
-		/* //Move back to top
-	//Recruiter Message - use these later on
-	recruiterOriginalPos.x = recruiterPos.x;
-	recruiterOriginalPos.y = recruiterPos.y;
-	recruiterClusterLocation.x = location.x;
-	recruiterClusterLocation.y = location.y;
+			//robotState->setMinorState(LOCATING);
+			//test to see how often recruited
+			activity_counter++;
 
-	//Triangulate position - final direction = broadcasted location - (position of robot - position of recruiter)
-	location.x = location.x - ( pos.x - recruiterPos.x);
-	location.y = location.y - ( pos.y - recruiterPos.y);
+			//load
+			division = type;
+		}
+	} else {
 
-	//Add gaussian noise to deviate a bit - MAY OR MAY NOT WORK! EEK!
-	location.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
-	location.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
+		//Global Location of cluster. 
+		clusterLocation = location;
+		destination = location;
 
-	//Cluster
-	clusterLocation.x = location.x;
-	clusterLocation.y = location.y;
+		//Set the destination to the cluster location
+		clusterLocation.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
+		clusterLocation.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
+		destination = clusterLocation;
 
-	//Set home vector
-	homeVector.x = -location.x;
-	homeVector.y = -location.y;
+		//check if in bounds
+		if (clusterLocation.x <= 0 ) clusterLocation.x = 1;
+		if (clusterLocation.y >= mine->size.y ) clusterLocation.y = mine->size.y-1;
 
-	//set destination
-	destination.x = location.x;
-	destination.y = location.y;*/
+		//Use recruiter position to determine whether to take it or not
 
-	//location
+		//change state
+		state = LOCATING;
+		state_counter = 0;
 
+		//robotState->setMinorState(LOCATING);
+		//test to see how often recruited
+		activity_counter++;
 
-
+		//load
+		division = type;
+	}
 }
 
 void Robot::localClusterSearchMovement() {
@@ -209,12 +227,14 @@ void Robot::localClusterSearchMovement() {
 			state = HOMING;
 			state_counter = 0;
 
-			//update cluster location - more accurate and closer
-			clusterLocation.x = pos.x;
-			clusterLocation.y = pos.y;
+			//update cluster location - more accurate and closer. Utilize the direction of the item found in findItem method.
+			clusterLocation.x = pos.x+dir.x;
+			clusterLocation.y = pos.y+dir.y;
 
 			foraged = true;
 			typeForaged = load_type;
+			
+			density = calculateDensity();
 
 		//if item has been located but not loaded
 		} else if (found) {
@@ -238,6 +258,8 @@ bool Robot::findItem( int searchRange ) {
 					load_type = mine->grid[pos.x +i][pos.y+j].type;
 					loaded = true;
 					mine->grid[pos.x +i][pos.y+j].type = EMPTY;
+
+					dir.x = i; dir.y = j;
 					return true;
 				} else {
 					//else set direction to move towards it
@@ -247,4 +269,15 @@ bool Robot::findItem( int searchRange ) {
 		}
 	}
 	return false;
+}
+
+double Robot::calculateLocationDesirability( double distance, double density ) {
+	//for now balance them equally
+	int desirability_balance = 0.5;
+	//NOTE: Density if inverted as we are using minimum
+	return desirability_balance*distance + (1-desirability_balance)*(1-density);
+}
+
+bool Robot::compareDesirability( double des1, double des2) {
+	return ( des1 < des2 ); //TODO: Improve. Current setup is just for prototyping.
 }
