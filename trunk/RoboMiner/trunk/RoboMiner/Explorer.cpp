@@ -13,6 +13,35 @@ void Robot::explore() {
 	}
 }
 
+double Robot::calculateDensity() {
+	double total = 0;
+	double occupied = 0;
+
+	for (int i=0; i < 8; i++) {
+		Coord d = dir_circle[i];
+		Coord tmp_pos; tmp_pos.x = pos.x; tmp_pos.y = pos.y;
+
+		//Run through depth of view
+		for (int i=0; i < DoV; i++ ) {
+			//calc new pos
+			tmp_pos.x += d.x;
+			tmp_pos.y += d.y;
+
+			//Increment the total area
+			total+= 1.0;
+
+			//if not empty then increment occupied and break out of loop
+			if (!isEmpty(tmp_pos)) {
+				occupied+=1.0;
+				break;
+			}
+		}
+	}
+
+	//Calculate density and return
+	return occupied/total;
+}
+
 void Robot::avoidObstacle() {
 	Coord option[2];
 	if ( dir.x == 0 || dir.y == 0) {
@@ -55,6 +84,7 @@ void Robot::exploreStep() {
 
 	//look for item and pick up
 	if (findItem()) {
+		density = calculateDensity();
 		state = HOMING;
 		state_counter = 0;
 		activity_counter++;
@@ -87,7 +117,7 @@ void Robot::recruitStep() {
 		//send message to waiting robots
 		for (int i=0; i < waitingRobots.size(); i++) {
 			if ( (*robots)[waitingRobots[i]].state == WAITING ) {
-				(*robots)[waitingRobots[i]].addRecruiterMessage(clusterLocation,oldSinkPos,division);
+				(*robots)[waitingRobots[i]].addRecruiterMessage(clusterLocation,oldSinkPos,division,density);
 			}
 		}
 		state_counter++;	
