@@ -14,6 +14,8 @@ public:
 	Experiment(void);
 	Experiment( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc);
 	~Experiment(void);
+	void setExperimentParam( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc);
+	void runAllSamples();
 
 	virtual int initialize();
 	virtual int run() = 0;
