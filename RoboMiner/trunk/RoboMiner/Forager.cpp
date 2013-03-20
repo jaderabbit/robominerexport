@@ -138,7 +138,7 @@ void Robot::unloadStep() {
 }
 
 void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, double location_density ) {
-
+	//I BROKE SOMETHING!
 	//First want to calculate desirability, then use that desirability to determine whether recruiter message is added or not
 	
 	//If the maximum distance from the sink is 0, then this robot has never been recruited.
