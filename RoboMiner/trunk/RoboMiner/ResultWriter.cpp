@@ -1,11 +1,11 @@
 #include "ResultWriter.h"
 #include <sstream>
 #include <fstream>
+#include <iostream>
 
 ResultWriter::ResultWriter(void)
 {
 }
-
 
 ResultWriter::~ResultWriter(void)
 {
@@ -81,6 +81,8 @@ bool ResultWriter::writeResultFile() {
 
 	//Close file
 	f.close();
+
+	cout << "COMPLETE: " << fileName << endl;
 
 	//TODO: Change function to return result of opening the file
 	return true;
