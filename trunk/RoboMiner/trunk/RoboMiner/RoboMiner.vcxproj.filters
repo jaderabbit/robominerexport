@@ -154,6 +154,7 @@
     <ClCompile Include="BasicForageGoldOnly.cpp">
       <Filter>Experiment\BasicForage\GoldOnly</Filter>
     </ClCompile>
+    <ClCompile Include="ExperimentMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -246,5 +247,10 @@
     <ClInclude Include="BasicForageGoldOnly.h">
       <Filter>Experiment\BasicForage\GoldOnly</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GS.fx">
+      <Filter>Visualizer</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -92,6 +92,7 @@
     <ClCompile Include="DXRenderer.cpp" />
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="Experiment.cpp" />
+    <ClCompile Include="ExperimentMain.cpp" />
     <ClCompile Include="Explorer.cpp" />
     <ClCompile Include="ExploreState.cpp" />
     <ClCompile Include="Forager.cpp" />
@@ -149,6 +150,9 @@
     <ProjectReference Include="..\DataAnalysisTool\DataAnalysisTool.vcxproj">
       <Project>{975d75b0-96d2-405b-aada-f52355725e42}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GS.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
