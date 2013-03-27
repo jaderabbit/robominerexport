@@ -4,6 +4,8 @@
 #include <sstream>
 #include <fstream>
 #include <assert.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace std;
 using namespace RoboMiner;
@@ -285,6 +287,160 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 	return grid;
 }
 
+bool collision( vector<Coord> &centroids, vector<int> &radii, Coord c, int r ) {
+	int feather = 2;
+	for (int i=0; i < centroids.size(); i++) {
+		if ( c.x < (centroids[i].x + radii[i]-feather) &&  c.x > (centroids[i].x - radii[i] +feather) ) { 
+			if ( c.y < (centroids[i].y + radii[i]-feather) &&  c.y > (centroids[i].y - radii[i] +feather) ) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+int calculateAvailablePosition( vector<vector<int>>& grid, Coord centroid, int radius ) {
+	//Calculate start position;
+	int i = ( centroid.x - radius < 0 ) ? 0 : centroid.x - radius;
+	int j = ( centroid.y - radius < 0 ) ? 0 : centroid.y - radius;
+
+	//Calculate end position
+	int i_stop = ( centroid.x + radius >= grid.size() ) ? grid.size() : centroid.x + radius;
+	int j_stop = ( centroid.y + radius >= grid.size() ) ? grid.size() : centroid.y + radius;
+
+	int avail_positions = 0;
+	for ( ; i <i_stop; i++) {
+		for (; j < j_stop; j++) {
+			//Increment if empty;
+			if ( grid[i][j] == EMPTY) {
+				avail_positions++;
+			}
+		}
+	}
+
+	return avail_positions;
+}
+
+void alternateClusteredPerType(vector<vector<int>> &grid, vector<Coord> &centroids, vector<int> &radii, int _grid_size, double S_gold, int &gold_count,Tools& t, int TYPE ) {
+	//Generate centroid position
+	Coord c; 
+	c.x = t.random(0, _grid_size);
+	c.y = t.random(0, _grid_size);
+
+	//Generate the number of objects for the cluster
+	int N_gold = t.random(floor(0.25*S_gold),floor(2*S_gold));
+
+	//Limit
+	if (N_gold > gold_count ) {
+		N_gold = gold_count;
+	}
+
+	//Calculate radius size
+	int r = sqrt(N_gold*1.0/(M_PI)) + 1;
+
+	//Validation & regeneration
+	bool ok = false;
+	while (!ok) {
+		//Validation check
+		if (collision(centroids,radii,c,r)) {
+			centroids.push_back(c);
+			radii.push_back(r);
+			ok = true;
+		} else {
+			if ( t.randomClosed() < 0.5 ) {
+				//Regenerate coordinates
+				c.x = t.random(0, _grid_size);
+				c.y = t.random(0, _grid_size);
+			} else {
+				//Regenerate a smaller radius
+				//Generate the number of objects for the cluster
+				N_gold = t.random(floor(0.25*S_gold),N_gold);
+
+				//Calculate radius size
+				r = sqrt(N_gold*1.0/(M_PI));
+			}	
+		}
+	}
+
+	//Generate all items to fall into cluster
+	for (int i=0; i < N_gold; i++) {
+		bool ok = false;
+		int notokay_counter = 0;
+		while (!ok) {
+			//Generate new position.
+			//Add gaussian noise to centroid to get point p
+			Coord p;
+			p.x = t.gaussianDistribution(c.x,r);
+			p.y = t.gaussianDistribution(c.y,r);
+
+			//If an empty legitimate position then place gold item and increment itemCount
+			if ( p.x >= 0 && p.x < _grid_size && p.y >= 0 && p.y < _grid_size && grid[p.x][p.y] == EMPTY ) {
+				grid[p.x][p.y] = TYPE;
+				ok = true;
+				notokay_counter = 0;
+			} else if (p.x >= 0 && p.x < _grid_size && p.y >= 0 && p.y < _grid_size) {
+				//Calculate available spots
+				//If available spots > 10, continue, else increase radius size. 
+				notokay_counter++;
+				if (notokay_counter > 5 ) {
+					if (calculateAvailablePosition(grid,c,r) < 10) {
+						if (r < _grid_size-1)
+							r += 1;
+						notokay_counter = 0;
+					}
+				}
+			}
+		}
+	}
+
+	//Update the amount of gold still to be generated.
+	gold_count -= N_gold;
+}
+
+vector<vector<int>> alternateClusteredDistribution(int _num_objects, double _ratio_gold, int _grid_size, Tools &t, int SINK_BOUNDARY) {
+	//initialize grid of specified grid size
+	vector<vector<int>> grid = initializeGrid(_grid_size);
+	vector<Coord> centroids;
+	vector<int> radii;
+
+	//Generate random number of centroids
+	int C = t.random(3,10);
+
+	//Generate number of centroids per ratio.
+	int C_gold = C*_ratio_gold;
+	int C_waste = C - C_gold;
+
+	//Generate number of objects for each centroid
+	int O_gold = _num_objects*_ratio_gold;
+	int O_waste = _num_objects - O_gold;
+
+	//Calculate ratio. Average number of items to be in each cluster
+	double S_gold;
+	if ( C_gold > 0 )
+		S_gold = O_gold/C_gold;
+
+	double S_waste;
+	if ( C_waste > 0 )
+		S_waste= O_waste/C_waste;
+
+	//Gold counters
+	int gold_count = O_gold; 
+	int gold_cluster_count = 0;
+	
+	//Gold loop
+	for (int i=0; i < C_gold && gold_count > 0; i++ ) {
+		alternateClusteredPerType(grid,centroids,radii,_grid_size,S_gold, gold_count,t,GOLD);
+	}
+
+	//Waste loop
+	int waste_count = O_waste;
+	for (int i=0; i < C_waste && waste_count > 0; i++ ) {
+		alternateClusteredPerType(grid,centroids,radii,_grid_size,S_waste, waste_count,t,WASTE);
+	}
+
+	return grid;
+}
+
 vector<vector<int>> clusteredDistribution(int _num_objects, double _ratio_gold, int _grid_size, Tools &t, int SINK_BOUNDARY) {
 	//initialize grid of specified grid size
 	vector<vector<int>> grid = initializeGrid(_grid_size);
@@ -485,7 +641,10 @@ void generateClusteredEnvironments() {
 					string name = createFileName("clustered",percentage_objects[j],gold_ratios[k],grid_sizes[i],l);
 
 					//create environment
-					vector<vector<int>> grid = clusteredDistribution((0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],t,sink_boundary);
+					vector<vector<int>> grid = alternateClusteredDistribution((0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],t,sink_boundary);
+
+					//create environment
+					//vector<vector<int>> grid = clusteredDistribution((0.01)*percentage_objects[j]*grid_sizes[i]*grid_sizes[i],gold_ratios[k],grid_sizes[i],t,sink_boundary);
 
 					//output file
 					outputFile( name, grid );
