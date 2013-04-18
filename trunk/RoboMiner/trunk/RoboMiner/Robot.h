@@ -141,6 +141,7 @@ public:
 	bool isStuck();
 	bool isEmptyVicinity();
 	void adaptLambda();
+	int robotInVicinity();
 
 	//OutputMessages
 	void trackerOutput();
@@ -239,6 +240,7 @@ public:
 	const static int MAX_STATE_COUNTER = 100;
 	const static int DoV = 5;
 	const static int STUCK_WINDOW_SIZE = 8;
+	const static int RANGE = 5;
 
 	//if robot has a tracker, then a file is saved with its total movements
 	bool tracker;

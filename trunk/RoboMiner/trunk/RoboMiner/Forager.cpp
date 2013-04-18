@@ -33,7 +33,7 @@ void Robot::waitStep() {
 }
 
 void Robot::avoidSink() {
-	if (!isEmptyVicinity()) {
+	if (robotInVicinity() > 1 && state_counter < 3) {
 
 		//Calculate most clear route. 
 		double min_c = numeric_limits<double>::max();
@@ -48,14 +48,17 @@ void Robot::avoidSink() {
 				}
 			}
 		}
+
+		dir = dir_circle[min_dir];
+		makeMove();
 	} else {
 		state_counter = 0;
 		state = WAITING;
 		reset();
 	}
 
-	//Choose to move in the most clear route. 
-
+	//Increment state counter
+	state_counter++;
 
 
 }
@@ -163,7 +166,7 @@ void Robot::unloadStep() {
 	}
 	else {
 		state_counter = 0;
-		state = WAITING;
+		state = SINK_AVOIDANCE;
 		reset();
 		//cout << "cluster depleted, returned home empty" << endl;
 	}
@@ -187,7 +190,7 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, d
 
 		//Compare desirability of new item zone to desirability of old one and choose based
 		//If desirability of new one is less than that of old one then replace. 
-		if (compareDesirability( dist_new, dist_old)) {
+		//if (compareDesirability( dist_new, dist_old)) {
 			//Do same as in the else. 
 			
 			//Global Location of cluster. 
@@ -215,7 +218,7 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, d
 
 			//load
 			division = type;
-		}
+		//}
 	} else {
 
 		//Global Location of cluster. 

@@ -199,8 +199,11 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 	//Deviation specifies gaussian deviation of items around original line position
 	int deviation = t.random(2,5);
 
+	//Stuck Count
+	int stuck = 0;
+
 	//If NOT undefined slope
-	if ( k > 0 ) {
+	if ( k > 2 ) {
 		//Calculate M
 		double m = (1.0*(a.y - b.y ))/(1.0*(a.x - b.x ));
 
@@ -232,8 +235,17 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 					//check if new position is empty. If so place
 					if (grid[x_new][y_new] == EMPTY )  {
 							grid[x_new][y_new] = GOLD;
-							empty = true;							
-					} 
+							empty = true;		
+					} else {
+						//maybe this will work
+						stuck++;
+						if ( stuck > 500 ) {
+							if (deviation < _grid_size/2 ) {
+								deviation++;
+							}
+							stuck = 0;
+						}
+					}
 				}
 				count++;
 			} //while
@@ -261,7 +273,16 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 					if (grid[x_new][y_new] == EMPTY )  {
 							grid[x_new][y_new] = GOLD;
 							empty = true;							
-					} 
+					}  else {
+						//maybe this will work
+						stuck++;
+						if ( stuck > 500 ) {
+							if (deviation < _grid_size/2 ) {
+								deviation++;
+							}
+							stuck = 0;
+						}
+					}
 				}
 			}
 		}
@@ -273,14 +294,25 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 		while (!empty) {
 
 			//generate random position.
-			int x_new = t.random(SINK_BOUNDARY,_grid_size-1);
+			int x_new = t.random(0,_grid_size-1);
 			int y_new = t.random(0,_grid_size-1);
 
 			//check if new position is empty. If so place
 			if (grid[x_new][y_new] == EMPTY )  {
 					grid[x_new][y_new] = WASTE;
 					empty = true;
-			} 
+			}  else {
+				//maybe this will work
+				stuck++;
+				if ( stuck > 500 ) {
+					deviation++;
+					stuck = 0;
+
+					if (deviation < _grid_size ) {
+						deviation++;
+					}
+				}
+			}
 		}
 	}
 
@@ -388,6 +420,7 @@ void alternateClusteredPerType(vector<vector<int>> &grid, vector<Coord> &centroi
 							r += 1;
 						notokay_counter = 0;
 					}
+
 				}
 			}
 		}
@@ -656,8 +689,8 @@ void generateClusteredEnvironments() {
 }
 
 int main() {
-	generateClusteredEnvironments();
-	generateUniformDistributionEnvironments();
+	//generateClusteredEnvironments();
+	//generateUniformDistributionEnvironments();
 	generateVeinEnvironments();
 	generateGaussianEnvironments();
 }
