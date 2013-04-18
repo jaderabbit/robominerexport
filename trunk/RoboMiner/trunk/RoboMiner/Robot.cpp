@@ -464,6 +464,14 @@ int Robot::calculateFoV() {
 	return curr;
 }
 
+bool Robot::validMove( int dx, int dy ) {
+	return validPos( pos.x + dx, pos.y + dy );
+}
+
+bool Robot::validMove( Coord p ) {
+	return validPos( pos.x + p.x, pos.y + p.y );
+}
+
 double Robot::calculateClarity(Coord d) {
 	double u_max = DoV;
 	double u =0;
