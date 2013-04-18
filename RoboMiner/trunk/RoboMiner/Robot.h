@@ -17,7 +17,7 @@ enum { CLUSTER, FORAGE, EXPLORE, BASICFORAGE };
 enum { HOMING, BEACON_HOMING, CHOOSE_ACTIVITY, 			//General States
 	   RECRUITING, EXPLORING,					//Explorer States
 	   WAITING, LOCATING, LOCAL_CLUSTER_SEARCH, LOADING, UNLOADING,	//Forager States
-	   UNLOADED, LOADED						//Ant Cemetary States
+	   UNLOADED, LOADED, SINK_AVOIDANCE						//Ant Cemetary States
 	  };
 
 struct Coord {
@@ -102,6 +102,8 @@ public:
 	void chooseMaxPathLength();
 	void makeMove();
 	bool validMove();
+	bool validMove( int dx, int dy );
+	bool validMove( Coord p );
 	bool validPos(int x, int y);
 	bool isEmpty(int dirx, int diry );
 	bool isEmpty(Coord p);
@@ -111,6 +113,7 @@ public:
 	void locateStep();
 	void loadStep();
 	void unloadStep();
+	void avoidSink();
 	//void homingStep();
 
 	//Helper FORAGING Methods

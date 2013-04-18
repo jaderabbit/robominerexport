@@ -4,6 +4,7 @@
 #include <assert.h>
 #include "RobotState.h"
 #include "PerformanceBed.h"
+#include <limits>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ void Robot::forage() {
 		case LOCAL_CLUSTER_SEARCH: localClusterSearchMovement(); break;
 		case LOADING: loadStep(); break;
 		case UNLOADING: unloadStep(); break;
+		case SINK_AVOIDANCE: avoidSink(); break;
 		case CHOOSE_ACTIVITY: chooseActivity(); break;
 		default: cout << "Erroneous state for Foraging" << endl; break;
 	}
@@ -28,6 +30,34 @@ void Robot::waitStep() {
 		oldSinkPos.y = pos.y;
 	}
 	state_counter++;
+}
+
+void Robot::avoidSink() {
+	if (!isEmptyVicinity()) {
+
+		//Calculate most clear route. 
+		double min_c = numeric_limits<double>::max();
+		int min_dir = -1;
+
+		for (int i=0; i < 8; i++) {
+			if ( validMove(dir_circle[i]) ){
+				double c = calculateClarity(dir_circle[i]);
+				if (  c < min_c ) {
+					min_c = c;
+					min_dir = i;
+				}
+			}
+		}
+	} else {
+		state_counter = 0;
+		state = WAITING;
+		reset();
+	}
+
+	//Choose to move in the most clear route. 
+
+
+
 }
 
 void Robot::locateStep() {
@@ -127,6 +157,8 @@ void Robot::unloadStep() {
 		//Set state
 		state = LOCATING;
 		state_counter = 0;
+
+		//Avoid other 
 
 	}
 	else {
