@@ -587,12 +587,23 @@ bool Robot::isStuck() {
 
 bool Robot::isEmptyVicinity() {
 	for (int i=0; i < 8; i++ ) {
-		if ( !isEmpty( pos.x + dir_circle[i].x, pos.y + dir_circle[i].y ) ) {
+		if ( !isEmpty(dir_circle[i].x, dir_circle[i].y ) ) {
 			return false;
 		}
 	}
 
 	return true;
+}
+
+int Robot::robotInVicinity() {
+	int k=0;
+	for (int i=0; i < 8; i++ ) {
+		if ( !isEmpty(dir_circle[i].x, dir_circle[i].y ) ) {
+			k++;
+		}
+	}
+
+	return k;
 }
 
 void Robot::adaptLambda() {

@@ -132,11 +132,11 @@ vector<int> Robot::searchSink() {
 	vector<int> waiting;
 
 	for (int i=0; i < mine->size.y; i++) {
-		if ( mine->grid[1][i] == ROBOT ) {
-			waiting.push_back(mine->grid[1][i].index);
+		for (int j=0; j < RANGE; j++) {
+			if ( mine->grid[j][i] == ROBOT ) {
+				waiting.push_back(mine->grid[j][i].index);
 		}
-		if ( mine->grid[2][i] == ROBOT ) {
-			waiting.push_back(mine->grid[2][i].index);
+
 		}
 	}
 
