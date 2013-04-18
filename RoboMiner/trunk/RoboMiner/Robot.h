@@ -240,7 +240,7 @@ public:
 	const static int MAX_STATE_COUNTER = 100;
 	const static int DoV = 5;
 	const static int STUCK_WINDOW_SIZE = 8;
-	const static int RANGE = 5;
+	const static int RANGE = 6;
 
 	//if robot has a tracker, then a file is saved with its total movements
 	bool tracker;
@@ -265,6 +265,9 @@ public:
 
 	//Density for Explroer recruitment
 	double density;
+
+	//Position that previous item was found
+	Coord previous_item_pos;
 };
 
 
