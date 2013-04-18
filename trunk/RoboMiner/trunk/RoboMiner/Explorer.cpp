@@ -83,12 +83,13 @@ void Robot::exploreStep() {
 	/*part of random walk*/
 
 	//look for item and pick up
+	//Why is explorer picking stuff up?!?
 	if (findItem()) {
 		density = calculateDensity();
 		state = HOMING;
 		state_counter = 0;
 		activity_counter++;
-		clusterLocation = pos;
+		clusterLocation = previous_item_pos;
 	} 
 
 }
@@ -101,7 +102,11 @@ bool Robot::findItem() {
 				if (activity == FORAGE) {
 					loaded = true;
 					mine->grid[pos.x +i][pos.y+j].type = EMPTY;
+
+					dir.x = i; dir.y = j;
 				}
+				previous_item_pos.x = pos.x +i;
+				previous_item_pos.y = pos.y +j;
 				return true;
 			}
 		}

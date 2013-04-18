@@ -614,11 +614,11 @@ void Robot::adaptLambda() {
 
 	if ( stuck && empty ) {
 		//decrement clarity thus increment lambda
-		if (lambda <= 2*lambda - lambdaDelta ) 
-			lambda += 2*lambdaDelta;
+		if (lambda <= lambda - lambdaDelta ) 
+			lambda += lambdaDelta;
 	} else if ( stuck && !empty ) {
 		//increment clarity usage
-		if (lambda >=  lambdaDelta ) 
+		if (lambda +lambdaDelta >=  lambdaDelta ) 
 			lambda -= lambdaDelta;
 	} else { //if not stuck, reset
 		lambda = 0.5;

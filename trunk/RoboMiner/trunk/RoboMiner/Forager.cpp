@@ -130,8 +130,8 @@ void Robot::loadStep() {
 		state = HOMING;
 
 		//update cluster location
-		clusterLocation.x = pos.x;
-		clusterLocation.y = pos.y;
+		clusterLocation.x = previous_item_pos.x;
+		clusterLocation.y = previous_item_pos.y;
 
 		foraged = true;
 		typeForaged = division;
@@ -295,6 +295,9 @@ bool Robot::findItem( int searchRange ) {
 					mine->grid[pos.x +i][pos.y+j].type = EMPTY;
 
 					dir.x = i; dir.y = j;
+					previous_item_pos.x = pos.x +i;
+					previous_item_pos.y = pos.y +j;
+
 					return true;
 				} else {
 					//else set direction to move towards it
@@ -310,9 +313,12 @@ double Robot::calculateLocationDesirability( double distance, double density ) {
 	//for now balance them equally
 	int desirability_balance = 0.5;
 	//NOTE: Density if inverted as we are using minimum
-	return desirability_balance*distance + (1-desirability_balance)*(1-density);
+	//return desirability_balance*distance + (1-desirability_balance)*(1-density);
+	return density;
 }
 
 bool Robot::compareDesirability( double des1, double des2) {
 	return ( des1 < des2 ); //TODO: Improve. Current setup is just for prototyping.
+	//it works, but not THAT well. 
+
 }
