@@ -78,19 +78,23 @@ int Experiment::runAllSamplesStep() {
 		//reset counter
 		cnt = 0;
 
-	} else if ( sampleCount == samples ) {
+	}
+		
+	if ( sampleCount == samples ) {
 		//Save all experiments in the reader. 
 		resultWriter.setResults(pbs,desc,env_desc);
 		resultWriter.writeResultFile();
 
-		//To ensure termination
+		//To ensure termination. 
+		//Yes, but
 		sampleCount++;
+		sampleCount=0;
 
 		return true;
-	}
-
+	} else
+		runStep();
 	//This should not be run of sampleCount == samples
-	runStep();
+	
 
 	//Return false to show that the experiment is not yet finished
 	return false;

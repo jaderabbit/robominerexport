@@ -234,7 +234,7 @@ public:
 	const static int MAX_RECRUITMENT_REPS = 30;
 	const static int MAX_LOADING_REPS = 30;
 	const static int RADIUS_SIZE = 10;
-	const static int MAX_PATH_DEVIATION = 4;
+	const static int MAX_PATH_DEVIATION = 8;
 	const static int c = 3; //max cluster deviation
 	const static int MAX_SEARCH_RANGE = 5;
 	const static int MAX_STATE_COUNTER = 100;

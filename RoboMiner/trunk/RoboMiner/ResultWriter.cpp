@@ -27,8 +27,8 @@ string ResultWriter::generateFileName( EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DE
 		<< "_size_" << _env_desc.grid_size << "_obj_" << _env_desc.num_objects << "_ratio_" << _env_desc.ratio_gold;
 
 	//Experiment
-	name << "_rob_"<< _exp_desc.number_objects << "_div_" << _exp_desc.gold_waste_division_ratio 
-		<<"_iter_" << _exp_desc.total_iterations << "_mpath_" << _exp_desc.total_iterations << ".csv";
+	name << "_rob_"<< _exp_desc.number_robots << "_div_" << _exp_desc.gold_waste_division_ratio 
+		<<"_iter_" << _exp_desc.total_iterations << "_mpath_" << _exp_desc.max_path << ".csv";
 	
 	return name.str();
 }
