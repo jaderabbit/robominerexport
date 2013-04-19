@@ -27,7 +27,7 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	EXPERIMENT_DESC d;
 	d.width = 50; d.height = 50;
 	d.number_objects = 700;
-	d.number_robots = 20;
+	d.number_robots = 10;
 	d.gold_waste_ratio = 0.4;
 	d.forager_explorer_ratio = 0.7;
 	d.total_iterations = 4000;

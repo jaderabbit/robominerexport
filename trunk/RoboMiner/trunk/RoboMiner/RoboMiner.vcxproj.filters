@@ -158,7 +158,9 @@
       <Filter>Experiment\BasicForage\GoldOnly</Filter>
     </ClCompile>
     <ClCompile Include="ExperimentMain.cpp" />
-    <ClCompile Include="DesertAntForage.cpp" />
+    <ClCompile Include="DesertAntForage.cpp">
+      <Filter>Experiment\DesertAntForage Experiment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -251,7 +253,9 @@
     <ClInclude Include="BasicForageGoldOnly.h">
       <Filter>Experiment\BasicForage\GoldOnly</Filter>
     </ClInclude>
-    <ClInclude Include="DesertAntForage.h" />
+    <ClInclude Include="DesertAntForage.h">
+      <Filter>Experiment\DesertAntForage Experiment</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="GS.fx">
