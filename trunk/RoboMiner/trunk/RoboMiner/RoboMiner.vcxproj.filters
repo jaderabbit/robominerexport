@@ -61,6 +61,9 @@
     <Filter Include="Experiment\BasicForage\GoldOnly">
       <UniqueIdentifier>{1eb1d6a6-2627-4036-b74d-584def973679}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Experiment\DesertAntForage Experiment">
+      <UniqueIdentifier>{529b07b3-6868-48db-b02b-edd1a8bcabc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Forager.cpp">
@@ -155,6 +158,7 @@
       <Filter>Experiment\BasicForage\GoldOnly</Filter>
     </ClCompile>
     <ClCompile Include="ExperimentMain.cpp" />
+    <ClCompile Include="DesertAntForage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -247,6 +251,7 @@
     <ClInclude Include="BasicForageGoldOnly.h">
       <Filter>Experiment\BasicForage\GoldOnly</Filter>
     </ClInclude>
+    <ClInclude Include="DesertAntForage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GS.fx">

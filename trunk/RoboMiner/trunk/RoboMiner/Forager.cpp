@@ -198,8 +198,8 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, d
 			destination = location;
 
 			//Set the destination to the cluster location
-			clusterLocation.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
-			clusterLocation.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
+			clusterLocation.x = t.gaussianDistributionDiscrete(location.x,(1-location_density)*MAX_PATH_DEVIATION);
+			clusterLocation.y = t.gaussianDistributionDiscrete(location.y,(1-location_density)*MAX_PATH_DEVIATION);
 			destination = clusterLocation;
 
 			//check if in bounds
@@ -275,6 +275,13 @@ void Robot::localClusterSearchMovement() {
 		} else if (found) {
 			makeMove();
 			//state_counter--;
+		} else {
+			//choose random direction and move
+			int d = t.random(0,7);
+			dir = dir_circle[d];
+
+			makeMove();
+
 		}
 
 	} else {
