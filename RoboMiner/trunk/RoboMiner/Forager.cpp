@@ -276,12 +276,9 @@ void Robot::localClusterSearchMovement() {
 			makeMove();
 			//state_counter--;
 		} else {
+			max_path = 5;
 			//choose random direction and move
-			int d = t.random(0,7);
-			dir = dir_circle[d];
-
-			makeMove();
-
+			randomWalkStep();
 		}
 
 	} else {
