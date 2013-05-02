@@ -31,6 +31,10 @@ int Experiment::initialize() {
 
 	//Initialize Performance measures
 	pb = new PerformanceBed(robots);
+
+	for (int i=0; i < robots.size(); i++) {
+		robots[i].setPerformanceBed(pb);
+	}
 	initializePerformanceMeasures();
 
 	cnt = 0;

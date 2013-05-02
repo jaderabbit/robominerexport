@@ -8,6 +8,7 @@
 #include "PerformanceBed.h"
 #include "BasicForagingState.h"
 #include <assert.h>
+#include "DesertAnt.h"
 
 Robot::Robot(void)
 {
@@ -85,6 +86,7 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	dir_circle[7].x = 1; dir_circle[7].y = -1;
 
 	lambda = 0.5;
+	path_count = 0;
 
 	one_stuck_mother_fucker = 0;
 }
@@ -260,6 +262,7 @@ void Robot::doStep() {
 		case (FORAGE) : forage(); break;//if (!robotState) robotState = new ForageState(this); robotState->doStep(); break;
 		case (CLUSTER) : cluster();break;// if (!robotState) robotState = new ClusterState(this); robotState->doStep(); break;
 		case (BASICFORAGE) : robotState->doStep(); break;
+		case (DESERTANT) : robotState->doStep(); break;
 		default: cout << "Erroneous ACTIVITY" << endl; break;
 	}
 
@@ -333,11 +336,11 @@ void Robot::makeMove() {
 		pos.x += dir.x; 
 		pos.y += dir.y; 
 
-		if (activity == EXPLORE) {
+		if (activity == EXPLORE || (activity == DESERTANT && state == EXPLORING)) {
 			//TODO: Possibly irrelevant line of code. Optimize
 			destination.x += dir.x;
 			destination.y += dir.y;
-		} else if (activity == FORAGE) {
+		} else if (activity == FORAGE || (activity == DESERTANT && state == LOCATING) ) {
 			destination.x -= dir.x;
 			destination.y -= dir.y;
 		} else if (activity == BASICFORAGE ) {
@@ -694,7 +697,7 @@ void Robot::homingStep() {
 		//set home as the destination
 		destination.x = oldSinkPos.x;
 		destination.y = oldSinkPos.y;
-	} else if (state_counter == 0 && activity == FORAGE) {
+	} else if (state_counter == 0 && activity == FORAGE || activity == DESERTANT) {
 		//set the location of the cluster
 		clusterLocation.x =  pos.x;
 		clusterLocation.y =  pos.y;
@@ -730,7 +733,7 @@ void Robot::homingStep() {
 			if (activity == EXPLORE) {
 				state = RECRUITING; //has to be home at this point
 			}
-			else if (activity == FORAGE) {
+			else if (activity == FORAGE || activity == DESERTANT) {
 				state = UNLOADING;
 			} else if (activity == BASICFORAGE) {
 				state = UNLOADING;
@@ -750,7 +753,7 @@ void Robot::beaconHomingStep() {
 
 		if (activity == EXPLORE ) {
 			state = RECRUITING;
-		} else if (activity == FORAGE) {
+		} else if (activity == FORAGE || activity == DESERTANT) {
 			state = UNLOADING;
 		} else if ( activity == BASICFORAGE) {
 			state = UNLOADING;

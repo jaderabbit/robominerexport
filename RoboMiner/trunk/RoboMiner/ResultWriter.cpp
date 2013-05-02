@@ -74,13 +74,13 @@ bool ResultWriter::writeResultFile() {
 				string tmp = samples[j]->pm[i]->getNext(); 
 				f << tmp << ",";
 			}
+
 		}
 		f << endl;
 		it++;
 	}
 
-	//Close file
-	f.close();
+	//Close file	f.close();
 
 	cout << "COMPLETE: " << fileName << endl;
 
