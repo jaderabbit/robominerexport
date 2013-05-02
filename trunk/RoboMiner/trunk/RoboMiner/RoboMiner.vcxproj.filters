@@ -64,6 +64,9 @@
     <Filter Include="Experiment\DesertAntForage Experiment">
       <UniqueIdentifier>{529b07b3-6868-48db-b02b-edd1a8bcabc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RobotState\DesertAnt">
+      <UniqueIdentifier>{13a076a9-a71c-44f1-8c56-8cb5566dc812}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Forager.cpp">
@@ -161,6 +164,9 @@
     <ClCompile Include="DesertAntForage.cpp">
       <Filter>Experiment\DesertAntForage Experiment</Filter>
     </ClCompile>
+    <ClCompile Include="DesertAnt.cpp">
+      <Filter>RobotState\DesertAnt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -255,6 +261,9 @@
     </ClInclude>
     <ClInclude Include="DesertAntForage.h">
       <Filter>Experiment\DesertAntForage Experiment</Filter>
+    </ClInclude>
+    <ClInclude Include="DesertAnt.h">
+      <Filter>RobotState\DesertAnt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
