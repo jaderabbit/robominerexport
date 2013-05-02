@@ -99,7 +99,7 @@ bool Robot::findItem() {
 		for (int j=-1; j <= 1; j++) {
 			if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == division) {
 				load_type = mine->grid[pos.x +i][pos.y+j].type;
-				if (activity == FORAGE) {
+				if (activity == FORAGE || activity == DESERTANT) {
 					loaded = true;
 					mine->grid[pos.x +i][pos.y+j].type = EMPTY;
 

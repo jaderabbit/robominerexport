@@ -283,7 +283,11 @@ void Robot::localClusterSearchMovement() {
 
 	} else {
 		//else cluster is depleted and just go home unloaded 
-		state = HOMING;
+		if (activity == FORAGE) {
+			state = HOMING;
+		} else if (activity == DESERTANT) {
+			state = EXPLORING;
+		}
 		state_counter = 0;
 	}
 }
