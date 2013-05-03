@@ -2,11 +2,15 @@
 #include "BasicForageGoldOnly.h"
 #include "BasicForage.h"
 #include "Experiment.h"
-
+#include <process.h>
+#include <stdio.h>
 #include <vector>
 
 using namespace std;
 
+void beginThread( void* pParams ) {
+	int k=0;
+}
 
 bool runExperiment( Experiment* e, EXPERIMENT_DESC exp_desc, ENVIRONMENT_DESC env_desc ) {
 	//Set the experiment parameters
@@ -72,6 +76,7 @@ int main() {
 	env_desc.sink_boundary = 5;			//Sink boundary
 	
 	//-------------Giant Experiment Loop--------------------------
+	_beginthread( beginThread, 0 , NULL);
 
 	//Environment
 	for (int i=0; i < num_environment_types; i++) {
