@@ -553,6 +553,10 @@ void  Robot::chooseForagerDirection() {
 	//direction is thus
 	dir = FoV[min_desirability_index];
 	//assert( validPos(pos.x + dir.x,pos.y + dir.y) );
+
+	if (isStuck()) {
+		dir = FoV[t.random(0,7)];
+	}
 }
 
 bool Robot::isStuck() {
@@ -617,14 +621,19 @@ void Robot::adaptLambda() {
 
 	if ( stuck && empty ) {
 		//decrement clarity thus increment lambda
-		if (lambda <= lambda - lambdaDelta ) 
+		if (lambda <= 1 - lambdaDelta ) 
 			lambda += lambdaDelta;
 	} else if ( stuck && !empty ) {
 		//increment clarity usage
-		if (lambda +lambdaDelta >=  lambdaDelta ) 
+		if (lambda -lambdaDelta >=  -0.4 ) 
 			lambda -= lambdaDelta;
 	} else { //if not stuck, reset
-		lambda = 0.5;
+		if ( lambda < 0.5 ) {
+			lambda += lambdaDelta;
+		} else if (lambda > 0.5) {
+			lambda -= lambdaDelta;
+		}
+		
 	}
 }
 
@@ -651,9 +660,14 @@ void  Robot::chooseForagerLocatingDirection() {
 		}
 	}
 
+
 	//direction is thus
 	dir = FoV[min_desirability_index];
 	//assert( validPos(pos.x + dir.x,pos.y + dir.y) );
+
+	if (isStuck()) {
+		dir = FoV[t.random(0,7)];
+	}
 }
 
 Coord  Robot::directionToItem() {

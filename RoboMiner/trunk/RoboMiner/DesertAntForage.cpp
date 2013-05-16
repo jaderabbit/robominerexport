@@ -95,19 +95,12 @@ void DesertAntForage::initializeRobots() {
 
 		forager_count++;
 
-
-		//Set Division ratio
-		if ( i <= desc.number_robots*desc.gold_waste_division_ratio ) {
-			if ( c % 2 == 0 )
-				robots[i].setDivision(GOLD);
-			else 
-				robots[i].setDivision(WASTE);
+		if ( t.randomOpen() < desc.gold_waste_division_ratio ) {
+			robots[i].setDivision(GOLD);
 		} else {
-			if ( c % 2 == 0 )
-				robots[i].setDivision(WASTE);
-			else 
-				robots[i].setDivision(GOLD);
+			robots[i].setDivision(WASTE);
 		}
+
 	}
 
 	for (int i=0; i < robots.size(); i++) {

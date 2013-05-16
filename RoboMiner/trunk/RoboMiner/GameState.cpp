@@ -29,20 +29,20 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 	d.width = 50; d.height = 50;
 	d.number_objects = 700;
 	d.number_robots = 10;
-	d.gold_waste_ratio = 0.4;
+	d.gold_waste_ratio = 1;
 	d.forager_explorer_ratio = 0.7;
 	d.total_iterations = 4000;
-	d.gold_waste_division_ratio = 0.5;
+	d.gold_waste_division_ratio = 1;
 	d.max_path = 50;
 	d.samples = 19;
 
 	ENVIRONMENT_DESC e;
 	e.grid_size = 50;
 	e.num_objects = 20;
-	e.ratio_gold = 0.2;
+	e.ratio_gold = 1.0/3.0;
 	e.type = "clustered";
 	e.sink_boundary = 5;
-	experiment = new BasicForage(d,e);
+	experiment = new BeeForage(d,e);
 
 	return true;
 }
@@ -136,7 +136,7 @@ void GameState::RenderScene()
 								case LOADING: trg.pTiles[count].color = float3(0,0,0); break; //BLACK
 								case UNLOADING: trg.pTiles[count].color = float3(1,0,1); break; //MAGENTA
 								default :trg.pTiles[count].color = float3(0,0,0); break;
-							}
+							};
 							/*int ind = experiment->mine.grid[x][y].index;
 							if ( experiment->robots[ind].activity == EXPLORE) {
 									trg.pTiles[count].color = float3(139.0/255.0,117.0/255.0,0);break;
@@ -144,12 +144,19 @@ void GameState::RenderScene()
 								trg.pTiles[count].color= float3(70.0/255.0,40.0/255.0,70.0/255.0);break;	
 							}
 							trg.pTiles[count].color = rndColors[ind];
-							/*
-							switch ( m.robots[m.grid[x][y].index].activity ) {
-								case CLUSTER: trg.pTiles[count].color = float3(1,1,0); break;
+							*/
+							/*switch (experiment->robots[ind].activity ) {
+								case DESERTANT: trg.pTiles[count].color = float3(128.0/255.0,0,128.0/255.0); break;
 								case EXPLORE: trg.pTiles[count].color = float3(0,1,1); break;
-								case FORAGE: trg.pTiles[count].color = rndColors[m.robots[m.grid[x][y].index].state]; break;
+								case FORAGE: trg.pTiles[count].color = float3(1,0,1);; 
+											if (experiment->robots[ind].state == WAITING) {
+												 trg.pTiles[count].color = float3(0,0,1);
+											}
+											break;
+								case BASICFORAGE:  trg.pTiles[count].color = float3(225.0/255.0,97.0/255.0,3.0/255.0); break;
 							}*/
+
+							
 							break;}
 				case GOLD: trg.pTiles[count].color= float3(139.0/255.0,117.0/255.0,0);break; //gold colour
 				case WASTE: trg.pTiles[count].color= float3(40/255,40/255,40/255);break;				//waste colour

@@ -18,7 +18,7 @@
 
 //window variables
 HWND hWnd;					//window handle
-int windowWidth = 1600;	
+int windowWidth = 900;	
 int windowHeight = 900;	
 
 //gamestate and renderer
@@ -81,8 +81,8 @@ bool InitWindow(HWND &hWnd, HINSTANCE hInstance, int width, int height)
 	hWnd = CreateWindow( "PFVISTOOLKIT", 
 						 "NOMAD - Pathfinding Visualization Toolkit", 
 						 WS_OVERLAPPED |  WS_SYSMENU | WS_MINIMIZEBOX,
-						 CW_USEDEFAULT, 
-						 CW_USEDEFAULT, 
+						 0, 
+						 0, 
 						 rect.right - rect.left, 
 						 rect.bottom - rect.top, 
 						 NULL, 
@@ -127,7 +127,7 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 		}
 		else
 		{		
-			if ( t % 10 ==0 ) {
+			if ( t % 50 ==0 ) {
 				game.Update();
 			}
 			t++;

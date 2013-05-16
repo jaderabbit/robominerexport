@@ -112,6 +112,7 @@
     <ClCompile Include="ResultWriter.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="RobotState.cpp" />
+    <ClCompile Include="sfmt.cpp" />
     <ClCompile Include="StatisticsHandler.cpp" />
     <ClCompile Include="Tools.cpp" />
     <ClCompile Include="Update.cpp" />
@@ -143,9 +144,11 @@
     <ClInclude Include="mtrand.h" />
     <ClInclude Include="PerformanceBed.h" />
     <ClInclude Include="PerformanceMeasure.h" />
+    <ClInclude Include="randomc.h" />
     <ClInclude Include="ResultWriter.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotState.h" />
+    <ClInclude Include="sfmt.h" />
     <ClInclude Include="TileRenderGraph.h" />
     <ClInclude Include="Tools.h" />
     <ClInclude Include="Types.h" />
