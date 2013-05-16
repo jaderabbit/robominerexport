@@ -30,6 +30,11 @@ void Robot::waitStep() {
 		oldSinkPos.y = pos.y;
 	}
 	state_counter++;
+
+	if (state_counter > 500 ) {
+		activity = EXPLORE;
+		state = EXPLORING;
+	}
 }
 
 void Robot::avoidSink() {
@@ -276,9 +281,11 @@ void Robot::localClusterSearchMovement() {
 			makeMove();
 			//state_counter--;
 		} else {
-			max_path = 5;
+			max_path = 5; //local cluster search
 			//choose random direction and move
 			randomWalkStep();
+
+			max_path = 50;
 		}
 
 	} else {

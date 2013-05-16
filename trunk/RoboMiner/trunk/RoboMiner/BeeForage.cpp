@@ -70,6 +70,9 @@ int BeeForage::runStep() {
  }
 
 void BeeForage::initializeRobots() {
+	
+	int goldCount = desc.number_robots*desc.gold_waste_division_ratio;
+	int wasteCount = desc.number_robots - desc.number_robots*desc.gold_waste_division_ratio;
 	int forager_count = 0, explorer_count = 0; 	int c = 0;
 	for (int i=0; i < desc.number_robots ; i ++ ) {
 		//Create Robots
@@ -105,27 +108,72 @@ void BeeForage::initializeRobots() {
 		robots.push_back(r);
 
 		//forager to explorer ratio
-		if ( i <= desc.number_robots*desc.forager_explorer_ratio ) {
-			robots[i].setActivity(FORAGE);
-			forager_count++;
-		} else {
+		if ( i <= (desc.number_robots - desc.number_robots*desc.forager_explorer_ratio )) {
 			robots[i].setActivity(EXPLORE); //explorers need to alternate type
 			explorer_count++;
+
+
+			//Set GOLD WASTE division
+			if (desc.gold_waste_division_ratio < 1 && desc.gold_waste_division_ratio > 0 && i==0 ) { 
+				//if there ratio isnt only gold or only waste and is first. 
+				//This is to ensure there exists AT LEAST one gold forager.
+				robots[i].setDivision(GOLD);
+				goldCount--;
+			} else if (desc.gold_waste_division_ratio < 1 && desc.gold_waste_division_ratio > 0 && i== 1) {  
+				//if there ratio isnt only gold or only waste and is second
+				//if there ratio isnt only gold or only waste and is first. 
+				//This is to ensure there exists AT LEAST one waste forager.
+				robots[i].setDivision(WASTE);
+				wasteCount--;
+			} else if ( (goldCount > 0 && wasteCount > 0) || (goldCount == 0 && wasteCount == 0) ) {
+				//randomly choose
+				if (t.orand() < 0.5 ) {
+					robots[i].setDivision(GOLD);
+					goldCount--;
+				} else {
+					robots[i].setDivision(WASTE);
+					wasteCount--;
+				}
+
+			} else if ( goldCount > 0 && wasteCount == 0 ) {
+				robots[i].setDivision(GOLD);
+				goldCount--;
+				//choose Gold
+			} else if ( goldCount == 0 && wasteCount > 0 ) {
+				//choose waste
+				robots[i].setDivision(WASTE);
+				wasteCount--;
+			}
+
+		} else {
+			robots[i].setActivity(FORAGE);
+			forager_count++;
+	
+			//Set GOLD WASTE division
+			if ( (goldCount > 0 && wasteCount > 0) || (goldCount == 0 && wasteCount == 0) ) {
+				//randomly choose
+				if (t.orand() < 0.5 ) {
+					robots[i].setDivision(GOLD);
+					goldCount--;
+				} else {
+					robots[i].setDivision(WASTE);
+					wasteCount--;
+				}
+
+			} else if ( goldCount > 0 && wasteCount == 0 ) {
+				robots[i].setDivision(GOLD);
+				goldCount--;
+				//choose Gold
+			} else if ( goldCount == 0 && wasteCount > 0 ) {
+				//choose waste
+				robots[i].setDivision(WASTE);
+				wasteCount--;
+			}
+
 		}
 
-		//Set Division ratio
-		if ( i <= desc.number_robots*desc.gold_waste_division_ratio ) {
-			if ( c % 2 == 0 )
-				robots[i].setDivision(GOLD);
-			else 
-				robots[i].setDivision(WASTE);
-		} else {
-			if ( c % 2 == 0 )
-				robots[i].setDivision(WASTE);
-			else 
-				robots[i].setDivision(GOLD);
-		}
 	}
+
 
 }
 

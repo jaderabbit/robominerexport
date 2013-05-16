@@ -6,6 +6,7 @@
 #include <random>
 #define round(x) int(x + 0.5)
 struct Coord;
+#include "sfmt.h"
 	
 enum { ENV_UNIFORM, ENV_GAUSSIAN, ENV_VEIN, ENV_CLUSTERED };
 
@@ -27,18 +28,21 @@ public:
 		//int t = rand();
 		int t = irand();
 		return abs( t % (high - low + 1) ) + low;
+		//return  sfmt->IRandom(low,high);
 	}
 
 	double randomClosed() {
 		//return mt->genrand_real1();
 		//return rand()/RAND_MAX;
 		return crand();
+		//return  sfmt->Random();
 	}
 
 	double randomOpen() {
 		//return mt->genrand_real3();
 		//return rand()/RAND_MAX;
 		return orand();
+		//return  sfmt->Random();
 	}
 
 	double gaussianDistribution( double location, double scale ) {
@@ -113,6 +117,7 @@ public:
 
 	//Random Object
 	MersenneTwister *mt;
+	CRandomSFMT *sfmt;
 
 	MTRand_int32 irand; // 32-bit int generator
 	MTRand drand; // double in [0, 1) generator

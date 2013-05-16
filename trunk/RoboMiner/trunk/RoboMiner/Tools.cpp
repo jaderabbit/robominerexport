@@ -16,6 +16,10 @@ Tools::Tools(void)
 	crand.seed(time(0));
 	irand.seed(time(0));
 
+	//Super Fast Mersenne Twister - Thread-safe
+	const int init2[4]={0x123, 0x234, 0x345, 0x457};
+//	sfmt = new CRandomSFMT0(time(0));
+//	sfmt->RandomInitByArray(init2,length);
 
 	//Built in Random
 	srand(time(0));

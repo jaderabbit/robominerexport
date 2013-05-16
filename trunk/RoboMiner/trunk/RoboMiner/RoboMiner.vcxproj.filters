@@ -67,6 +67,9 @@
     <Filter Include="RobotState\DesertAnt">
       <UniqueIdentifier>{13a076a9-a71c-44f1-8c56-8cb5566dc812}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tools\ThreadSafeMersenneTwister">
+      <UniqueIdentifier>{65d26184-1b60-4b98-9afd-2c6cb388453f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Forager.cpp">
@@ -167,6 +170,9 @@
     <ClCompile Include="DesertAnt.cpp">
       <Filter>RobotState\DesertAnt</Filter>
     </ClCompile>
+    <ClCompile Include="sfmt.cpp">
+      <Filter>Tools\ThreadSafeMersenneTwister</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -264,6 +270,12 @@
     </ClInclude>
     <ClInclude Include="DesertAnt.h">
       <Filter>RobotState\DesertAnt</Filter>
+    </ClInclude>
+    <ClInclude Include="sfmt.h">
+      <Filter>Tools\ThreadSafeMersenneTwister</Filter>
+    </ClInclude>
+    <ClInclude Include="randomc.h">
+      <Filter>Tools\ThreadSafeMersenneTwister</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

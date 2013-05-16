@@ -268,6 +268,7 @@ public:
 
 	//Position that previous item was found
 	Coord previous_item_pos;
+	int recruited;
 };
 
 

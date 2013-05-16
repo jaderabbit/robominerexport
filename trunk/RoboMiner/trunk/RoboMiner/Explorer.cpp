@@ -115,11 +115,15 @@ bool Robot::findItem() {
 }
 
 void Robot::recruitStep() {
+	if (state_counter == 0 ) {
+		recruited=0;
+	}
 	if (state_counter < MAX_RECRUITMENT_REPS ) {
 		//search up and down the area by the sink for waiting robots
 		vector<int> waitingRobots = searchSink();
 
 		//send message to waiting robots
+		recruited += waitingRobots.size();
 		for (int i=0; i < waitingRobots.size(); i++) {
 			if ( (*robots)[waitingRobots[i]].state == WAITING ) {
 				(*robots)[waitingRobots[i]].addRecruiterMessage(clusterLocation,oldSinkPos,division,density);
@@ -127,9 +131,16 @@ void Robot::recruitStep() {
 		}
 		state_counter++;	
 	} else {
-		state = EXPLORING;
-		state_counter = 0;
-		reset();
+		if ( recruited > 0 ) {
+			state = EXPLORING;
+			state_counter = 0;
+			reset();
+		} else {
+			activity = FORAGE;
+			state = WAITING;
+			state_counter = 0;
+			reset();
+		}
 	}
 }
 
