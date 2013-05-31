@@ -89,6 +89,12 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	path_count = 0;
 
 	one_stuck_mother_fucker = 0;
+
+	desirability_threshold =0;
+	desirability_total=0;
+	num_desirabilities=0;
+
+	recruitment_reps = MAX_RECRUITMENT_REPS;
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div,  string track_file){
@@ -377,10 +383,30 @@ void Robot::calculateDistanceFromSink() {
 	if ( distance_from_sink > max_distance_from_sink ) { max_distance_from_sink = distance_from_sink ; }
 }
 
+
 double Robot::calculateDistanceFromSink(Coord new_dir) {
 	Coord new_pos;
 	new_pos.x = pos.x + new_dir.x;
 	new_pos.y = pos.y + new_dir.y;
+
+	//Calculates distance from the sink
+	if ( division == GOLD ) {
+		//gold is on the left
+		if ( pos.y >= mine->size.y/2 ) {
+			return t.distance( new_pos.x, 1, new_pos.y, mine->size.y/2 );
+		} else {
+			return t.distance( new_pos.x, 1, new_pos.y, new_pos.y );
+		}
+	} else {
+		if ( pos.y <= mine->size.y/2 ) {
+			return t.distance( new_pos.x, 1, new_pos.y, mine->size.y/2 );
+		} else {
+			return t.distance( new_pos.x, 1, new_pos.y, new_pos.y );
+		}
+	}
+}
+
+double Robot::calculatePosDistanceFromSink(Coord new_pos) {
 
 	//Calculates distance from the sink
 	if ( division == GOLD ) {
@@ -842,4 +868,18 @@ Coord Robot::directionToSink() {
 void Robot::setIndex(int _index ) { 
 	index = _index; 
 	mine->grid[pos.x][pos.y].index = _index; 
+}
+
+double Robot::calculateLocationDesirability( double distance, double density ) {
+	//use maximum distance from sink - make sure this is updated. 
+
+	//use distance of food source from sink
+
+	//Use density.
+
+	//for now balance them equally
+	int desirability_balance = 0.5;
+	//NOTE: Density if inverted as we are using minimum
+	return desirability_balance*distance + (1-desirability_balance)*(1-density);
+	//return density;
 }

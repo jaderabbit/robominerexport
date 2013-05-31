@@ -130,6 +130,7 @@ public:
 	//Obstacle Avoidance Methods
 	void calculateDistanceFromSink();
 	double calculateDistanceFromSink(Coord new_dir);
+	double calculatePosDistanceFromSink(Coord new_pos);
 	double calculateDistanceFromLocation(Coord new_dir);
 	int calculateFoV();
 	double calculateClarity( Coord d );
@@ -269,6 +270,17 @@ public:
 	//Position that previous item was found
 	Coord previous_item_pos;
 	int recruited;
+
+	//Desirability threshold
+	bool compareDesirability( double des);
+	double desirability_threshold;
+	double desirability_total;
+	int num_desirabilities;
+
+	//Recruitment reps
+	int recruitment_reps; //length of dance. Scaled linearly based on desirability.  
+
+
 };
 
 
