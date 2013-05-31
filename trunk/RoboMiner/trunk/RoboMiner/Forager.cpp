@@ -241,6 +241,9 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, d
 
 		//Use recruiter position to determine whether to take it or not
 
+		calculateDistanceFromSink();
+		
+		if ( distance_from_sink > max_distance_from_sink ) { max_distance_from_sink = distance_from_sink ; }
 		//change state
 		state = LOCATING;
 		state_counter = 0;
@@ -324,16 +327,12 @@ bool Robot::findItem( int searchRange ) {
 	return false;
 }
 
-double Robot::calculateLocationDesirability( double distance, double density ) {
-	//for now balance them equally
-	int desirability_balance = 0.5;
-	//NOTE: Density if inverted as we are using minimum
-	//return desirability_balance*distance + (1-desirability_balance)*(1-density);
-	return density;
-}
-
 bool Robot::compareDesirability( double des1, double des2) {
-	return ( des1 < des2 ); //TODO: Improve. Current setup is just for prototyping.
+
+	if (des1 < des2) {
+		
+	}
+	//return ( des1 < des2 ); //TODO: Improve. Current setup is just for prototyping.
 	//it works, but not THAT well. 
 
 }

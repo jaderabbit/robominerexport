@@ -173,3 +173,30 @@ vector<int> Robot::radiusSearchSink() {
 
 	return waiting;
 }
+
+
+bool Robot::compareDesirability( double des) {
+	//new desirability calculation for a single compare. Used by Explorers actually
+	bool good_desirability = false;
+
+	if (des > desirability_threshold) {
+		good_desirability= true;
+
+		//set recruitment reps
+		recruitment_reps = MAX_RECRUITMENT_REPS*des;
+	} else {
+		good_desirability= false;
+	}
+
+	//recalculate threshold
+	num_desirabilities++;
+	desirability_total+= des;
+	desirability_threshold = desirability_total/(1.0*num_desirabilities);
+
+
+	return good_desirability;
+
+	//return ( des1 < des2 ); //TODO: Improve. Current setup is just for prototyping.
+	//it works, but not THAT well. 
+
+}
