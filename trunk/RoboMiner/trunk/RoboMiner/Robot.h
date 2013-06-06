@@ -172,6 +172,7 @@ public:
 	void setMutualRobotAwareness( vector<Robot> * _robots ) { robots = _robots; }
 
 	void setDivision( int _div ) { division = _div;}
+	void setDivToOriginalDivision() { original_division = division;};
 	int getDivision() { return division;}
 
 	void setPerformanceBed( PerformanceBed* _performanceBed ) { performanceBed = _performanceBed; }
@@ -197,6 +198,7 @@ public:
 	int load_type;
 	bool loaded;	//perhaps unnecessary
 	int division;
+	int original_division;
 
 	//Random wander
 	int max_path;
@@ -232,8 +234,8 @@ public:
 	Coord oldSinkPos;
 	
 	//variables
-	const static int MAX_RECRUITMENT_REPS = 30;
-	const static int MAX_WAITING_REPS = 30;
+	const static int MAX_RECRUITMENT_REPS = 20;
+	const static int MAX_WAITING_REPS = 50;
 	const static int MAX_LOADING_REPS = 30;
 	const static int RADIUS_SIZE = 10;
 	const static int MAX_PATH_DEVIATION = 8;
@@ -243,6 +245,7 @@ public:
 	const static int DoV = 5;
 	const static int STUCK_WINDOW_SIZE = 8;
 	const static int RANGE = 6;
+	const static int MAX_EXPLORE_STEP = 200;
 
 	//if robot has a tracker, then a file is saved with its total movements
 	bool tracker;

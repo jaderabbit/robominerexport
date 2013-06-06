@@ -34,6 +34,7 @@ void Robot::waitStep() {
 	if (state_counter > MAX_WAITING_REPS ) {
 		activity = EXPLORE;
 		state = EXPLORING;
+		//division = original_division;
 	}
 }
 
@@ -162,17 +163,22 @@ void Robot::unloadStep() {
 		//destination is set back to the location of the cluster
 		destination = clusterLocation;
 
-		//If good enough then dance
-		if ( compareDesirability(site_desirability) ) {
-			if (activity == FORAGE) activity_counter = 0;
-			activity = EXPLORE;
-			state = RECRUITING;
-			state_counter = 0;
+		if ( activity != DESERTANT) {
+			//If good enough then dance
+			if ( compareDesirability(site_desirability) ) {
+				if (activity == FORAGE) activity_counter = 0;
+				activity = EXPLORE;
+				state = RECRUITING;
+				state_counter = 0;
+			} else {
+				//If not good enough become a forager
+				if (activity == EXPLORE) activity_counter = 0;
+				state = LOCATING;
+				activity = FORAGE;
+				state_counter = 0;	
+			}
 		} else {
-			//If not good enough become a forager
-			if (activity == EXPLORE) activity_counter = 0;
 			state = LOCATING;
-			activity = FORAGE;
 			state_counter = 0;	
 		}
 	}
@@ -187,44 +193,79 @@ void Robot::unloadStep() {
 void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, double location_density ) {
 	//I BROKE SOMETHING!
 	//First want to calculate desirability, then use that desirability to determine whether recruiter message is added or not
-	
-	//If the maximum distance from the sink is 0, then this robot has never been recruited.
-	if (max_distance_from_sink > 0 ) {
-		//Calculate distance of new cluster location. 
-		double dist_new = t.distance(pos.x,pos.y,location.x, location.y)/max_distance_from_sink; //TODO: Max distance from sink is initially zero, so that case should be catered for. 
+	//if ( type == division ) {	
+		//If the maximum distance from the sink is 0, then this robot has never been recruited.
+		if (max_distance_from_sink > 0 ) {
+			//Calculate distance of new cluster location. 
+			double dist_new = t.distance(pos.x,pos.y,location.x, location.y)/max_distance_from_sink; //TODO: Max distance from sink is initially zero, so that case should be catered for. 
 
-		//Calculate distance of old cluster location
-		double dist_old = t.distance(pos.x,pos.y,clusterLocation.x, clusterLocation.y)/max_distance_from_sink; //TODO: Max distance from sink is initially zero, so that case should be catered for. 
+			//Calculate distance of old cluster location
+			double dist_old = t.distance(pos.x,pos.y,clusterLocation.x, clusterLocation.y)/max_distance_from_sink; //TODO: Max distance from sink is initially zero, so that case should be catered for. 
 	
-		//Calculate desirability
-		double desire_new = calculateLocationDesirability(dist_new,location_density);
-		double desire_old = calculateLocationDesirability(dist_old,density);
+			//Calculate desirability
+			double desire_new = calculateLocationDesirability(dist_new,location_density);
+			double desire_old = calculateLocationDesirability(dist_old,density);
 
-		//Compare desirability of new item zone to desirability of old one and choose based
-		//If desirability of new one is less than that of old one then replace. 
-		//if (compareDesirability( dist_new, dist_old)) {
-			//Do same as in the else. 
+			//Compare desirability of new item zone to desirability of old one and choose based
+			//If desirability of new one is less than that of old one then replace. 
+			//if (compareDesirability( dist_new, dist_old)) {
+				//Do same as in the else. 
 			
+				//Global Location of cluster. 
+				clusterLocation = location;
+				destination = location;
+
+				//Set the destination to the cluster location
+				clusterLocation.x = t.gaussianDistributionDiscrete(location.x,(1-location_density)*MAX_PATH_DEVIATION);
+				clusterLocation.y = t.gaussianDistributionDiscrete(location.y,(1-location_density)*MAX_PATH_DEVIATION);
+				destination = clusterLocation;
+
+				//check if in bounds
+				if (clusterLocation.x <= 0 ) clusterLocation.x = 1;
+				if (clusterLocation.y >= mine->size.y ) clusterLocation.y = mine->size.y-1;
+
+				//Use recruiter position to determine whether to take it or not
+
+				//change state
+				if (activity != FORAGE) {
+					activity_counter=0;
+					activity = FORAGE;
+				}
+				state = LOCATING;
+				state_counter = 0;
+
+				//robotState->setMinorState(LOCATING);
+				//test to see how often recruited
+				activity_counter++;
+
+				//load
+				division = type;
+			//}
+		} else {
+			//change state
+			if (activity != FORAGE) {
+				activity_counter=0;
+				activity = FORAGE;
+			}
+
 			//Global Location of cluster. 
 			clusterLocation = location;
 			destination = location;
 
 			//Set the destination to the cluster location
-			clusterLocation.x = t.gaussianDistributionDiscrete(location.x,(1-location_density)*MAX_PATH_DEVIATION);
-			clusterLocation.y = t.gaussianDistributionDiscrete(location.y,(1-location_density)*MAX_PATH_DEVIATION);
+			clusterLocation.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
+			clusterLocation.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
 			destination = clusterLocation;
 
 			//check if in bounds
 			if (clusterLocation.x <= 0 ) clusterLocation.x = 1;
 			if (clusterLocation.y >= mine->size.y ) clusterLocation.y = mine->size.y-1;
 
-			//Use recruiter position to determine whether to take it or not
-
+			//Use recruiter position to determine whether to take it or not. Or not. 
+			calculateDistanceFromSink();
+		
+			if ( distance_from_sink > max_distance_from_sink ) { max_distance_from_sink = distance_from_sink ; }
 			//change state
-			if (activity != FORAGE) {
-				activity_counter=0;
-				activity = FORAGE;
-			}
 			state = LOCATING;
 			state_counter = 0;
 
@@ -233,43 +274,9 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, d
 			activity_counter++;
 
 			//load
-			division = type;
-		//}
-	} else {
-		//change state
-		if (activity != FORAGE) {
-				activity_counter=0;
-				activity = FORAGE;
-			}
-
-		//Global Location of cluster. 
-		clusterLocation = location;
-		destination = location;
-
-		//Set the destination to the cluster location
-		clusterLocation.x = t.gaussianDistributionDiscrete(location.x,MAX_PATH_DEVIATION);
-		clusterLocation.y = t.gaussianDistributionDiscrete(location.y,MAX_PATH_DEVIATION);
-		destination = clusterLocation;
-
-		//check if in bounds
-		if (clusterLocation.x <= 0 ) clusterLocation.x = 1;
-		if (clusterLocation.y >= mine->size.y ) clusterLocation.y = mine->size.y-1;
-
-		//Use recruiter position to determine whether to take it or not. Or not. 
-		calculateDistanceFromSink();
-		
-		if ( distance_from_sink > max_distance_from_sink ) { max_distance_from_sink = distance_from_sink ; }
-		//change state
-		state = LOCATING;
-		state_counter = 0;
-
-		//robotState->setMinorState(LOCATING);
-		//test to see how often recruited
-		activity_counter++;
-
-		//load
-		division = type;
-	}
+			//division = type;
+		}
+	//}
 }
 
 void Robot::localClusterSearchMovement() {

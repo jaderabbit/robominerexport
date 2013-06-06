@@ -112,7 +112,6 @@ void BeeForage::initializeRobots() {
 			robots[i].setActivity(EXPLORE); //explorers need to alternate type
 			explorer_count++;
 
-
 			//Set GOLD WASTE division
 			if (desc.gold_waste_division_ratio < 1 && desc.gold_waste_division_ratio > 0 && i==0 ) { 
 				//if there ratio isnt only gold or only waste and is first. 
@@ -171,7 +170,7 @@ void BeeForage::initializeRobots() {
 			}
 
 		}
-
+		robots[i].setDivToOriginalDivision();
 	}
 
 
