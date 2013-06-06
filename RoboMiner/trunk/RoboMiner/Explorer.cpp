@@ -97,15 +97,42 @@ void Robot::exploreStep() {
 		clusterLocation = previous_item_pos;
 		foraged = true;
 		typeForaged = division;
-	} 
+	} else {
+		if (state_counter > MAX_EXPLORE_STEP ){
+			division = WASTE;
+		} else if (state_counter > 2*MAX_EXPLORE_STEP)  {
+			activity = FORAGE;
+			state = HOMING;
+			state_counter = 0;
+			activity_counter = 0;
+		}
+	}
 
 }
 
 bool Robot::findItem() {
 	for (int i=-1; i <= 1; i++) {
 		for (int j=-1; j <= 1; j++) {
-			if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == division) {
+			if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == GOLD) {
 				load_type = mine->grid[pos.x +i][pos.y+j].type;
+				if (activity == FORAGE || activity == DESERTANT || activity == EXPLORE ) { //Added explorer 2013/06/06 Seeley Model 
+					loaded = true;
+					mine->grid[pos.x +i][pos.y+j].type = EMPTY;
+					dir.x = i; dir.y = j;
+
+					//Calculate the desirability of the location. 
+					calculateDistanceFromSink();
+					site_desirability= calculateLocationDesirability(distance_from_sink/max_distance_from_sink,calculateDensity());
+					
+					if (activity != DESERTANT) 
+						division = GOLD;
+				}
+				previous_item_pos.x = pos.x +i;
+				previous_item_pos.y = pos.y +j;
+				return true;
+			} else if (activity != DESERTANT && division ==WASTE && validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE) {
+				load_type = mine->grid[pos.x +i][pos.y+j].type;
+
 				if (activity == FORAGE || activity == DESERTANT || activity == EXPLORE ) { //Added explorer 2013/06/06 Seeley Model 
 					loaded = true;
 					mine->grid[pos.x +i][pos.y+j].type = EMPTY;
@@ -141,9 +168,15 @@ void Robot::recruitStep() {
 		}
 		state_counter++;	
 	} else {
-		//Done dancing. Recruit self
-		addRecruiterMessage(clusterLocation,oldSinkPos,division,density);
-		
+
+		if ( t.randomOpen() > 0.1 ) {
+			//Done dancing. Recruit self
+			addRecruiterMessage(clusterLocation,oldSinkPos,division,density);
+		} else {
+			//Start scouting
+			state = EXPLORING;
+			state_counter = 0;
+		}
 		/*if ( recruited > 0 ) {
 			state = EXPLORING;
 			state_counter = 0;
@@ -196,7 +229,12 @@ bool Robot::compareDesirability( double des) {
 		good_desirability= true;
 
 		//set recruitment reps
-		recruitment_reps = MAX_RECRUITMENT_REPS*des;
+		if ( division == GOLD ) {
+			recruitment_reps = MAX_RECRUITMENT_REPS*des;
+		} else {
+			recruitment_reps = MAX_RECRUITMENT_REPS*des*0.5;
+		}
+
 	} else {
 		good_desirability= false;
 	}

@@ -7,6 +7,7 @@
 #include "TileRenderGraph.h"
 #include "Types.h"
 #include "BeeForage.h"
+#include "DesertAntForage.h"
 #include "BasicForageGoldOnly.h"
 #include "BasicForage.h"
 
@@ -55,7 +56,7 @@ public:
 	~GameState();
 
 	//initialization and shutdown
-	bool Initialize( HWND* pWnd, int2 resolution, ENVIRONMENT_DESC e, EXPERIMENT_DESC d);
+	bool Initialize( HWND* pWnd, int2 resolution, Experiment* _experiment );
 	void Shutdown() {};
 
 	//level loader

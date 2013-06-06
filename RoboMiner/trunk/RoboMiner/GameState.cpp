@@ -16,7 +16,7 @@ GameState::~GameState()
 {
 }
 //initialize function
-bool GameState::Initialize( HWND* pWnd, int2 res, ENVIRONMENT_DESC e, EXPERIMENT_DESC d )
+bool GameState::Initialize( HWND* pWnd, int2 res,  Experiment* _experiment )
 {
 	//set game settings
 	pHWnd = pWnd;
@@ -24,7 +24,7 @@ bool GameState::Initialize( HWND* pWnd, int2 res, ENVIRONMENT_DESC e, EXPERIMENT
 
 	//initialize renderer
 	if ( !renderer.Initialize(pWnd) ) return FatalError(*pWnd, "renderer init failed");		
-	experiment = new BeeForage(d,e);
+	experiment =_experiment; 
 
 	return true;
 }

@@ -115,9 +115,9 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	d.number_objects = 700;
 	d.number_robots = 10;
 	d.gold_waste_ratio = 1;
-	d.forager_explorer_ratio = 0.7;
+	d.forager_explorer_ratio = 0.8;
 	d.total_iterations = 4000;
-	d.gold_waste_division_ratio = 0.9;
+	d.gold_waste_division_ratio =1;
 	d.max_path = 50;
 	d.samples = 19;
 
@@ -129,7 +129,7 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	e.sink_boundary = 5;
 
 	//intialize game
-	if ( !game.Initialize(&hWnd, int2(windowWidth, windowHeight),e,d) ) return FatalError(hWnd, "Game init failed!");
+	if ( !game.Initialize(&hWnd, int2(windowWidth, windowHeight),new BeeForage(d,e)) ) return FatalError(hWnd, "Game init failed!");
 	
 	//load map
 	if ( !game.LoadLevel("clustered_test.txt",80,80,20,3) ) return FatalError(hWnd, "Level Load failed!");
