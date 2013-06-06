@@ -16,7 +16,7 @@ GameState::~GameState()
 {
 }
 //initialize function
-bool GameState::Initialize( HWND* pWnd, int2 res )
+bool GameState::Initialize( HWND* pWnd, int2 res, ENVIRONMENT_DESC e, EXPERIMENT_DESC d )
 {
 	//set game settings
 	pHWnd = pWnd;
@@ -24,24 +24,6 @@ bool GameState::Initialize( HWND* pWnd, int2 res )
 
 	//initialize renderer
 	if ( !renderer.Initialize(pWnd) ) return FatalError(*pWnd, "renderer init failed");		
-
-	EXPERIMENT_DESC d;
-	d.width = 50; d.height = 50;
-	d.number_objects = 700;
-	d.number_robots = 10;
-	d.gold_waste_ratio = 1;
-	d.forager_explorer_ratio = 0.7;
-	d.total_iterations = 4000;
-	d.gold_waste_division_ratio = 1;
-	d.max_path = 50;
-	d.samples = 19;
-
-	ENVIRONMENT_DESC e;
-	e.grid_size = 50;
-	e.num_objects = 20;
-	e.ratio_gold = 1.0/3.0;
-	e.type = "clustered";
-	e.sink_boundary = 5;
 	experiment = new BeeForage(d,e);
 
 	return true;

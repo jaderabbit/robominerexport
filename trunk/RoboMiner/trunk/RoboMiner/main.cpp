@@ -108,8 +108,28 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	//set up the application window
 	if ( !InitWindow(hWnd, hInstance, windowWidth, windowHeight)) return FatalError(hWnd, "Could not Create Window!");
 			
+	//Initialize experiment + environment
+	
+	EXPERIMENT_DESC d;
+	d.width = 50; d.height = 50;
+	d.number_objects = 700;
+	d.number_robots = 10;
+	d.gold_waste_ratio = 1;
+	d.forager_explorer_ratio = 0.7;
+	d.total_iterations = 4000;
+	d.gold_waste_division_ratio = 0.9;
+	d.max_path = 50;
+	d.samples = 19;
+
+	ENVIRONMENT_DESC e;
+	e.grid_size = 50;
+	e.num_objects = 20;
+	e.ratio_gold = 0.5;
+	e.type = "clustered";
+	e.sink_boundary = 5;
+
 	//intialize game
-	if ( !game.Initialize(&hWnd, int2(windowWidth, windowHeight)) ) return FatalError(hWnd, "Game init failed!");
+	if ( !game.Initialize(&hWnd, int2(windowWidth, windowHeight),e,d) ) return FatalError(hWnd, "Game init failed!");
 	
 	//load map
 	if ( !game.LoadLevel("clustered_test.txt",80,80,20,3) ) return FatalError(hWnd, "Level Load failed!");

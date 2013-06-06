@@ -233,6 +233,7 @@ public:
 	
 	//variables
 	const static int MAX_RECRUITMENT_REPS = 30;
+	const static int MAX_WAITING_REPS = 30;
 	const static int MAX_LOADING_REPS = 30;
 	const static int RADIUS_SIZE = 10;
 	const static int MAX_PATH_DEVIATION = 8;
@@ -276,6 +277,7 @@ public:
 	double desirability_threshold;
 	double desirability_total;
 	int num_desirabilities;
+	double site_desirability;
 
 	//Recruitment reps
 	int recruitment_reps; //length of dance. Scaled linearly based on desirability.  
