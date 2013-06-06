@@ -55,7 +55,7 @@ public:
 	~GameState();
 
 	//initialization and shutdown
-	bool Initialize( HWND* pWnd, int2 resolution);
+	bool Initialize( HWND* pWnd, int2 resolution, ENVIRONMENT_DESC e, EXPERIMENT_DESC d);
 	void Shutdown() {};
 
 	//level loader

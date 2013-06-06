@@ -114,7 +114,6 @@ void DesertAntForage::initializePerformanceMeasures() {
 	pb->attach( new AverageTimeInState(PM_FORAGE));
 	pb->attach( new Entropy(desc.height,desc.number_robots) );
 	pb->attach( new ItemsForagedOverTime() );
-
 }
 
 

@@ -383,7 +383,6 @@ void Robot::calculateDistanceFromSink() {
 	if ( distance_from_sink > max_distance_from_sink ) { max_distance_from_sink = distance_from_sink ; }
 }
 
-
 double Robot::calculateDistanceFromSink(Coord new_dir) {
 	Coord new_pos;
 	new_pos.x = pos.x + new_dir.x;
@@ -771,7 +770,7 @@ void Robot::homingStep() {
 
 			//not very good. Need to improve at some point when cluster *RUNS OUT*
 			if (activity == EXPLORE) {
-				state = RECRUITING; //has to be home at this point
+				state = UNLOADING; //has to be home at this point
 			}
 			else if (activity == FORAGE || activity == DESERTANT) {
 				state = UNLOADING;

@@ -8,6 +8,7 @@ void Robot::explore() {
 		case BEACON_HOMING: beaconHomingStep(); break;
 		case EXPLORING: exploreStep(); break;
 		case RECRUITING: recruitStep(); break;
+		case UNLOADING: unloadStep(); break;
 		case CHOOSE_ACTIVITY: chooseActivity(); break;
 		default: cout << "Erroneous State for Exploring" << endl; break;
 	}
@@ -80,16 +81,22 @@ void Robot::exploreStep() {
 	randomWalkStep();
 
 	//record step & calculate minimal thingie. 
-	/*part of random walk*/
+	//Calculate the distance from sink every step.
+	calculateDistanceFromSink();
 
 	//look for item and pick up
 	//Why is explorer picking stuff up?!?
 	if (findItem()) {
-		density = calculateDensity();
+		density = calculateDensity();	
+		//Change to forager, 2013/06/06 Seeley Model 
+		activity = FORAGE;
 		state = HOMING;
 		state_counter = 0;
+		//activity_counter=0;
 		activity_counter++;
 		clusterLocation = previous_item_pos;
+		foraged = true;
+		typeForaged = division;
 	} 
 
 }
@@ -99,11 +106,14 @@ bool Robot::findItem() {
 		for (int j=-1; j <= 1; j++) {
 			if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == division) {
 				load_type = mine->grid[pos.x +i][pos.y+j].type;
-				if (activity == FORAGE || activity == DESERTANT) {
+				if (activity == FORAGE || activity == DESERTANT || activity == EXPLORE ) { //Added explorer 2013/06/06 Seeley Model 
 					loaded = true;
 					mine->grid[pos.x +i][pos.y+j].type = EMPTY;
-
 					dir.x = i; dir.y = j;
+
+					//Calculate the desirability of the location. 
+					calculateDistanceFromSink();
+					site_desirability= calculateLocationDesirability(distance_from_sink/max_distance_from_sink,calculateDensity());
 				}
 				previous_item_pos.x = pos.x +i;
 				previous_item_pos.y = pos.y +j;
@@ -131,16 +141,19 @@ void Robot::recruitStep() {
 		}
 		state_counter++;	
 	} else {
-		if ( recruited > 0 ) {
+		//Done dancing. Recruit self
+		addRecruiterMessage(clusterLocation,oldSinkPos,division,density);
+		
+		/*if ( recruited > 0 ) {
 			state = EXPLORING;
 			state_counter = 0;
 			reset();
 		} else {
 			activity = FORAGE;
-			state = WAITING;
+			state = LOCATING;
 			state_counter = 0;
 			reset();
-		}
+		}*/
 	}
 }
 

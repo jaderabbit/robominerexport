@@ -31,7 +31,7 @@ void Robot::waitStep() {
 	}
 	state_counter++;
 
-	if (state_counter > 500 ) {
+	if (state_counter > MAX_WAITING_REPS ) {
 		activity = EXPLORE;
 		state = EXPLORING;
 	}
@@ -162,12 +162,19 @@ void Robot::unloadStep() {
 		//destination is set back to the location of the cluster
 		destination = clusterLocation;
 
-		//Set state
-		state = LOCATING;
-		state_counter = 0;
-
-		//Avoid other 
-
+		//If good enough then dance
+		if ( compareDesirability(site_desirability) ) {
+			if (activity == FORAGE) activity_counter = 0;
+			activity = EXPLORE;
+			state = RECRUITING;
+			state_counter = 0;
+		} else {
+			//If not good enough become a forager
+			if (activity == EXPLORE) activity_counter = 0;
+			state = LOCATING;
+			activity = FORAGE;
+			state_counter = 0;	
+		}
 	}
 	else {
 		state_counter = 0;
@@ -214,6 +221,10 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, d
 			//Use recruiter position to determine whether to take it or not
 
 			//change state
+			if (activity != FORAGE) {
+				activity_counter=0;
+				activity = FORAGE;
+			}
 			state = LOCATING;
 			state_counter = 0;
 
@@ -225,6 +236,11 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, d
 			division = type;
 		//}
 	} else {
+		//change state
+		if (activity != FORAGE) {
+				activity_counter=0;
+				activity = FORAGE;
+			}
 
 		//Global Location of cluster. 
 		clusterLocation = location;
@@ -239,8 +255,7 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, d
 		if (clusterLocation.x <= 0 ) clusterLocation.x = 1;
 		if (clusterLocation.y >= mine->size.y ) clusterLocation.y = mine->size.y-1;
 
-		//Use recruiter position to determine whether to take it or not
-
+		//Use recruiter position to determine whether to take it or not. Or not. 
 		calculateDistanceFromSink();
 		
 		if ( distance_from_sink > max_distance_from_sink ) { max_distance_from_sink = distance_from_sink ; }
@@ -332,7 +347,6 @@ bool Robot::compareDesirability( double des1, double des2) {
 	if (des1 < des2) {
 		
 	}
-	//return ( des1 < des2 ); //TODO: Improve. Current setup is just for prototyping.
+	return ( des1 < des2 ); //TODO: Improve. Current setup is just for prototyping.
 	//it works, but not THAT well. 
-
 }
