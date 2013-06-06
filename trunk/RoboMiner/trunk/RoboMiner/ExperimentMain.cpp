@@ -5,6 +5,10 @@
 #include <process.h>
 #include <stdio.h>
 #include <vector>
+#include <windows.h>
+#include <tchar.h>
+#include <WinBase.h>
+//#include <Processthreadsapi.h>
 
 using namespace std;
 
@@ -113,6 +117,10 @@ void beginThread( void* pParams ) {
 		}
 }
 
+LPTSTR createCommandlineString( ENVIRONMENT_DESC e, EXPERIMENT_DESC d ) {
+
+}
+
 int main(int argc, char* argv[]) {
 	//All parameters lists
 	if ( argc < 2 ) return -1;
@@ -215,3 +223,4 @@ int main(int argc, char* argv[]) {
 	//}
 	//Bitch, please...
 }
+
