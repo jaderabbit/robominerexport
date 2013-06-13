@@ -12,7 +12,8 @@
 #include <iostream>
 
 using namespace std;
-/*
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+
 bool runExperiment( Experiment* e, EXPERIMENT_DESC exp_desc, ENVIRONMENT_DESC env_desc ) {
 	//Set the experiment parameters
 	e->setExperimentParam(exp_desc,env_desc);
@@ -22,6 +23,8 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC exp_desc, ENVIRONMENT_DESC en
 
 	//Run all samples
 	e->runAllSamples();
+
+	e->reset();
 
 	return true;
 }
@@ -114,28 +117,81 @@ void beginThread( void* pParams ) {
 				}
 			}
 		}
+
+	for (int i=0; i < experiments.size(); i++) 
+	{
+		delete experiments[i];
+	}
+
 }
 
 LPTSTR createCommandlineString( ENVIRONMENT_DESC e, EXPERIMENT_DESC d) {
-	LPTSTR commandline;
+	char* commandline;
 	stringstream s;
 
 
 	s << e.ratio_gold  << " " << e.sink_boundary  << " "<< d.forager_explorer_ratio << " "<< d.max_path  << " "<< d.samples << " ";
 	s << d.total_iterations;
 
-	const char* tmp = s.str().c_str();
+	string value = s.str();
+	const char* tmp = value.c_str();
 	commandline = new char[s.str().length() + 1];
 	copy(tmp, tmp + s.str().length() + 1, commandline);
 
 	return commandline;
 }
 
+
 int main(int argc, char* argv[]) {
+
+	//Test Case 1	
+	EXPERIMENT_DESC d;
+	d.width = 50; d.height = 50;
+	d.number_objects = 700;
+	d.number_robots = 10;
+	d.gold_waste_ratio = 1;
+	d.forager_explorer_ratio = 0.8;
+	d.total_iterations = 4000;
+	d.gold_waste_division_ratio =1;
+	d.max_path = 50;
+	d.samples = 30;
+
+	ENVIRONMENT_DESC e;
+	e.grid_size = 50;
+	e.num_objects = 20;
+	e.ratio_gold = 0.5;
+	e.type = "clustered";
+	e.sink_boundary = 5;
+
+	//Test Case 2
+	EXPERIMENT_DESC d2;
+	d2.width = 50; d2.height = 50;
+	d2.number_objects = 700;
+	d2.number_robots = 10;
+	d2.gold_waste_ratio = 1;
+	d2.forager_explorer_ratio = 0.8;
+	d2.total_iterations = 4000;
+	d2.gold_waste_division_ratio =1;
+	d2.max_path = 50;
+	d2.samples = 30;
+
+	ENVIRONMENT_DESC e2;
+	e2.grid_size = 50;
+	e2.num_objects = 20;
+	e2.ratio_gold = 0.33333333;
+	e2.type = "clustered";
+	e2.sink_boundary = 5;
+
+	runExperiment( new BeeForage(d,e), d,e);
+	runExperiment( new BeeForage(d2,e2), d2,e2);
+
 	//All parameters lists
-	if ( argc < 2 ) return -1;
+	/*if ( argc < 2 ) return -1;
 
 	//-------------Values that do not change----------------------
+
+	
+
 	//Descriptors
 	EXPERIMENT_DESC exp_desc;
 	ENVIRONMENT_DESC env_desc;
@@ -156,9 +212,22 @@ int main(int argc, char* argv[]) {
 	for (int p=0; p < goldWasteRatio.size(); p++) {
 		env_desc.ratio_gold = goldWasteRatio[p];
 		LPTSTR command = createCommandlineString(env_desc,exp_desc);
-		if (!CreateProcess("RoboMineProcess",command,NULL,NULL,FALSE,ABOVE_NORMAL_PRIORITY_CLASS,NULL,NULL,NULL,NULL) ) {
+		STARTUPINFO si;
+		PROCESS_INFORMATION pi;
+
+		ZeroMemory( &si, sizeof(si) );
+		si.cb = sizeof(si);
+		ZeroMemory( &pi, sizeof(pi) );
+
+		if (!CreateProcess("RoboMineProcess.exe",command,NULL,NULL,FALSE,0,NULL,NULL,&si,&pi) ) {
 			cout << "Error in process creation: " << command << endl; 
 		}
-	}
-}*/
+
+		delete [] command;
+
+		  // Close process and thread handles. 
+		CloseHandle( pi.hProcess );
+		CloseHandle( pi.hThread );
+	}*/
+}
 

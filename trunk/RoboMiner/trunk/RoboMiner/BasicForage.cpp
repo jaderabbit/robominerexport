@@ -51,7 +51,7 @@ int BasicForage::runStep() {
 			robots[i].setActivity(BASICFORAGE);
 
 			//Set states
-			if ( t.randomClosed() <= desc.gold_waste_division_ratio ) 
+			if ( t.randomOpen() <= desc.gold_waste_division_ratio ) 
 				robots[i].setRobotState( new BasicForagingState( &robots[i], GOLD,1,1) );
 			else 
 				robots[i].setRobotState( new BasicForagingState( &robots[i], WASTE,1,1) );
@@ -106,7 +106,13 @@ void BasicForage::initializeRobots() {
 		Robot r(&mine);
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
-		r.setDivision(GOLD);
+
+		if ( t.randomOpen() < desc.gold_waste_division_ratio ) {
+			r.setDivision(GOLD);
+		} else {
+			r.setDivision(WASTE);
+		}
+
 		r.setActivity(activity);
 		r.setStringTracker(s.str());
 		r.setMutualRobotAwareness(&robots);

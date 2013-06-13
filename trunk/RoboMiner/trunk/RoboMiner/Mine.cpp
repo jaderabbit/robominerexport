@@ -436,7 +436,7 @@ void Mine::fileOutput(string fname) {
 	}
 	f << "Num Robots=" << robots << "; Num Gold=" << gold << "; Num Waste=" << waste << "; Sink_num=" << sink_num << endl;
 	f << endl;
-
+	f.close();
 }
 
 bool Mine::fileInput(string fname) {
@@ -484,6 +484,7 @@ bool Mine::fileInput(string fname) {
 
 	}
 
+	f.close();
 	return true;
 }
 

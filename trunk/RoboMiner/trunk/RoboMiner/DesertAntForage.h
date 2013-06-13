@@ -14,6 +14,7 @@ public:
 
 	void initializePerformanceMeasures();
 	virtual void initializeRobots();
+	virtual string getAlgorithmName() { return "DesertAnt"; }
 	Coord randomRobotPosition();
 };
 

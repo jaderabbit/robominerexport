@@ -9,12 +9,12 @@ class ResultWriter
 public:
 	ResultWriter(void);
 	virtual ~ResultWriter(void);
-	ResultWriter( vector<PerformanceBed*> _samples, EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc );
-	void setResults( vector<PerformanceBed*> _samples, EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc );
+	ResultWriter( vector<PerformanceBed*> _samples, EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc, string algorithmType );
+	void setResults( vector<PerformanceBed*> _samples, EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc, string algorithmType );
 
 	//Generates file path and name
 	string generateFileName( EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc);
-
+	void reset();
 	//outputs file
 	bool writeResultFile();
 private:
@@ -23,5 +23,6 @@ private:
 	vector<PerformanceBed*> samples;
 	EXPERIMENT_DESC exp_desc;
 	ENVIRONMENT_DESC env_desc;
+	string algType;
 };
 

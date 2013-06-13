@@ -129,7 +129,7 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	e.sink_boundary = 5;
 
 	//intialize game
-	if ( !game.Initialize(&hWnd, int2(windowWidth, windowHeight),new BeeForage(d,e)) ) return FatalError(hWnd, "Game init failed!");
+	if ( !game.Initialize(&hWnd, int2(windowWidth, windowHeight),new DesertAntForage(d,e)) ) return FatalError(hWnd, "Game init failed!");
 	
 	//load map
 	if ( !game.LoadLevel("clustered_test.txt",80,80,20,3) ) return FatalError(hWnd, "Level Load failed!");

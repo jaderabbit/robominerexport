@@ -33,7 +33,7 @@ float convertFloat( char* text) {
 	return num;
 }
 
-bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
+/*bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
 	//Set the experiment parameters
 	e->setExperimentParam(d,en);
 
@@ -46,7 +46,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
 	return true;
 }
 
-int experimentRun(int argc, char* argv[]) 
+int _tmain(int argc, char* argv[]) 
 {
 	//Test
 	ENVIRONMENT_DESC e;
@@ -74,7 +74,7 @@ int experimentRun(int argc, char* argv[])
 	//Setup all the parameters to be run.
 
 	//Environment types
-	string environment_types[] = { "clustered", "uniform", "gaussian", "vein" };
+/*	string environment_types[] = { "clustered", "uniform", "gaussian", "vein" };
 	int num_environment_types = 4;
 
 	//Grid sizes
@@ -124,7 +124,8 @@ int experimentRun(int argc, char* argv[])
 						experiments.push_back (new DesertAntForage() );
 
 						for (int v = 0; v < experiments.size(); v++ ) {
-								runExperiment( experiments[v], d, e);
+								//runExperiment( experiments[v], d, e);
+							cout << "Processes going yep" << endl;
 						}
 					}
 
@@ -136,5 +137,5 @@ int experimentRun(int argc, char* argv[])
 
 	return true;
 
-}
+}*/
 

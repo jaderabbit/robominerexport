@@ -8,9 +8,21 @@ Experiment::Experiment(void)
 
 Experiment::~Experiment(void)
 {
+	cleanup();
+
+	//delete performance bed
+
+	for (int i=0; i < pbs.size(); i++) {
+		delete pbs[i];
+	}
+
+	if (pb != NULL && pb->pm.size() > 0) {
+		delete pb;
+		pb = 0;
+	}
 }
 
-Experiment::Experiment( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc ) : desc(_desc), env_desc(_env_desc), sampleCount(0), cnt(0), samples(_desc.samples){}
+Experiment::Experiment( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc ) : desc(_desc), env_desc(_env_desc), sampleCount(0), cnt(0), pb(0), samples(_desc.samples){}
 
 void Experiment::setExperimentParam( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc) {
 	//Clean grid and robots
@@ -50,10 +62,30 @@ int Experiment::cleanup() {
 	robots.clear();
 	mine.grid.clear();
 	
-	//delete performance bed
-	if (pb==0) delete pb;
-
 	return true;
+}
+
+void Experiment::reset() 
+{
+	cleanup();
+
+	//delete performance bed
+	if (pb != NULL && pb->pm.size() > 0) {
+		delete pb;
+		pb = 0;
+	}
+
+	for (int i=0; i < pbs.size(); i++) {
+		if (pbs[i]) {
+			delete pbs[i];
+			pbs[i] = 0;
+		}
+	}
+
+	pbs.clear();
+
+
+	resultWriter.reset();
 }
 
 void Experiment::initializeGrid() {
@@ -90,7 +122,7 @@ int Experiment::runAllSamplesStep() {
 		
 	if ( sampleCount == samples ) {
 		//Save all experiments in the reader. 
-		resultWriter.setResults(pbs,desc,env_desc);
+		resultWriter.setResults(pbs,desc,env_desc,getAlgorithmName());
 		resultWriter.writeResultFile();
 
 		//To ensure termination. 
@@ -135,7 +167,7 @@ void  Experiment::runAllSamples() {
 	}
 
 	//Save all experiments in the reader. 
-	resultWriter.setResults(pbs,desc,env_desc);
+	resultWriter.setResults(pbs,desc,env_desc,getAlgorithmName());
 	resultWriter.writeResultFile();
 
 	//End of experiment
@@ -155,3 +187,4 @@ string Experiment::getEnvironmentFileName() {
 	fileName << "_sim_" << sampleCount << ".txt";
 	return fileName.str();
 }
+

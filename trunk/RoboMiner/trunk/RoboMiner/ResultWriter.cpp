@@ -9,14 +9,20 @@ ResultWriter::ResultWriter(void)
 
 ResultWriter::~ResultWriter(void)
 {
+	samples.clear();
 }
 
-ResultWriter::ResultWriter( vector<PerformanceBed*> _samples, EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc ) : samples(_samples), exp_desc(_exp_desc), env_desc(_env_desc) {}
+ResultWriter::ResultWriter( vector<PerformanceBed*> _samples, EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc, string algorithmType ) : samples(_samples), exp_desc(_exp_desc), env_desc(_env_desc) {}
 
-void ResultWriter::setResults( vector<PerformanceBed*> _samples, EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc ) {
+void ResultWriter::setResults( vector<PerformanceBed*> _samples, EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc, string algorithmType ) {
 	samples = _samples;
 	exp_desc = _exp_desc;
 	env_desc = _env_desc;
+	algType = algorithmType;
+}
+
+void ResultWriter::reset() {
+	samples.clear();
 }
 
 string ResultWriter::generateFileName( EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc) {
@@ -24,7 +30,7 @@ string ResultWriter::generateFileName( EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DE
 
 	//Environments
 	name << "results\\" <<_env_desc.type << "\\" << _env_desc.type
-		<< "_size_" << _env_desc.grid_size << "_obj_" << _env_desc.num_objects << "_ratio_" << _env_desc.ratio_gold;
+		<<"_alg_" << algType<< "_size_" << _env_desc.grid_size << "_obj_" << _env_desc.num_objects << "_ratio_" << _env_desc.ratio_gold;
 
 	//Experiment
 	name << "_rob_"<< _exp_desc.number_robots << "_div_" << _exp_desc.gold_waste_division_ratio 

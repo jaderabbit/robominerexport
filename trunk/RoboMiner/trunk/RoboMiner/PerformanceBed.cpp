@@ -6,13 +6,20 @@ PerformanceBed::PerformanceBed( vector<Robot> &_robots) : robots(_robots) {
 
 PerformanceBed::~PerformanceBed(void)
 {
+	for (int i=0; i < pm.size(); i++) 
+	{
+		if (pm[i]) {
+			delete pm[i];
+			pm[i] = 0;
+		}
+	}
 }
 
  void PerformanceBed::trigger() 
  {
-
 	//for each performance measure
-	for (int i(0); i < pm.size(); i++) {
+	for (int i(0); i < pm.size(); i++) 
+	{
 		pm[i]->takeMeasure(robots);
 	}
 
