@@ -240,6 +240,8 @@ Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, int 
 
 Robot::~Robot(void)
 {
+	if (!robotState) delete robotState;
+
 }
 
 void Robot::trackerOutput() {

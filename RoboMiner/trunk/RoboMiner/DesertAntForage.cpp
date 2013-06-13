@@ -96,7 +96,7 @@ void DesertAntForage::initializeRobots() {
 
 		forager_count++;
 
-		if ( t.randomOpen() < desc.gold_waste_division_ratio ) {
+		if ( t.randomOpen() <= desc.gold_waste_division_ratio ) {
 			robots[i].setDivision(GOLD);
 		} else {
 			robots[i].setDivision(WASTE);

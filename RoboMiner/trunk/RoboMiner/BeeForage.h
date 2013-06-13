@@ -14,6 +14,7 @@ public:
 	//Main methods
 	virtual int run();
 	virtual int runStep();
+	virtual string getAlgorithmName() { return "HoneyBee"; }
 
 	void initializePerformanceMeasures();
 	virtual void initializeRobots();

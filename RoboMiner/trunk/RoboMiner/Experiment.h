@@ -23,6 +23,7 @@ public:
 	virtual int getTotalIterations();
 	virtual int runAllSamplesStep();
 	virtual int cleanup();
+	virtual void reset();
 
 	//Initialization methods
 	virtual void initializeGrid();
@@ -31,6 +32,7 @@ public:
 	virtual void initializePerformanceMeasures() = 0;
 
 	virtual string getEnvironmentFileName();
+	virtual string getAlgorithmName() = 0;
 
 	//Environment
 	Mine mine;

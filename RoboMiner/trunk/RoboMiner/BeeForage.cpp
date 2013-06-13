@@ -65,8 +65,6 @@ int BeeForage::runStep() {
 	pb->attach( new ItemsForagedOverTime() );
 	pb->attach( new AverageTimeInState(PM_FORAGE));
 	pb->attach( new Entropy(env_desc.grid_size,number_robots) );
-	pb->attach( new ItemsForagedOverTime() );
-
  }
 
 void BeeForage::initializeRobots() {
