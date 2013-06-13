@@ -22,11 +22,15 @@ void Experiment::setExperimentParam( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _en
 	sampleCount = 0;
 	cnt = 0;
 	samples = desc.samples;
+	desc.width = env_desc.grid_size;
+	desc.height = env_desc.grid_size;
 }
 
 int Experiment::initialize() {
 	initializeGrid(); //TODO: Have a "createEnvironmentFileName" method for a given environment descriptor.
 	initializeSink();
+
+	number_robots = (desc.number_robots*1.0/100.0)*env_desc.grid_size;
 	initializeRobots();
 
 	//Initialize Performance measures

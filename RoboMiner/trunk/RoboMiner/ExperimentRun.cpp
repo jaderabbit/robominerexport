@@ -33,9 +33,9 @@ float convertFloat( char* text) {
 	return num;
 }
 
-bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC e ) {
+bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
 	//Set the experiment parameters
-	e->setExperimentParam(d,e);
+	e->setExperimentParam(d,en);
 
 	//Initialize
 	e->initialize();
@@ -46,7 +46,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC e ) {
 	return true;
 }
 
-int main(int argc, char* argv[]) 
+int experimentRun(int argc, char* argv[]) 
 {
 	//Test
 	ENVIRONMENT_DESC e;
@@ -134,6 +134,7 @@ int main(int argc, char* argv[])
 		
 	}
 
-	runExperiment( ex, d, e );
+	return true;
+
 }
 
