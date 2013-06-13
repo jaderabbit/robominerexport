@@ -67,7 +67,7 @@ void Entropy::finalize()
 double Entropy::entropyPerRobot( Grid g, int uniquePositions ) 
 {
 	//Calculate average
-	double average = 0.0;
+	/*double average = 0.0;
 	for (int j=0; j < gridSize; j++) {
 		for (int k=0; k < gridSize; k++) {
 			average += g[j][k];
@@ -88,7 +88,16 @@ double Entropy::entropyPerRobot( Grid g, int uniquePositions )
 	double uniquenessRatio = uniquePositions/(1.0*N);
 
 	//Return entropy
-	return uniquenessRatio*stdDev;
+	return uniquenessRatio*stdDev;*/
+
+	double total = 0.0;
+	for (int j=0; j < gridSize; j++) {
+		for (int k=0; k < gridSize; k++) {
+			total += g[j][k];
+		}
+	}
+
+	return (uniquePositions*1.0)/(total*1.0);
 }
 
 

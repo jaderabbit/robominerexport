@@ -80,10 +80,10 @@ int BasicForage::cleanup() {
 
 void BasicForage::initializeRobots() {
 	//Initialize Robots
-
+	
 	//TODO: Decide if initialize at sink or randomly
 	//TODO: Allow for robots to NOT choose what items to cluster. i.e. A robot can cluster any item.
-	for (int i=0; i < desc.number_robots ; i ++ ) {
+	for (int i=0; i < number_robots ; i ++ ) {
 		//choose position
 		Coord p = randomRobotPosition();
 
@@ -128,7 +128,7 @@ Coord BasicForage::randomRobotPosition() {
 
 	//generate position located close to sink
 	do { 
-		int range = desc.number_robots/desc.width + 1;
+		int range = number_robots/desc.width + 1;
 		p.x = t.random(0,range); 
 		p.y = t.random(0,desc.height-1);
 	} while (!mine.isEmpty(p.x,p.y));
@@ -139,5 +139,5 @@ Coord BasicForage::randomRobotPosition() {
 void BasicForage::initializePerformanceMeasures() {
 	pb->attach( new ItemsForagedOverTime() );
 	pb->attach( new AverageTimeInState(PM_FORAGE));
-	pb->attach( new Entropy(desc.height,desc.number_robots) );
+	pb->attach( new Entropy(desc.height,number_robots) );
  }

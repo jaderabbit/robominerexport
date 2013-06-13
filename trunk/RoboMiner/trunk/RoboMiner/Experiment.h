@@ -35,6 +35,7 @@ public:
 	//Environment
 	Mine mine;
 	vector<Robot> robots;
+	int number_robots;
 
 	//Performance bed
 	PerformanceBed* pb;

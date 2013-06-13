@@ -21,7 +21,7 @@ int BeeForage::run() {
 
 	//FORAGE/EXPLORING
 	for (unsigned int i=0; i < robots.size(); i++) {
-		if ( i < desc.number_robots*desc.forager_explorer_ratio ) 
+		if ( i < number_robots*desc.forager_explorer_ratio ) 
 			robots[i].setActivity(FORAGE);
 		else {
 			robots[i].setActivity(EXPLORE);
@@ -64,17 +64,17 @@ int BeeForage::runStep() {
  void BeeForage::initializePerformanceMeasures() {
 	pb->attach( new ItemsForagedOverTime() );
 	pb->attach( new AverageTimeInState(PM_FORAGE));
-	pb->attach( new Entropy(desc.height,desc.number_robots) );
+	pb->attach( new Entropy(env_desc.grid_size,number_robots) );
 	pb->attach( new ItemsForagedOverTime() );
 
  }
 
 void BeeForage::initializeRobots() {
 	
-	int goldCount = desc.number_robots*desc.gold_waste_division_ratio;
-	int wasteCount = desc.number_robots - desc.number_robots*desc.gold_waste_division_ratio;
+	int goldCount = number_robots*desc.gold_waste_division_ratio;
+	int wasteCount = number_robots - number_robots*desc.gold_waste_division_ratio;
 	int forager_count = 0, explorer_count = 0; 	int c = 0;
-	for (int i=0; i < desc.number_robots ; i ++ ) {
+	for (int i=0; i < number_robots ; i ++ ) {
 		//Create Robots
 		//choose position
 		Coord p = randomRobotPosition();
@@ -108,7 +108,7 @@ void BeeForage::initializeRobots() {
 		robots.push_back(r);
 
 		//forager to explorer ratio
-		if ( i <= (desc.number_robots - desc.number_robots*desc.forager_explorer_ratio )) {
+		if ( i <= (number_robots - number_robots*desc.forager_explorer_ratio )) {
 			robots[i].setActivity(EXPLORE); //explorers need to alternate type
 			explorer_count++;
 
@@ -182,9 +182,9 @@ Coord BeeForage::randomRobotPosition() {
 
 	//generate position located close to sink
 	do { 
-		int range = desc.number_robots/desc.width + 1;
+		int range = number_robots/env_desc.grid_size + 1;
 		p.x = t.random(0,range); 
-		p.y = t.random(0,desc.height-1);
+		p.y = t.random(0,env_desc.grid_size-1);
 	} while (!mine.isEmpty(p.x,p.y));
 
 	return p;

@@ -80,9 +80,15 @@ bool ResultWriter::writeResultFile() {
 		it++;
 	}
 
-	//Close file	f.close();
+	//Close file	
+	f.close();
 
 	cout << "COMPLETE: " << fileName << endl;
+	//Open File
+	ofstream log; 
+	log.open("log.txt",std::ios_base::app);
+	log << "COMPLETE: " << fileName << endl;
+	log.close();
 
 	//TODO: Change function to return result of opening the file
 	return true;

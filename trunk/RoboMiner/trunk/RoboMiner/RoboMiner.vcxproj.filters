@@ -173,6 +173,7 @@
     <ClCompile Include="sfmt.cpp">
       <Filter>Tools\ThreadSafeMersenneTwister</Filter>
     </ClCompile>
+    <ClCompile Include="ExperimentRun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">

@@ -59,7 +59,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3dx10.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <EntryPointSymbol>WinMain</EntryPointSymbol>
+      <EntryPointSymbol>experimentRun</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -95,6 +95,7 @@
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="Experiment.cpp" />
     <ClCompile Include="ExperimentMain.cpp" />
+    <ClCompile Include="ExperimentRun.cpp" />
     <ClCompile Include="Explorer.cpp" />
     <ClCompile Include="ExploreState.cpp" />
     <ClCompile Include="Forager.cpp" />
