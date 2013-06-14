@@ -15,6 +15,7 @@ public:
 	virtual bool isNext() = 0;
 	virtual string getNext() = 0;
 	virtual string getName() = 0;
+	//virtual void reset() = 0;
 
 protected:
 

@@ -20,6 +20,7 @@ public:
 	virtual string getName() { return "Entropy";}
 	virtual bool isNext();
 	virtual string getNext();
+	virtual void reset();
 
 private:
 	//Entropy per robot

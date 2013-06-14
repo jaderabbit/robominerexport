@@ -145,6 +145,7 @@ void Mine::setCellIndex( int x, int y, int index ) {
 
 int Mine::getCellIndex( int x, int y) {
 	if (isValid(x,y)) return grid[x][y].index;
+	else return -1;
 }
 
 bool Mine::load(int x, int y, int num_rob, int ratio_rob, string inputFile, int algorithm) {
@@ -324,7 +325,7 @@ void Mine::output() {
 	int sink_num = 0;
 	for (int j=0; j < size.y; j++) {
 		for (int i=0; i < size.x; i++) {
-			char a;
+			char a =' ';
 			switch( grid[i][j].type ) {
 				case 0: { a = '.'; break;}
 				case 1: {a = 'G'; gold++; break;}
@@ -350,7 +351,7 @@ void Mine::outputAdvanced() {
 	int sink_num = 0;
 	for (int j=0; j < size.y; j++) {
 		for (int i=0; i < size.x; i++) {
-			char a;
+			char a=' ';
 			switch( grid[i][j].type ) {
 				case 0: { a = '.'; break;}
 				case 1: {a = 'G'; gold++; break;}
@@ -381,7 +382,7 @@ void Mine::outputAdvanced(int option) {
 	int sink_num = 0;
 	for (int j=0; j < size.y; j++) {
 		for (int i=0; i < size.x; i++) {
-			char a;
+			char a=' ';
 			switch( grid[i][j].type ) {
 				case 0: { a = '.'; break;}
 				case 1: {a = 'G'; gold++; break;}
@@ -419,7 +420,7 @@ void Mine::fileOutput(string fname) {
 	int sink_num = 0;
 	for (int j=0; j < size.y; j++) {
 		for (int i=0; i < size.x; i++) {
-			char a;
+			char a=' ';
 			switch( grid[i][j].type ) {
 				case 0: { a = '.'; break;}
 				case 1: {a = 'G'; gold++; break;}

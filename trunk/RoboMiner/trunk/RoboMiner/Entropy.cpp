@@ -38,6 +38,17 @@ Entropy::~Entropy(void)
 {
 }
 
+void Entropy::reset() {
+
+	robotGrids.clear();
+	uniquePosPerRobot.clear();
+
+	gridSize=0;
+	N=0; //number of blocks in grid
+
+	time=0;
+}
+
 void Entropy::takeMeasure( vector<Robot>& robots) 
 {
 	//Calculate measure
@@ -97,7 +108,7 @@ double Entropy::entropyPerRobot( Grid g, int uniquePositions )
 		}
 	}
 
-	return (uniquePositions*1.0)/(total*1.0);
+	return (total > 0) ? (uniquePositions*1.0)/(total*1.0) : 0;
 }
 
 
