@@ -10,6 +10,21 @@
 #include <assert.h>
 #include "DesertAnt.h"
 
+	
+//variables
+const  int Robot::MAX_RECRUITMENT_REPS = 30;
+const  int Robot::MAX_WAITING_REPS = 50;
+const  int Robot::MAX_LOADING_REPS = 30;
+const  int Robot::RADIUS_SIZE = 10;
+const  int Robot::MAX_PATH_DEVIATION = 8;
+const  int Robot::c = 3; //max cluster deviation
+const  int Robot::MAX_SEARCH_RANGE = 5;
+const  int Robot::MAX_STATE_COUNTER = 100;
+const  int Robot::DoV = 5;
+const  int Robot::STUCK_WINDOW_SIZE = 8;
+const  int Robot::RANGE = 6;
+const  int Robot::MAX_EXPLORE_STEP = 200;
+
 Robot::Robot(void)
 {
 	one_stuck_mother_fucker = 0;
@@ -60,7 +75,7 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	 init_states[EXPLORE] = EXPLORING;
 
 	 //Initial path length
-	 chooseMaxPathLength();	
+	 //chooseMaxPathLength();	
 	 
 	 //Recruiter Message and directions
 	 homeVector.x = 0; homeVector.y = 0;
@@ -442,6 +457,7 @@ int Robot::getDirectionIndex( Coord c ) {
 			return i;
 		}
 	}
+	return -1;
 }
 
 int Robot::calculateFoV() {
@@ -879,8 +895,8 @@ double Robot::calculateLocationDesirability( double distance, double density ) {
 	//Use density.
 
 	//for now balance them equally
-	int desirability_balance = 0.5;
+	//double desirability_balance = 0.5;
 	//NOTE: Density if inverted as we are using minimum
-	return desirability_balance*distance + (1-desirability_balance)*(1-density);
-	//return density;
+	//return desirability_balance*distance + (1-desirability_balance)*(1-density);
+	return density;
 }

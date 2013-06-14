@@ -42,7 +42,7 @@ int Experiment::initialize() {
 	initializeGrid(); //TODO: Have a "createEnvironmentFileName" method for a given environment descriptor.
 	initializeSink();
 
-	number_robots = (desc.number_robots*1.0/100.0)*env_desc.grid_size;
+	number_robots = ceil((desc.number_robots*1.0/100.0)*env_desc.grid_size);
 	initializeRobots();
 
 	//Initialize Performance measures

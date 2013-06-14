@@ -69,8 +69,8 @@ int BeeForage::runStep() {
 
 void BeeForage::initializeRobots() {
 	
-	int goldCount = number_robots*desc.gold_waste_division_ratio;
-	int wasteCount = number_robots - number_robots*desc.gold_waste_division_ratio;
+	int goldCount = ceil(number_robots*desc.gold_waste_division_ratio);
+	int wasteCount = floor(number_robots - number_robots*desc.gold_waste_division_ratio);
 	int forager_count = 0, explorer_count = 0; 	int c = 0;
 	for (int i=0; i < number_robots ; i ++ ) {
 		//Create Robots

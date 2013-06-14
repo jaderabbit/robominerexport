@@ -191,6 +191,9 @@ void Robot::unloadStep() {
 }
 
 void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, double location_density ) {
+	if ( state == RECRUITING && (division == GOLD || type == WASTE) ) {
+		return;
+	}
 	//I BROKE SOMETHING!
 	//First want to calculate desirability, then use that desirability to determine whether recruiter message is added or not
 	//if ( type == division ) {	
@@ -242,6 +245,7 @@ void Robot::addRecruiterMessage( Coord location, Coord recruiterPos, int type, d
 				division = type;
 			//}
 		} else {
+
 			//change state
 			if (activity != FORAGE) {
 				activity_counter=0;

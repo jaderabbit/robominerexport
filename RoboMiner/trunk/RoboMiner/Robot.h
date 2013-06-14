@@ -163,7 +163,7 @@ public:
 	void setRobotState( RobotState* _state ) { robotState = _state; }
 	RobotState* getRobotState() { return robotState; }
 
-	void setMaxPath( int _max_path ) { max_path = _max_path; }
+	void setMaxPath( int _max_path ) { max_path = _max_path; chooseMaxPathLength();	 }
 
 	void setStringTracker( string track_file ) { tracker = true;
 		trackFile = track_file;
@@ -234,18 +234,18 @@ public:
 	Coord oldSinkPos;
 	
 	//variables
-	const static int MAX_RECRUITMENT_REPS = 20;
-	const static int MAX_WAITING_REPS = 50;
-	const static int MAX_LOADING_REPS = 30;
-	const static int RADIUS_SIZE = 10;
-	const static int MAX_PATH_DEVIATION = 8;
-	const static int c = 3; //max cluster deviation
-	const static int MAX_SEARCH_RANGE = 5;
-	const static int MAX_STATE_COUNTER = 100;
-	const static int DoV = 5;
-	const static int STUCK_WINDOW_SIZE = 8;
-	const static int RANGE = 6;
-	const static int MAX_EXPLORE_STEP = 200;
+	const static int MAX_RECRUITMENT_REPS;
+	const static int MAX_WAITING_REPS;
+	const static int MAX_LOADING_REPS;
+	const static int RADIUS_SIZE;
+	const static int MAX_PATH_DEVIATION;
+	const static int c; //max cluster deviation
+	const static int MAX_SEARCH_RANGE;
+	const static int MAX_STATE_COUNTER;
+	const static int DoV;
+	const static int STUCK_WINDOW_SIZE;
+	const static int RANGE;
+	const static int MAX_EXPLORE_STEP;
 
 	//if robot has a tracker, then a file is saved with its total movements
 	bool tracker;

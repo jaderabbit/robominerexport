@@ -1,4 +1,5 @@
 #include "BeeForage.h"
+#include "DesertAntForage.h"
 #include "BasicForageGoldOnly.h"
 #include "BasicForage.h"
 #include "Experiment.h"
@@ -73,39 +74,39 @@ void beginThread( void* pParams ) {
 	experiments.push_back( new BasicForage() );
 
 	//Forager explorer ratio
-	double forager_explorer_ratio[] = { 0.1, 0.3, 0.5, 0.7, 0.9 };
-	vector<double> foragerExplorerRatio (forager_explorer_ratio, forager_explorer_ratio + sizeof(forager_explorer_ratio) / sizeof(int) );
+	float forager_explorer_ratio[] = { 0.1f, 0.3f, 0.5f, 0.7f, 0.9f };
+	vector<float> foragerExplorerRatio (forager_explorer_ratio, forager_explorer_ratio + sizeof(forager_explorer_ratio) / sizeof(int) );
 
 	//Gold waste division ratio
-	double gold_waste_robot_division[] = {  0, 0.2, 0.25, 0.33333333, 0.5, 0.666666667, 0.75, 0.8, 1  };
-	vector<double> goldWasteRobotDiv (gold_waste_robot_division, gold_waste_robot_division + sizeof(gold_waste_robot_division) / sizeof(int) );
+	float gold_waste_robot_division[] = {  0.0f, 0.2f, 0.25f, 0.33333333f, 0.5f, 0.666666667f, 0.75f, 0.8f, 1.0f };
+	vector<float> goldWasteRobotDiv (gold_waste_robot_division, gold_waste_robot_division + sizeof(gold_waste_robot_division) / sizeof(int) );
 
-	for (int j=0; j < gridSize.size(); j++) {
+	for (unsigned int j=0; j < gridSize.size(); j++) {
 			env_desc.grid_size = gridSize[j];
 
 			//Percentage of objects
-			for (int k=0; k < objectPercentage.size(); k++ ) {
+			for (unsigned int k=0; k < objectPercentage.size(); k++ ) {
 				env_desc.num_objects = objectPercentage[k];
 
 				//Gold to waste ratio
-				for (int p=0; p < goldWasteRatio.size(); p++) {
+				for (unsigned int p=0; p < goldWasteRatio.size(); p++) {
 					env_desc.ratio_gold = goldWasteRatio[p];
 
 					//Experiment
 					//Number of robots
-					for (int q = 0; q < numRobots.size(); q++) {
+					for (unsigned int q = 0; q < numRobots.size(); q++) {
 						exp_desc.number_robots = numRobots[q];
 
 						//Forager explorer ratio
-						for (int u=0; u < foragerExplorerRatio.size(); u++) {		
+						for (unsigned int u=0; u < foragerExplorerRatio.size(); u++) {		
 							exp_desc.forager_explorer_ratio = foragerExplorerRatio[u];
 
 							//Gold waste robot division
-							for (int y=0; y < goldWasteRobotDiv.size(); y++) {		
+							for (unsigned int y=0; y < goldWasteRobotDiv.size(); y++) {		
 								exp_desc.gold_waste_division_ratio = goldWasteRobotDiv[y];
 
 								//Experiment
-								for (int v = 0; v < experiments.size(); v++ ) {
+								for (unsigned int v = 0; v < experiments.size(); v++ ) {
 									 runExperiment( experiments[v], exp_desc, env_desc);
 								}
 							}
@@ -150,7 +151,7 @@ int main(int argc, char* argv[]) {
 	d.number_objects = 700;
 	d.number_robots = 10;
 	d.gold_waste_ratio = 1;
-	d.forager_explorer_ratio = 0.8;
+	d.forager_explorer_ratio = 0.8f;
 	d.total_iterations = 4000;
 	d.gold_waste_division_ratio =1;
 	d.max_path = 50;
@@ -169,7 +170,7 @@ int main(int argc, char* argv[]) {
 	d2.number_objects = 700;
 	d2.number_robots = 10;
 	d2.gold_waste_ratio = 1;
-	d2.forager_explorer_ratio = 0.8;
+	d2.forager_explorer_ratio = 0.8f;
 	d2.total_iterations = 4000;
 	d2.gold_waste_division_ratio =1;
 	d2.max_path = 50;
@@ -178,12 +179,12 @@ int main(int argc, char* argv[]) {
 	ENVIRONMENT_DESC e2;
 	e2.grid_size = 50;
 	e2.num_objects = 20;
-	e2.ratio_gold = 0.33333333;
+	e2.ratio_gold = 0.5;
 	e2.type = "clustered";
 	e2.sink_boundary = 5;
 
 	runExperiment( new BeeForage(d,e), d,e);
-	runExperiment( new BeeForage(d2,e2), d2,e2);
+	runExperiment( new DesertAntForage(d2,e2), d2,e2);
 
 	//All parameters lists
 	/*if ( argc < 2 ) return -1;

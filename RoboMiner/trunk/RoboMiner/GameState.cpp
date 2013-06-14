@@ -64,7 +64,7 @@ bool GameState::LoadLevel( const char* filename, int width, int height, int num_
 	float tx=-1, ty=1;
 
 	//TODO: Replace navgraph with Mine.grid
-	for ( int y=0; y <  experiment->mine.size.y; y++ )
+	for (unsigned  int y=0; y <  experiment->mine.size.y; y++ )
 	{
 		for ( unsigned int x=0; x < experiment->mine.size.x; x++ )
 		{

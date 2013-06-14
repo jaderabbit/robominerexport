@@ -2,6 +2,7 @@
 
 #include "mt.h"
 #include "mtrand.h"
+#include <assert.h>
 #include <limits>
 #include <random>
 #define round(x) int(x + 0.5)
@@ -26,6 +27,7 @@ public:
 	int random(int low, int high) {
 		//int t = mt->genrand_int31();
 		//int t = rand();
+		assert(high - low > -1 );
 		int t = irand();
 		return abs( t % (high - low + 1) ) + low;
 		//return  sfmt->IRandom(low,high);

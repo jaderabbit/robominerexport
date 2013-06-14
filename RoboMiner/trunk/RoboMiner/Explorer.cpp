@@ -23,7 +23,7 @@ double Robot::calculateDensity() {
 		Coord tmp_pos; tmp_pos.x = pos.x; tmp_pos.y = pos.y;
 
 		//Run through depth of view
-		for (int i=0; i < DoV; i++ ) {
+		for (int j=0; j < DoV; j++ ) {
 			//calc new pos
 			tmp_pos.x += d.x;
 			tmp_pos.y += d.y;
@@ -161,8 +161,8 @@ void Robot::recruitStep() {
 
 		//send message to waiting robots
 		recruited += waitingRobots.size();
-		for (int i=0; i < waitingRobots.size(); i++) {
-			if ( (*robots)[waitingRobots[i]].state == WAITING ) {
+		for (unsigned int i=0; i < waitingRobots.size(); i++) {
+			if ( (*robots)[waitingRobots[i]].state == WAITING || (*robots)[waitingRobots[i]].state == RECRUITING ) {
 				(*robots)[waitingRobots[i]].addRecruiterMessage(clusterLocation,oldSinkPos,division,density);
 			}
 		}
@@ -230,9 +230,9 @@ bool Robot::compareDesirability( double des) {
 
 		//set recruitment reps
 		if ( division == GOLD ) {
-			recruitment_reps = MAX_RECRUITMENT_REPS*des;
+			recruitment_reps = ceil(MAX_RECRUITMENT_REPS*des);
 		} else {
-			recruitment_reps = MAX_RECRUITMENT_REPS*des*0.5;
+			recruitment_reps = ceil(MAX_RECRUITMENT_REPS*des*0.5);
 		}
 
 	} else {
@@ -243,7 +243,6 @@ bool Robot::compareDesirability( double des) {
 	num_desirabilities++;
 	desirability_total+= des;
 	desirability_threshold = desirability_total/(1.0*num_desirabilities);
-
 
 	return good_desirability;
 

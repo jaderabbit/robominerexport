@@ -33,7 +33,7 @@ Tools::~Tools(void)
 
 void Tools::sortConcurrent( double num[], Coord a2[], int size ){
 	int i, j, flag = 1;    // set flag to 1 to start first pass
-	int temp;             // holding variable
+	double temp;             // holding variable
 	int numLength = size;
 	Coord t;
 	for (i = 1; (i <= numLength) && flag; i++)

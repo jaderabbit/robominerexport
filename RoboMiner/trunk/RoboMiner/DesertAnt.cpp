@@ -47,7 +47,8 @@ int DesertAnt::nextState(int currentState, bool located, bool memory, bool loade
 		return EXPLORING;
 	} else if ( currentState == LOCAL_CLUSTER_SEARCH && located == true ) {
 		return HOMING;
-	}
+	} 
+	return -1;
 }
 
 void DesertAnt::exploring() {

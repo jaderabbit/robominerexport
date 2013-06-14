@@ -54,8 +54,8 @@ bool FrequencyHistogramTool::readFile( string input) {
 bool FrequencyHistogramTool::writeFile( string output) {
 	ofstream out(output);
 	if (out.is_open() ) {
-		for (int i=0; i < grid.size(); i++) {
-			for (int j=0; j < grid[0].size(); j++) {
+		for (unsigned int i=0; i < grid.size(); i++) {
+			for (unsigned int j=0; j < grid[0].size(); j++) {
 				out << grid[i][j] << ",";
 			}
 			out << endl;
