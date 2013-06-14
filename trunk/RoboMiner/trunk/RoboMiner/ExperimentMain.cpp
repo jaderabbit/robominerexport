@@ -13,7 +13,7 @@
 #include <iostream>
 
 using namespace std;
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+
 
 bool runExperiment( Experiment* e, EXPERIMENT_DESC exp_desc, ENVIRONMENT_DESC env_desc ) {
 	//Set the experiment parameters
