@@ -122,7 +122,7 @@ void beginThread( void* pParams ) {
 	for (int i=0; i < experiments.size(); i++) 
 	{
 		delete experiments[i];
-	}
+}
 
 }
 
@@ -209,9 +209,9 @@ int main(int argc, char* argv[]) {
 	double gold_ratios[] = { 0, 0.2, 0.25, 0.33333333, 0.5, 0.666666667, 0.75, 0.8, 1 };
 	vector<double> goldWasteRatio (gold_ratios, gold_ratios + sizeof(gold_ratios) / sizeof(int) );
 
-	//Gold to waste ratio
-	for (int p=0; p < goldWasteRatio.size(); p++) {
-		env_desc.ratio_gold = goldWasteRatio[p];
+				//Gold to waste ratio
+				for (int p=0; p < goldWasteRatio.size(); p++) {
+					env_desc.ratio_gold = goldWasteRatio[p];
 		LPTSTR command = createCommandlineString(env_desc,exp_desc);
 		STARTUPINFO si;
 		PROCESS_INFORMATION pi;
@@ -222,7 +222,7 @@ int main(int argc, char* argv[]) {
 
 		if (!CreateProcess("RoboMineProcess.exe",command,NULL,NULL,FALSE,0,NULL,NULL,&si,&pi) ) {
 			cout << "Error in process creation: " << command << endl; 
-		}
+						}
 
 		delete [] command;
 
@@ -230,5 +230,5 @@ int main(int argc, char* argv[]) {
 		CloseHandle( pi.hProcess );
 		CloseHandle( pi.hThread );
 	}*/
-}
-
+		}
+		
