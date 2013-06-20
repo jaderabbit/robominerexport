@@ -33,7 +33,7 @@ float convertFloat( char* text) {
 	return num;
 }
 
-/*bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
+bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
 	//Set the experiment parameters
 	e->setExperimentParam(d,en);
 
@@ -46,20 +46,21 @@ float convertFloat( char* text) {
 	return true;
 }
 
-int _tmain(int argc, char* argv[]) 
+int main(int argc, char* argv[]) 
 {
-	//Test
+	/*//Test
 	ENVIRONMENT_DESC e;
 	e.ratio_gold = 0.5;
 	e.sink_boundary = 5;
 
 	EXPERIMENT_DESC d;
-	d.forager_explorer_ratio = 0.7;
+	d.forager_explorer_ratio = 0.7f;
 	d.max_path = 50;
 	d.samples = 30;
 	d.total_iterations = 5000;
-
-	/*
+	int k;
+	cin >> k;*/
+	
 	//Pull data from environment variables
 	ENVIRONMENT_DESC e;
 	e.ratio_gold = convertDouble(argv[1]);
@@ -69,12 +70,12 @@ int _tmain(int argc, char* argv[])
 	d.forager_explorer_ratio = convertFloat(argv[3]);
 	d.max_path = convertInt(argv[4]);
 	d.samples = convertInt( argv[5] );
-	d.total_iterations = convertInt( argv[6] );*/
+	d.total_iterations = convertInt( argv[6] );
 
 	//Setup all the parameters to be run.
-
 	//Environment types
-/*	string environment_types[] = { "clustered", "uniform", "gaussian", "vein" };
+
+	string environment_types[] = { "clustered", "uniform", "gaussian", "vein" };
 	int num_environment_types = 4;
 
 	//Grid sizes
@@ -132,10 +133,7 @@ int _tmain(int argc, char* argv[])
 				}
 			}
 		}
-		
 	}
-
 	return true;
-
-}*/
+}
 
