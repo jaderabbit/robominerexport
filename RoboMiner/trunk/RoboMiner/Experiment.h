@@ -29,7 +29,8 @@ public:
 	virtual void initializeGrid();
 	virtual void initializeSink();
 	virtual void initializeRobots() =0;
-	virtual void initializePerformanceMeasures() = 0;
+	virtual void initializePerformanceMeasures();
+	virtual void addPerformanceMeasure(PerformanceMeasure * pm);
 
 	virtual string getEnvironmentFileName();
 	virtual string getAlgorithmName() = 0;
@@ -62,6 +63,5 @@ public:
 
 	//Interation counter
 	int cnt;
-
 };
 

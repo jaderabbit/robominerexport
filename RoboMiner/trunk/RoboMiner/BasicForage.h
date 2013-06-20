@@ -14,7 +14,6 @@ public:
 
 	//Initialize
 	virtual void initializeRobots();
-	virtual void initializePerformanceMeasures();
 	virtual string getAlgorithmName() { return "Basic"; }
 	//Chose robot position
 	Coord randomRobotPosition();

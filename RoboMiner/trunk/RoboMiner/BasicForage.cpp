@@ -141,9 +141,3 @@ Coord BasicForage::randomRobotPosition() {
 
 	return p;
 }
-
-void BasicForage::initializePerformanceMeasures() {
-	pb->attach( new ItemsForagedOverTime() );
-	pb->attach( new AverageTimeInState(PM_FORAGE));
-	pb->attach( new Entropy(desc.height,number_robots) );
- }

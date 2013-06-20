@@ -110,13 +110,6 @@ void DesertAntForage::initializeRobots() {
 
 }
 
-void DesertAntForage::initializePerformanceMeasures() {
-	pb->attach( new ItemsForagedOverTime() );
-	pb->attach( new AverageTimeInState(PM_FORAGE));
-	pb->attach( new Entropy(desc.height,number_robots) );
-	pb->attach( new ItemsForagedOverTime() );
-}
-
 
 Coord DesertAntForage::randomRobotPosition() {
 	//choose position

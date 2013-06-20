@@ -16,7 +16,6 @@ public:
 	virtual int runStep();
 	virtual string getAlgorithmName() { return "HoneyBee"; }
 
-	void initializePerformanceMeasures();
 	virtual void initializeRobots();
 	Coord randomRobotPosition();
 };

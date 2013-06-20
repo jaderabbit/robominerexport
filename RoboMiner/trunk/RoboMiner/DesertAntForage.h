@@ -12,7 +12,6 @@ public:
 	virtual int run();
 	virtual int runStep();
 
-	void initializePerformanceMeasures();
 	virtual void initializeRobots();
 	virtual string getAlgorithmName() { return "DesertAnt"; }
 	Coord randomRobotPosition();
