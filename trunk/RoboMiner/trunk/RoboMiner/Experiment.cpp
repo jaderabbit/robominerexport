@@ -1,10 +1,12 @@
 #include "Experiment.h"
 
+#include "ItemsForagedOverTime.h"
+#include "AverageTimeInState.h"
+#include "Entropy.h"
 
 Experiment::Experiment(void)
 {
 }
-
 
 Experiment::~Experiment(void)
 {
@@ -187,4 +189,14 @@ string Experiment::getEnvironmentFileName() {
 	fileName << "_sim_" << sampleCount << ".txt";
 	return fileName.str();
 }
+
+ void Experiment::initializePerformanceMeasures() {
+	pb->attach( new ItemsForagedOverTime() );
+	pb->attach( new AverageTimeInState(PM_FORAGE));
+	pb->attach( new Entropy(env_desc.grid_size,number_robots) );
+ }
+
+ void Experiment::addPerformanceMeasure( PerformanceMeasure * pm) {
+	 pb->attach( pm );
+ }
 

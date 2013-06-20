@@ -14,7 +14,6 @@ public:
 
 	//Initialize
 	virtual void initializeRobots();
-	virtual void initializePerformanceMeasures();
 
 	//Chose robot position
 	Coord randomRobotPosition();
