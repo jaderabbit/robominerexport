@@ -7,6 +7,7 @@
 
 //include game state
 #include "GameState.h"
+#include "ClusterGeneration.h"
 #include "FatalError.h"
 
 //include STL libraries
@@ -113,23 +114,27 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	EXPERIMENT_DESC d;
 	d.width = 50; d.height = 50;
 	d.number_objects = 700;
-	d.number_robots = 10;
+	d.number_robots = 100;
 	d.gold_waste_ratio = 1;
 	d.forager_explorer_ratio = 0.8f;
-	d.total_iterations = 4000;
+	d.total_iterations = 10000;
 	d.gold_waste_division_ratio =1;
-	d.max_path = 50;
+	d.max_path = 10;
 	d.samples = 19;
 
 	ENVIRONMENT_DESC e;
 	e.grid_size = 50;
-	e.num_objects = 20;
-	e.ratio_gold = 0.5;
-	e.type = "clustered";
+	e.num_objects = 50;
+	e.ratio_gold = 0.666667;
+	e.type = "uniform";
 	e.sink_boundary = 5;
 
+	Tools tools;
+	Experiment *cg = new ClusterGeneration(tools);
+	cg->setExperimentParam(d,e);
+
 	//intialize game
-	if ( !game.Initialize(&hWnd, int2(windowWidth, windowHeight),new BeeForage(d,e)) ) return FatalError(hWnd, "Game init failed!");
+	if ( !game.Initialize(&hWnd, int2(windowWidth, windowHeight),cg) ) return FatalError(hWnd, "Game init failed!");
 	
 	//load map
 	if ( !game.LoadLevel("clustered_test.txt",80,80,20,3) ) return FatalError(hWnd, "Level Load failed!");

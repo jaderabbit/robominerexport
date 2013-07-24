@@ -177,7 +177,9 @@
       <Filter>Tools\ThreadSafeMersenneTwister</Filter>
     </ClCompile>
     <ClCompile Include="ExperimentRun.cpp" />
-    <ClCompile Include="ClusterGeneration.cpp" />
+    <ClCompile Include="ClusterGeneration.cpp">
+      <Filter>Experiment\ClusterGeneration</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -282,7 +284,9 @@
     <ClInclude Include="randomc.h">
       <Filter>Tools\ThreadSafeMersenneTwister</Filter>
     </ClInclude>
-    <ClInclude Include="ClusterGeneration.h" />
+    <ClInclude Include="ClusterGeneration.h">
+      <Filter>Experiment\ClusterGeneration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="GS.fx">

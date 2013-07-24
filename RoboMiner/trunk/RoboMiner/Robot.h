@@ -285,6 +285,15 @@ public:
 	//Recruitment reps
 	int recruitment_reps; //length of dance. Scaled linearly based on desirability.  
 
+	//Cluster generation. 
+	vector<double> lambdas;
+	vector<deque<int>> T;
+	const static int T_size;
+	double pickup_prob_const;
+	double drop_prob_const;
+	void randomWalkStepCluster();
+	void makeUnsafeMove();
+	double calculateDensityType(int);
 
 };
 

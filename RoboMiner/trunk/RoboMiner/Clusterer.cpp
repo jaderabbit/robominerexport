@@ -12,14 +12,15 @@ void Robot::cluster() {
 }
 
 void Robot::loadedStep() {
+
+	//randomly move
+	randomWalkStepCluster();
+
 	//calculate f
 	calculateF();
 
-	//randomly move
-	randomWalkStep();
-
 	//look around and pick up and put down
-	unload();
+	if (isEmpty(pos)) unload();
 
 	if (!loaded) {
 		state = UNLOADED;
@@ -28,27 +29,58 @@ void Robot::loadedStep() {
 }
 
 void Robot::unloadedStep() {
+	
+	//randomly move
+	randomWalkStepCluster();
+
 	//calculate f
 	calculateF();
 
-	//randomly move
-	randomWalkStep();
-
 	//look around and pick up and put down
-	load();
+	if (!isEmpty(pos)) load();
 
 	if (loaded) {
 		state = LOADED;
 	}
 }
 
-void Robot::randomWalkStep() {
-	if ( path_count < path_length && validMove() ) {
-		makeMove();
+void Robot::makeUnsafeMove() {
+	//mine->grid[pos.x][pos.y].type = EMPTY; //prev pos to empty 
+	//mine->grid[pos.x + dir.x][pos.y + dir.y].type = ROBOT; //current pos to robot
+	mine->grid[pos.x + dir.x][pos.y + dir.y].index = index; //set the index of mine position to that of current robot
+	mine->grid[pos.x][pos.y].index = -1; 
+		
+	//Move robot in direction
+	pos.x += dir.x; 
+	pos.y += dir.y; 
+
+	moved = true;
+}
+
+
+void Robot::randomWalkStepCluster() {
+	if ( path_count < path_length && ( (pos.x + dir.x >= 0) && (pos.x + dir.x < mine->size.x)  && (pos.y + dir.y < mine->size.y) && (pos.y + dir.y >= 0)) ) {
+		makeUnsafeMove();
 		path_count++;
 	} else {
 
+		if ( path_count < path_length ) {
+			chooseMaxPathLength();
+		}
+		
+		//if (t.randomOpen() < 0.5)
+			chooseDirection();
+		//else 
+		//	chooseOppositeDirection();
+		path_count = 0;
+	}
+}
 
+void Robot::randomWalkStep() {
+	if ( path_count < path_length && validMove()) {
+		makeMove();
+		path_count++;
+	} else {
 
 		if ( path_count < path_length ) {
 			chooseMaxPathLength();
@@ -100,8 +132,20 @@ void Robot::chooseMaxPathLength() {
 }
 
 bool Robot::load() {
-	assert ( f >= 0 );
-	double Pp = pow((f-1),4);
+	double Pp = pickup_prob_const/(pickup_prob_const + lambdas[ mine->grid[pos.x][pos.y].type - 1]); //choose correct lambda
+	double r = t.randomOpen();
+	if ( r < Pp) {
+		load_type = mine->grid[pos.x][pos.y].type;
+		loaded = true;
+		mine->grid[pos.x][pos.y].type = EMPTY;
+		return true;
+	}
+		
+	return false;
+
+	//assert ( f >= 0 );
+	//double Pp = pow((f-1),4);
+	/*
 	double r = t.randomOpen();
 	if ( r < Pp) {
 		for (int i=-1; i <= 1; i++) {
@@ -114,14 +158,25 @@ bool Robot::load() {
 				}
 			}
 		}
-	}
-		
-	return false;
+	}*/
 }
 
 bool Robot::unload() {
+	double Pd =  lambdas[load_type - 1]/(drop_prob_const + lambdas[load_type - 1]); //choose correct lambda
+	double r = t.randomOpen();
+	if ( r < Pd) {
+		//put down
+		mine->grid[pos.x][pos.y].type = load_type;
+
+		//change to unloaded
+		loaded = false;
+		load_type = 0;
+		return true;
+	}
+		
+	return false;
 	//calculate Pd
-	double Pd = -pow((f -1),4)+1;
+	/*double Pd = -pow((f -1),4)+1;
 	double r = t.randomOpen();
 
 	if ( r < Pd ) {
@@ -140,7 +195,7 @@ bool Robot::unload() {
 				}
 			}	
 		}
-	return false;
+	return false;*/
 }
 
 bool Robot::validPos(int x, int y) {
@@ -151,7 +206,42 @@ bool Robot::validPos(int x, int y) {
 }
 
 void Robot::calculateF() {
-	double divisor = 0;
+
+	//Update window
+
+	//lambdas[GOLD-1]  = calculateDensityType(GOLD);
+	//lambdas[WASTE-1]  = calculateDensityType(WASTE);
+	if ( !isEmpty(pos) ) {
+		if ( mine->grid[pos.x][pos.y].type == GOLD) {
+			T[GOLD-1].pop_front();
+			T[GOLD-1].push_back(1);
+			T[WASTE-1].pop_front();
+			T[WASTE-1].push_back(0);
+		} else if (mine->grid[pos.x][pos.y].type == WASTE) {
+			T[GOLD-1].pop_front();
+			T[GOLD-1].push_back(0);
+			T[WASTE-1].pop_front();
+			T[WASTE-1].push_back(1);
+		}
+	} else {
+		T[GOLD-1].pop_front();
+		T[GOLD-1].push_back(0);
+		T[WASTE-1].pop_front();
+		T[WASTE-1].push_back(0);
+	}
+
+	//Update lambdas
+	for (int i=0; i < T_size; i++) {
+		lambdas[GOLD-1] += T[GOLD-1][i];
+		lambdas[WASTE-1] += T[WASTE-1][i];
+	}
+
+	lambdas[GOLD-1] /= T_size;
+	lambdas[WASTE-1] /= T_size;
+	
+	//Update Pp and Pd
+
+	/*double divisor = 0;
 	for (int i=0; i < c; i++) {
 		divisor += i*8;
 	}
@@ -242,4 +332,33 @@ void Robot::calculateF() {
 
 int Robot::opposite( int division ) {
 	return (division == GOLD) ? WASTE : GOLD;
+}
+
+double Robot::calculateDensityType(int type) {
+	double total = 0;
+	double occupied = 0;
+
+	for (int i=0; i < 8; i++) {
+		Coord d = dir_circle[i];
+		Coord tmp_pos; tmp_pos.x = pos.x; tmp_pos.y = pos.y;
+
+		//Run through depth of view
+		for (int j=0; j < DoV; j++ ) {
+			//calc new pos
+			tmp_pos.x += d.x;
+			tmp_pos.y += d.y;
+
+			//Increment the total area
+			total+= 1.0;
+
+			//if not empty then increment occupied and break out of loop
+			if (mine->isValid(tmp_pos.x,tmp_pos.y) && !isEmpty(tmp_pos) && mine->grid[tmp_pos.x][tmp_pos.y].type == type) {
+				occupied+=1.0;
+				break;
+			}
+		}
+	}
+
+	//Calculate density and return
+	return occupied/total;
 }

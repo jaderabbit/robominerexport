@@ -3,7 +3,7 @@
 
 using namespace std;
 
-typedef vector<vector<int>> Grid;
+typedef vector<vector<short int>> Grid;
 
 #include "PerformanceMeasure.h"
 class Entropy :
@@ -25,9 +25,13 @@ public:
 private:
 	//Entropy per robot
 	double entropyPerRobot( Grid g, int uniquePositions );
+	double entropyPerRobot( short int** g, int uniquePositions );
 
 	//Grid per robot
 	vector<Grid> robotGrids;
+	//vector<short int**> robotGrids;
+
+	Grid robotGrid;
 	vector<int> uniquePosPerRobot;
 
 	int gridSize;
