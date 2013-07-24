@@ -79,7 +79,7 @@ bool InitWindow(HWND &hWnd, HINSTANCE hInstance, int width, int height)
 
 	//create the window from the class defined above	
 	hWnd = CreateWindow( "PFVISTOOLKIT", 
-						 "NOMAD - Pathfinding Visualization Toolkit", 
+						 "RoboMiner", 
 						 WS_OVERLAPPED |  WS_SYSMENU | WS_MINIMIZEBOX,
 						 0, 
 						 0, 
@@ -103,7 +103,7 @@ bool InitWindow(HWND &hWnd, HINSTANCE hInstance, int width, int height)
 /*******************************************************************
 * WinMain
 *******************************************************************/
-/*int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow )
+int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow )
 {
 	//set up the application window
 	if ( !InitWindow(hWnd, hInstance, windowWidth, windowHeight)) return FatalError(hWnd, "Could not Create Window!");

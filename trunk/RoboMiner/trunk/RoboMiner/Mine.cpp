@@ -5,24 +5,10 @@
 
 Mine::Mine(void)
 {
-	//init size
-	size.x = 80;
-	size.y = 80;
+}
 
-	//init grid world
-	for (int i=0; i < size.x; i++) {
-		vector<Block> t;
-		for (int j=0; j < size.y; j++) {
-			Block b;
-			b.index = -1;
-			b.type = EMPTY;
-			t.push_back(b);
-		}
-		grid.push_back(t);
-	}
-
-	//output blank file
-	fileOutput("single.txt");
+Mine::Mine(Tools &_t) : t(_t)
+{
 }
 
 Mine::~Mine(void)

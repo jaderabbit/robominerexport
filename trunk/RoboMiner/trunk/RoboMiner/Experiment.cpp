@@ -4,8 +4,11 @@
 #include "AverageTimeInState.h"
 #include "Entropy.h"
 
-Experiment::Experiment(void)
+Experiment::Experiment(void) : sampleCount(0), cnt(0), pb(0)
 {
+}
+
+Experiment::Experiment(Tools &_t) : t(_t),  sampleCount(0), cnt(0), pb(0), mine(_t){
 }
 
 Experiment::~Experiment(void)

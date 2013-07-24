@@ -5,6 +5,7 @@ class DesertAntForage :
 {
 public:
 	DesertAntForage(void);
+	DesertAntForage(Tools &t);
 	DesertAntForage( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc  );
 	virtual ~DesertAntForage(void);
 	

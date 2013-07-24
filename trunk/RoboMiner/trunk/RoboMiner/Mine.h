@@ -28,6 +28,7 @@ class Mine
 {
 public:
 	Mine(void);
+	Mine(Tools &t);
 	~Mine(void);
 
 //NEW METHODS

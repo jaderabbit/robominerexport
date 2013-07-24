@@ -5,7 +5,11 @@
 #include "AverageTimeInState.h"
 #include <sstream>
 
-BasicForage::BasicForage(void)
+BasicForage::BasicForage(void) :Experiment()
+{
+}
+
+BasicForage::BasicForage(Tools &_t) : Experiment(_t)
 {
 }
 
@@ -103,7 +107,7 @@ void BasicForage::initializeRobots() {
 		s << "tracker_robot_" << i << ".csv";
  
 		//Construct robot
-		Robot r(&mine);
+		Robot r(&mine,t);
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
 

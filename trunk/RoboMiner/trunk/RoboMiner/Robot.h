@@ -47,7 +47,7 @@ public:
 //Methods
 	//Constructors
 	Robot(void);
-	Robot(Mine* _mine);
+	Robot(Mine* _mine, Tools& _t);
 	Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, string tracker = "");
 	Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div, string tracker = "");
 	Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, int _div, string tracker = "");

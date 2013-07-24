@@ -5,7 +5,11 @@
 
 #include <sstream>
 
-BeeForage::BeeForage(void)
+BeeForage::BeeForage(void) :Experiment()
+{
+}
+
+BeeForage::BeeForage(Tools &_t) : Experiment(_t)
 {
 }
 
@@ -85,7 +89,7 @@ void BeeForage::initializeRobots() {
 		s << "tracker_robot_" << i << ".csv";
  
 		//Construct robot
-		Robot r(&mine);
+		Robot r(&mine,t);
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
 		r.setStringTracker(s.str());

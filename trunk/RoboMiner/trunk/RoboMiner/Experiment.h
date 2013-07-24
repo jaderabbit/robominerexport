@@ -12,6 +12,7 @@ class Experiment
 {
 public:
 	Experiment(void);
+	Experiment(Tools &t);
 	Experiment( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc);
 	~Experiment(void);
 	void setExperimentParam( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc);

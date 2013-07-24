@@ -5,6 +5,7 @@ class BasicForage :
 {
 public:
 	BasicForage(void);
+	BasicForage(Tools &_t);
 	BasicForage(EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc );
 	virtual ~BasicForage(void);
 
