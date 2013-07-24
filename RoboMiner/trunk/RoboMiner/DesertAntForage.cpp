@@ -4,10 +4,13 @@
 #include "AverageTimeInState.h"
 #include "Entropy.h"
 
-DesertAntForage::DesertAntForage(void)
+DesertAntForage::DesertAntForage(void) : Experiment()
 {
 }
 
+DesertAntForage::DesertAntForage(Tools &_t) : Experiment(_t)
+{
+}
 
 DesertAntForage::~DesertAntForage(void)
 {
@@ -76,7 +79,7 @@ void DesertAntForage::initializeRobots() {
 		s << "tracker_robot_" << i << ".csv";
  
 		//Construct robot
-		Robot r(&mine);
+		Robot r(&mine,t);
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
 		r.setStringTracker(s.str());

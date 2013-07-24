@@ -5,6 +5,8 @@
 #include "Experiment.h"
 #include <iostream>
 #include <sstream>
+#include <vld.h>
+#include "Tools.h"
 
 using namespace std;
 
@@ -48,7 +50,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
 
 int main(int argc, char* argv[]) 
 {
-	/*//Test
+	/*Test
 	ENVIRONMENT_DESC e;
 	e.ratio_gold = 0.5;
 	e.sink_boundary = 5;
@@ -60,7 +62,8 @@ int main(int argc, char* argv[])
 	d.total_iterations = 5000;
 	int k;
 	cin >> k;*/
-	
+	Tools t;
+
 	//Pull data from environment variables
 	ENVIRONMENT_DESC e;
 	e.ratio_gold = convertDouble(argv[1]);
@@ -72,11 +75,18 @@ int main(int argc, char* argv[])
 	d.samples = convertInt( argv[5] );
 	d.total_iterations = convertInt( argv[6] );
 
+	cout << argv[1] << endl;
+	cout << argv[2] << endl;
+	cout << argv[3] << endl;
+	cout << argv[4] << endl;
+	cout << argv[5] << endl;
+	cout << argv[6] << endl;
+
 	//Setup all the parameters to be run.
 	//Environment types
 
-	string environment_types[] = { "clustered", "uniform", "gaussian", "vein" };
-	int num_environment_types = 4;
+	string environment_types[] = {"gaussian", "vein" };
+	int num_environment_types = 3;
 
 	//Grid sizes
 	int grid_sizes[] = { 50, 100, 200, 300, 500 };
@@ -95,7 +105,7 @@ int main(int argc, char* argv[])
 
 	//Gold waste division ratio
 	double gold_waste_robot_division[] = {  0, 0.2, 0.25, 0.33333333, 0.5, 0.666666667, 0.75, 0.8, 1  };
-	vector<double> goldWasteRobotDiv (gold_waste_robot_division, gold_waste_robot_division + sizeof(gold_waste_robot_division) / sizeof(int) );
+	vector<double> goldWasteRobotDiv (gold_waste_robot_division, gold_waste_robot_division + sizeof(gold_waste_robot_division) / sizeof(double) );
 
 	//Environment Types
 	for (int i=0; i < num_environment_types; i++) {
@@ -120,13 +130,13 @@ int main(int argc, char* argv[])
 
 						//Experiment
 					    vector<Experiment*> experiments;
-						experiments.push_back( new BeeForage() );
-						experiments.push_back( new BasicForage() );
-						experiments.push_back (new DesertAntForage() );
+						experiments.push_back( new BeeForage(t) );
+						experiments.push_back( new BasicForage(t) );
+						experiments.push_back (new DesertAntForage(t) );
 
 						for (int v = 0; v < experiments.size(); v++ ) {
-								//runExperiment( experiments[v], d, e);
-							cout << "Processes going yep" << endl;
+								runExperiment( experiments[v], d, e);
+								delete experiments[v];
 						}
 					}
 
@@ -136,4 +146,3 @@ int main(int argc, char* argv[])
 	}
 	return true;
 }
-

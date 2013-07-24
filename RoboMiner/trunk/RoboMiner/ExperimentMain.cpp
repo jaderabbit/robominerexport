@@ -14,7 +14,7 @@
 
 using namespace std;
 
-
+/*
 bool runExperiment( Experiment* e, EXPERIMENT_DESC exp_desc, ENVIRONMENT_DESC env_desc ) {
 	//Set the experiment parameters
 	e->setExperimentParam(exp_desc,env_desc);
@@ -124,14 +124,14 @@ void beginThread( void* pParams ) {
 		delete experiments[i];
 }
 
-}
+}*/
 
 LPTSTR createCommandlineString( ENVIRONMENT_DESC e, EXPERIMENT_DESC d) {
 	char* commandline;
 	stringstream s;
 
 
-	s << e.ratio_gold  << " " << e.sink_boundary  << " "<< d.forager_explorer_ratio << " "<< d.max_path  << " "<< d.samples << " ";
+	s << "RoboMinerProcess.exe" <<" " << e.ratio_gold  << " " << e.sink_boundary  << " "<< d.forager_explorer_ratio << " "<< d.max_path  << " "<< d.samples << " ";
 	s << d.total_iterations;
 
 	string value = s.str();
@@ -143,14 +143,13 @@ LPTSTR createCommandlineString( ENVIRONMENT_DESC e, EXPERIMENT_DESC d) {
 }
 
 
-int main(int argc, char* argv[]) {
+int main4(int argc, char* argv[]) {
 
 	//Test Case 1	
-	EXPERIMENT_DESC d;
+	/*EXPERIMENT_DESC d;
 	d.width = 50; d.height = 50;
 	d.number_objects = 700;
 	d.number_robots = 10;
-	d.gold_waste_ratio = 1;
 	d.forager_explorer_ratio = 0.8f;
 	d.total_iterations = 4000;
 	d.gold_waste_division_ratio =1;
@@ -169,7 +168,6 @@ int main(int argc, char* argv[]) {
 	d2.width = 50; d2.height = 50;
 	d2.number_objects = 700;
 	d2.number_robots = 10;
-	d2.gold_waste_ratio = 1;
 	d2.forager_explorer_ratio = 0.8f;
 	d2.total_iterations = 4000;
 	d2.gold_waste_division_ratio =1;
@@ -178,19 +176,20 @@ int main(int argc, char* argv[]) {
 
 	ENVIRONMENT_DESC e2;
 	e2.grid_size = 50;
-	e2.num_objects = 20;
-	e2.ratio_gold = 0.5;
-	e2.type = "clustered";
+	e2.num_objects = 50;
+	e2.ratio_gold = 0.333333;
+	e2.type = "vein";
 	e2.sink_boundary = 5;
 
-	runExperiment( new BeeForage(d,e), d,e);
+	runExperiment( new BeeForage(d2,e2), d2,e2);
 	runExperiment( new DesertAntForage(d2,e2), d2,e2);
+	runExperiment( new BasicForage(d2,e2), d2,e2);
 
 	//All parameters lists
 	/*if ( argc < 2 ) return -1;
 
 	//-------------Values that do not change----------------------
-
+	*/
 	
 
 	//Descriptors
@@ -207,11 +206,12 @@ int main(int argc, char* argv[]) {
 	//Environment
 	//Gold waste ratios
 	double gold_ratios[] = { 0, 0.2, 0.25, 0.33333333, 0.5, 0.666666667, 0.75, 0.8, 1 };
-	vector<double> goldWasteRatio (gold_ratios, gold_ratios + sizeof(gold_ratios) / sizeof(int) );
+	vector<double> goldWasteRatio (gold_ratios, gold_ratios + sizeof(gold_ratios) / sizeof(double) );
+	//cout << goldWasteRatio.size() << endl;
 
-				//Gold to waste ratio
-				for (int p=0; p < goldWasteRatio.size(); p++) {
-					env_desc.ratio_gold = goldWasteRatio[p];
+	//Gold to waste ratio
+	for (int p=0; p < goldWasteRatio.size(); p++) {
+		env_desc.ratio_gold = goldWasteRatio[p];
 		LPTSTR command = createCommandlineString(env_desc,exp_desc);
 		STARTUPINFO si;
 		PROCESS_INFORMATION pi;
@@ -219,8 +219,8 @@ int main(int argc, char* argv[]) {
 		ZeroMemory( &si, sizeof(si) );
 		si.cb = sizeof(si);
 		ZeroMemory( &pi, sizeof(pi) );
-
-		if (!CreateProcess("RoboMineProcess.exe",command,NULL,NULL,FALSE,0,NULL,NULL,&si,&pi) ) {
+		cout << command << endl;
+		if (!CreateProcess(NULL,command,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi) ) {
 			cout << "Error in process creation: " << command << endl; 
 						}
 
@@ -229,6 +229,9 @@ int main(int argc, char* argv[]) {
 		  // Close process and thread handles. 
 		CloseHandle( pi.hProcess );
 		CloseHandle( pi.hThread );
-	}*/
-		}
+	}
+	int k=0;
+	cin >> k;
+	return true;
+}
 		

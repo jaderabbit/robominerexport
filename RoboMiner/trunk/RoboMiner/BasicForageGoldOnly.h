@@ -5,6 +5,7 @@ class BasicForageGoldOnly :
 {
 public:
 	BasicForageGoldOnly(void);
+	BasicForageGoldOnly(Tools &_t);
 	BasicForageGoldOnly(EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc );
 	virtual ~BasicForageGoldOnly(void);
 

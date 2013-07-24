@@ -9,6 +9,10 @@ BasicForageGoldOnly::BasicForageGoldOnly(void)
 {
 }
 
+BasicForageGoldOnly::BasicForageGoldOnly(Tools &_t) : Experiment(_t)
+{
+}
+
 BasicForageGoldOnly::~BasicForageGoldOnly(void)
 {
 }
@@ -101,7 +105,7 @@ void BasicForageGoldOnly::initializeRobots() {
 		s << "tracker_robot_" << i << ".csv";
  
 		//Construct robot
-		Robot r(&mine);
+		Robot r(&mine,t);
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
 		r.setDivision(GOLD);

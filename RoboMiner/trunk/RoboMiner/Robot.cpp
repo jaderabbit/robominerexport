@@ -57,7 +57,7 @@ Robot::Robot(void)
 	 homeVector.x = 0; homeVector.y = 0;
 }
 
-Robot::Robot(Mine* _mine) : mine(_mine) {
+Robot::Robot(Mine* _mine, Tools &_t) : mine(_mine), t(_t) {
 	
 	//Load
 	load_type = -1;
@@ -110,6 +110,7 @@ Robot::Robot(Mine* _mine) : mine(_mine) {
 	num_desirabilities=0;
 
 	recruitment_reps = MAX_RECRUITMENT_REPS;
+	robotState = 0;
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div,  string track_file){
@@ -255,8 +256,8 @@ Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, int 
 
 Robot::~Robot(void)
 {
-	if (!robotState) delete robotState;
-
+	if (robotState) delete robotState;
+	robotState = 0;
 }
 
 void Robot::trackerOutput() {

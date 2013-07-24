@@ -8,6 +8,7 @@ class BeeForage :
 {
 public:
 	BeeForage(void);
+	BeeForage(Tools &_t);
 	BeeForage( EXPERIMENT_DESC _desc, ENVIRONMENT_DESC _env_desc  );
 	virtual ~BeeForage(void);
 

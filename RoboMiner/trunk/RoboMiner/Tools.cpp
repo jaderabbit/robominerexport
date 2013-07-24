@@ -6,9 +6,9 @@ Tools::Tools(void)
 {
 	//Old Mersenne
 	unsigned long init[4]={0x123, 0x234, 0x345, 0x457}, length=4;
-    mt = new MersenneTwister();
-    mt->init_by_array(init, length);
-	mt->init_genrand(time(0));
+   // mt = new MersenneTwister();
+   // mt->init_by_array(init, length);
+	//mt->init_genrand(time(0));
 
 	//New Mersenne
 	drand.seed(time(0));
@@ -18,8 +18,8 @@ Tools::Tools(void)
 
 	//Super Fast Mersenne Twister - Thread-safe
 	const int init2[4]={0x123, 0x234, 0x345, 0x457};
-//	sfmt = new CRandomSFMT0(time(0));
-//	sfmt->RandomInitByArray(init2,length);
+	//sfmt = new CRandomSFMT0(time(0));
+	//sfmt->RandomInitByArray(init2,length);
 
 	//Built in Random
 	srand(time(0));
@@ -28,7 +28,8 @@ Tools::Tools(void)
 
 Tools::~Tools(void)
 {
-	//delete mt;
+	//if (mt) delete mt;
+	//mt = 0;
 }
 
 void Tools::sortConcurrent( double num[], Coord a2[], int size ){

@@ -70,6 +70,9 @@
     <Filter Include="Tools\ThreadSafeMersenneTwister">
       <UniqueIdentifier>{65d26184-1b60-4b98-9afd-2c6cb388453f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Experiment\ClusterGeneration">
+      <UniqueIdentifier>{99d8ad7f-471c-4256-bdd3-966fa34cc337}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Forager.cpp">
@@ -174,6 +177,7 @@
       <Filter>Tools\ThreadSafeMersenneTwister</Filter>
     </ClCompile>
     <ClCompile Include="ExperimentRun.cpp" />
+    <ClCompile Include="ClusterGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -278,6 +282,7 @@
     <ClInclude Include="randomc.h">
       <Filter>Tools\ThreadSafeMersenneTwister</Filter>
     </ClInclude>
+    <ClInclude Include="ClusterGeneration.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GS.fx">
