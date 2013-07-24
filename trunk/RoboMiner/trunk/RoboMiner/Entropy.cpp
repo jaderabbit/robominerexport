@@ -10,21 +10,26 @@ Entropy::Entropy( int _gridSize, int _numRobots ) : PerformanceMeasure(),gridSiz
 {
 	//Initialize time
 	time = 0;
-
+	
 	//Initialize grid per robot
 	for (int i=0; i < _numRobots; i++) {
 		//Initialize unique positions vector
 		uniquePosPerRobot.push_back(0);
 
 		//Initialize grid
-		Grid g;
+		Grid g(_gridSize);
 		for (int j=0; j < _gridSize; j++) {
-			vector<int> r;
-			for (int k=0; k < _gridSize; k++) {
-				r.push_back(0);
-			}
-			g.push_back(r);
+			vector<short int> r(_gridSize,0);
+			g[j] =r;
 		}
+			
+		/*short int** grid = new short int*[_gridSize];
+		for (int i=0; i < _gridSize; ++i) {
+			grid[i] = new short int[_gridSize];
+			for (int j=0; j < _gridSize; ++j) {
+				grid[i][j] = 0;
+			}
+		}*/
 		robotGrids.push_back(g);
 	}
 
@@ -36,6 +41,13 @@ Entropy::Entropy( int _gridSize, int _numRobots ) : PerformanceMeasure(),gridSiz
 
 Entropy::~Entropy(void)
 {
+	/*for (unsigned int i=0; i < robotGrids.size(); i++) {
+		for (int j=0; j < gridSize; j++) {
+			delete [] robotGrids[i][j];
+		}
+		delete [] robotGrids[i];
+	}*/
+	robotGrids.clear();
 }
 
 void Entropy::reset() {
@@ -76,6 +88,43 @@ void Entropy::finalize()
 }
 
 double Entropy::entropyPerRobot( Grid g, int uniquePositions ) 
+{
+	//Calculate average
+	/*double average = 0.0;
+	for (int j=0; j < gridSize; j++) {
+		for (int k=0; k < gridSize; k++) {
+			average += g[j][k];
+		}
+	}
+	average/=N;
+
+	//Calculate Standard deviation
+	double stdDev = 0.0;
+	for (int j=0; j < gridSize; j++) {
+		for (int k=0; k < gridSize; k++) {
+			stdDev += pow(  g[j][k] - average, 2.0);
+		}
+	}
+	stdDev = sqrt( stdDev/N);
+
+	//Calculate Uniqueness ration
+	double uniquenessRatio = uniquePositions/(1.0*N);
+
+	//Return entropy
+	return uniquenessRatio*stdDev;*/
+
+	double total = 0.0;
+	for (int j=0; j < gridSize; j++) {
+		for (int k=0; k < gridSize; k++) {
+			total += g[j][k];
+		}
+	}
+
+	return (total > 0) ? (uniquePositions*1.0)/(total*1.0) : 0;
+}
+
+
+double Entropy::entropyPerRobot( short int** g, int uniquePositions ) 
 {
 	//Calculate average
 	/*double average = 0.0;

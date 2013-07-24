@@ -104,6 +104,10 @@ void GameState::RenderScene()
 	{
 		for ( unsigned int x=0; x < experiment->mine.size.x; x++ )
 		{
+			if (experiment->mine.grid[x][y].index > -1 ) {
+				int ind = experiment->mine.grid[x][y].index;
+				trg.pTiles[count].color = float3(220.0/255.0,20.0/255.0,60.0/255.0);
+			} else
 			switch ( experiment->mine.grid[x][y].type ) {
 				case ROBOT:	{
 							int ind = experiment->mine.grid[x][y].index;

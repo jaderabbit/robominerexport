@@ -24,6 +24,8 @@ const  int Robot::DoV = 5;
 const  int Robot::STUCK_WINDOW_SIZE = 8;
 const  int Robot::RANGE = 6;
 const  int Robot::MAX_EXPLORE_STEP = 200;
+const  int Robot::T_size = 20;
+
 
 Robot::Robot(void)
 {
@@ -111,6 +113,19 @@ Robot::Robot(Mine* _mine, Tools &_t) : mine(_mine), t(_t) {
 
 	recruitment_reps = MAX_RECRUITMENT_REPS;
 	robotState = 0;
+
+	//Only for clustering folks
+	for (int j=0; j < 2; j++) {
+		deque<int> tmp;
+		for (int i=0; i < T_size; i++) {
+			tmp.push_back(0);
+		}
+		T.push_back(tmp);
+		lambdas.push_back(0);
+	}
+	pickup_prob_const = 0.01;
+	drop_prob_const = 0.1;
+	
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div,  string track_file){

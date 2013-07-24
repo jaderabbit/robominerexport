@@ -13,6 +13,7 @@ Mine::Mine(Tools &_t) : t(_t)
 
 Mine::~Mine(void)
 {
+	grid.clear();
 }
 
 Mine::Mine(int x, int y, int num_rob, int num_items, int num_item_types) {

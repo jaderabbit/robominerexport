@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 	int num_environment_types = 3;
 
 	//Grid sizes
-	int grid_sizes[] = { 50, 100, 200, 300, 500 };
+	int grid_sizes[] = {50, 100, 200, 300,500};
 	vector<int> gridSize (grid_sizes, grid_sizes + sizeof(grid_sizes) / sizeof(int) );
 
 	//Object percentage
