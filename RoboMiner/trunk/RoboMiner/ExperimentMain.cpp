@@ -137,7 +137,9 @@ LPTSTR createCommandlineString( ENVIRONMENT_DESC e, EXPERIMENT_DESC d) {
 	string value = s.str();
 	const char* tmp = value.c_str();
 	commandline = new char[s.str().length() + 1];
-	copy(tmp, tmp + s.str().length() + 1, commandline);
+	copy(tmp, tmp + s.str().length() + 1, commandline); //why am I doing this!?
+	s.str(std::string());
+	s.clear();
 
 	return commandline;
 }
