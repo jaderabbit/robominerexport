@@ -16,6 +16,7 @@ bool AverageDistance::isNext() {
 }
 
 string AverageDistance::getNext() {
+	stringstream s;
 	if (timer < time ) {
 		timer++;
 		return "";

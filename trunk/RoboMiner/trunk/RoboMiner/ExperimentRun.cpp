@@ -1,3 +1,4 @@
+//#include <vld.h>
 #include "BeeForage.h"
 #include "BasicForageGoldOnly.h"
 #include "BasicForage.h"
@@ -5,8 +6,11 @@
 #include "Experiment.h"
 #include <iostream>
 #include <sstream>
-#include <vld.h>
 #include "Tools.h"
+
+//#define _CRTDBG_MAP_ALLOC
+//#include <stdlib.h>
+//#include <crtdbg.h>
 
 using namespace std;
 
@@ -50,18 +54,52 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
 
 int main(int argc, char* argv[]) 
 {
-	/*Test
+	/*vector<int**> v;
+	for (int i=0;i < 10; i++) {
+		int** k = new int*[10];
+		for (int j=0; j < 10; j++) {
+			k[j] = new int[10];
+			for (int q=0; q < 10; q++) {
+				k[j][q] = 0;
+			}	
+		}
+		v.push_back(k);
+	}
+
+	for (int i=0; i < 10; i++) {
+		delete [] v[i];
+	}*/
+	//VLDEnable();
+	//Test
+	/*
+	Tools t;
 	ENVIRONMENT_DESC e;
 	e.ratio_gold = 0.5;
 	e.sink_boundary = 5;
+	e.grid_size = 50;
+	e.num_objects = 50;
+	e.type = "vein";
 
 	EXPERIMENT_DESC d;
 	d.forager_explorer_ratio = 0.7f;
 	d.max_path = 50;
 	d.samples = 30;
 	d.total_iterations = 5000;
-	int k;
-	cin >> k;*/
+	d.number_robots = 20;
+	d.gold_waste_division_ratio = 0.5;
+	vector<Experiment*> experiments;
+	experiments.push_back (new DesertAntForage(t) );
+
+	for (int v = 0; v < experiments.size(); v++ ) {
+			runExperiment( experiments[v], d, e);
+			delete experiments[v];
+	}
+
+	_CrtDumpMemoryLeaks();
+	*/
+
+	//int k;
+	//cin >> k;	
 	Tools t;
 
 	//Pull data from environment variables
@@ -85,7 +123,7 @@ int main(int argc, char* argv[])
 	//Setup all the parameters to be run.
 	//Environment types
 
-	string environment_types[] = {"gaussian", "vein" };
+	string environment_types[] = {"vein" };
 	int num_environment_types = 3;
 
 	//Grid sizes
@@ -135,14 +173,14 @@ int main(int argc, char* argv[])
 						experiments.push_back (new DesertAntForage(t) );
 
 						for (int v = 0; v < experiments.size(); v++ ) {
-								runExperiment( experiments[v], d, e);
-								delete experiments[v];
+							runExperiment( experiments[v], d, e);
+							delete experiments[v];
 						}
 					}
-
 				}
 			}
 		}
 	}
 	return true;
+	
 }

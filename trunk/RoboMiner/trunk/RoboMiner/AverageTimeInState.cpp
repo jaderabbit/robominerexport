@@ -103,13 +103,14 @@ bool AverageTimeInState::isNext() {
 }
 
 string AverageTimeInState::getNext() {
+	stringstream s1;
 	if (timer < time ) {
 		timer++;
 		return "";
 	} else {		
-		s.clear();
-		s << measurement[0];
+		s1.clear();
+		s1 << measurement[0];
 		timer++;
-		return s.str();
+		return s1.str();
 	}
 }

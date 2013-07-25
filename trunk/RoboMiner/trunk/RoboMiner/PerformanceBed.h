@@ -7,6 +7,8 @@ class PerformanceBed
 {
 public:
 	virtual ~PerformanceBed(void);
+	PerformanceBed( const PerformanceBed& other );
+	PerformanceBed& operator=(const PerformanceBed&);
 	PerformanceBed( vector<Robot>& _robots);
 
 	virtual void trigger();
