@@ -33,6 +33,15 @@ public:
 		//return  sfmt->IRandom(low,high);
 	}
 
+	int randomNoHigh(int low, int high) {
+		//int t = mt->genrand_int31();
+		//int t = rand();
+		assert(high - low > -1 );
+		int t = irand();
+		return abs( t % (high - low) ) + low;
+		//return  sfmt->IRandom(low,high);
+	}
+
 	double randomClosed() {
 		//return mt->genrand_real1();
 		//return rand()/RAND_MAX;

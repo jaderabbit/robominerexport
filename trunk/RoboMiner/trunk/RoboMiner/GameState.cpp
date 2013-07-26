@@ -104,10 +104,6 @@ void GameState::RenderScene()
 	{
 		for ( unsigned int x=0; x < experiment->mine.size.x; x++ )
 		{
-			if (experiment->mine.grid[x][y].index > -1 ) {
-				int ind = experiment->mine.grid[x][y].index;
-				trg.pTiles[count].color = float3(220.0/255.0,20.0/255.0,60.0/255.0);
-			} else
 			switch ( experiment->mine.grid[x][y].type ) {
 				case ROBOT:	{
 							int ind = experiment->mine.grid[x][y].index;
@@ -151,6 +147,10 @@ void GameState::RenderScene()
 					trg.pTiles[count].color= float3(1,215.0/255,0);break;
 				case W_SINK: trg.pTiles[count].color= float3(170/255,170/255,170/255);break;
 				case EMPTY:  trg.pTiles[count].color= float3(1,1,1);break;
+				case 7: trg.pTiles[count].color = float3(220.0/255.0,20.0/255.0,60.0/255.0); break;
+				case 8: trg.pTiles[count].color = float3(220.0/255.0,20.0/255.0,60.0/255.0); break;
+				case 9:trg.pTiles[count].color = float3(225.0/255.0,97.0/255.0,3.0/255.0); break; 
+				case 10: trg.pTiles[count].color = float3(0,0,1); break; //BLUE
 			}
 			count++;
 		}

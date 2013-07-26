@@ -132,6 +132,19 @@ void Robot::chooseMaxPathLength() {
 }
 
 bool Robot::load() {
+
+	double Pp = pickup_prob_const/(pickup_prob_const + lambdas[mine->grid[pos.x][pos.y].type-7]); //choose correct lambda
+	double r = t.randomOpen();
+	if ( r < Pp) {
+		load_type = mine->grid[pos.x][pos.y].type;
+		loaded = true;
+		mine->grid[pos.x][pos.y].type = EMPTY;
+		return true;
+	}
+		
+	return false;
+
+	/*
 	double Pp = pickup_prob_const/(pickup_prob_const + lambdas[ mine->grid[pos.x][pos.y].type - 1]); //choose correct lambda
 	double r = t.randomOpen();
 	if ( r < Pp) {
@@ -162,7 +175,7 @@ bool Robot::load() {
 }
 
 bool Robot::unload() {
-	double Pd =  lambdas[load_type - 1]/(drop_prob_const + lambdas[load_type - 1]); //choose correct lambda
+	double Pd =  lambdas[load_type-7]/(drop_prob_const + lambdas[load_type-7]); //choose correct lambda
 	double r = t.randomOpen();
 	if ( r < Pd) {
 		//put down
@@ -209,8 +222,42 @@ void Robot::calculateF() {
 
 	//Update window
 
+	for (int i=0; i < num_clusters; i++) {
+		lambdas[i] = calculateDensityType(i+7);
+	}
+
 	//lambdas[GOLD-1]  = calculateDensityType(GOLD);
 	//lambdas[WASTE-1]  = calculateDensityType(WASTE);
+
+	/*if ( !isEmpty(pos) ) {
+		int i= mine->grid[pos.x][pos.y].type;
+		for (int j=0; j < num_clusters; j++) {
+			T[j].pop_front();
+			if ( i-6== j) {
+				T[j].push_back(1);
+			} else {
+				T[j].push_back(0);
+			}
+		}
+		
+	} else {
+		for (int j=0; j < num_clusters; j++) {
+			T[j].pop_front();
+			T[j].push_back(0);
+		}
+	}
+
+	for (int j=0; j < num_clusters; j++) {
+		for (int i=0; i < T_size; i++) {
+			lambdas[j] += T[j][i];
+		}
+		lambdas[j] /= T_size;
+	}*/
+
+	//lambdas[GOLD-1] /= T_size;
+	//lambdas[WASTE-1] /= T_size;
+
+/*
 	if ( !isEmpty(pos) ) {
 		if ( mine->grid[pos.x][pos.y].type == GOLD) {
 			T[GOLD-1].pop_front();
@@ -240,7 +287,7 @@ void Robot::calculateF() {
 	lambdas[WASTE-1] /= T_size;
 	
 	//Update Pp and Pd
-
+	*/
 	/*double divisor = 0;
 	for (int i=0; i < c; i++) {
 		divisor += i*8;
