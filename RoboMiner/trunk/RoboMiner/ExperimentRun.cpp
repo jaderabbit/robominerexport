@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include "Tools.h"
+#include "ClusterGeneration.h"
 
 //#define _CRTDBG_MAP_ALLOC
 //#include <stdlib.h>
@@ -113,6 +114,9 @@ int main(int argc, char* argv[])
 	d.samples = convertInt( argv[5] );
 	d.total_iterations = convertInt( argv[6] );
 
+	d.max_path = 30;
+	d.total_iterations = 10000;
+
 	cout << argv[1] << endl;
 	cout << argv[2] << endl;
 	cout << argv[3] << endl;
@@ -123,7 +127,7 @@ int main(int argc, char* argv[])
 	//Setup all the parameters to be run.
 	//Environment types
 
-	string environment_types[] = {"vein" };
+	string environment_types[] = {"uniform" };
 	int num_environment_types = 3;
 
 	//Grid sizes
@@ -168,9 +172,10 @@ int main(int argc, char* argv[])
 
 						//Experiment
 					    vector<Experiment*> experiments;
-						experiments.push_back( new BeeForage(t) );
-						experiments.push_back( new BasicForage(t) );
-						experiments.push_back (new DesertAntForage(t) );
+						//experiments.push_back( new BeeForage(t) );
+						//experiments.push_back( new BasicForage(t) );
+						//experiments.push_back (new DesertAntForage(t) );
+						experiments.push_back ( new ClusterGeneration(t));
 
 						for (int v = 0; v < experiments.size(); v++ ) {
 							runExperiment( experiments[v], d, e);

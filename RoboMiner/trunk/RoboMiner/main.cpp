@@ -119,12 +119,12 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	d.forager_explorer_ratio = 0.8f;
 	d.total_iterations = 10000;
 	d.gold_waste_division_ratio =1;
-	d.max_path = 10;
+	d.max_path = 50;
 	d.samples = 19;
 
 	ENVIRONMENT_DESC e;
 	e.grid_size = 50;
-	e.num_objects = 50;
+	e.num_objects = 20;
 	e.ratio_gold = 0.666667;
 	e.type = "uniform";
 	e.sink_boundary = 5;
@@ -152,9 +152,9 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 		}
 		else
 		{		
-			if ( t % 10 ==0 ) {
+			//if ( t % 10 ==0 ) {
 				game.Update();
-			}
+			//}
 			t++;
 			game.RenderScene();
 		}

@@ -181,6 +181,8 @@ public:
 
 	void setLambda( double _lambda ) { lambda = _lambda; }
 
+	void setNumClusters( int _num_clusters ); 
+
 //Member Variables
 	//Performance Measures
 	PerformanceBed* performanceBed;
@@ -294,6 +296,8 @@ public:
 	void randomWalkStepCluster();
 	void makeUnsafeMove();
 	double calculateDensityType(int);
+
+	int num_clusters;
 
 };
 

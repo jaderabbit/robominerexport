@@ -9,6 +9,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include <WinBase.h>
+
 //#include <Processthreadsapi.h>
 #include <iostream>
 
@@ -192,7 +193,6 @@ int main4(int argc, char* argv[]) {
 
 	//-------------Values that do not change----------------------
 	*/
-	
 
 	//Descriptors
 	EXPERIMENT_DESC exp_desc;
@@ -211,8 +211,25 @@ int main4(int argc, char* argv[]) {
 	vector<double> goldWasteRatio (gold_ratios, gold_ratios + sizeof(gold_ratios) / sizeof(double) );
 	//cout << goldWasteRatio.size() << endl;
 
+	short parts = 1; short part = 1;
+	if (argc >= 3 ) {
+		stringstream s;
+		s << argv[1];
+		 s >> parts;
+		s << argv[2];
+		short part; s >> part;
+	}
+
+	unsigned int size = goldWasteRatio.size();
+	unsigned int segmentSize = size/parts;
+	unsigned int start = segmentSize*(part-1);
+	unsigned int end = segmentSize*(part);
+	if (part == parts) {
+		end = size;
+	}
+
 	//Gold to waste ratio
-	for (int p=0; p < goldWasteRatio.size(); p++) {
+	for (int p=start; p < end; p++) {
 		env_desc.ratio_gold = goldWasteRatio[p];
 		LPTSTR command = createCommandlineString(env_desc,exp_desc);
 		STARTUPINFO si;
