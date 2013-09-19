@@ -24,7 +24,6 @@ private:
 	vector<double> waste;
 	int time;
 	int running_sum;
-
 	int measureType;
 };
 

@@ -127,8 +127,9 @@ int main(int argc, char* argv[])
 	//Setup all the parameters to be run.
 	//Environment types
 
-	string environment_types[] = {"uniform" };
-	int num_environment_types = 3;
+	string environment_types[] = {"clustered","uniform", "vein","gaussian" };
+	int num_environment_types = 1;
+
 
 	//Grid sizes
 	int grid_sizes[] = {50, 100, 200, 300,500};
@@ -172,10 +173,10 @@ int main(int argc, char* argv[])
 
 						//Experiment
 					    vector<Experiment*> experiments;
-						//experiments.push_back( new BeeForage(t) );
-						//experiments.push_back( new BasicForage(t) );
-						//experiments.push_back (new DesertAntForage(t) );
-						experiments.push_back ( new ClusterGeneration(t));
+						experiments.push_back( new BeeForage(t) );
+						experiments.push_back( new BasicForage(t) );
+						experiments.push_back (new DesertAntForage(t) );
+						//experiments.push_back ( new ClusterGeneration(t));
 
 						for (int v = 0; v < experiments.size(); v++ ) {
 							runExperiment( experiments[v], d, e);
