@@ -12,7 +12,7 @@ public:
 
 	virtual void takeMeasure( vector<Robot>& robots);
 
-	virtual string getName() { return "ItemsForagedOverTime"; }
+	virtual string getName() { return "ItemsForagedOverTime" + (measureType == RUN_GOLD) ? "_GOLD" : "_WASTE"; }
 
 	virtual bool isNext();
 	virtual string getNext();

@@ -180,6 +180,7 @@
     <ClCompile Include="ClusterGeneration.cpp">
       <Filter>Experiment\ClusterGeneration</Filter>
     </ClCompile>
+    <ClCompile Include="DistanceTravelled.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -287,6 +288,7 @@
     <ClInclude Include="ClusterGeneration.h">
       <Filter>Experiment\ClusterGeneration</Filter>
     </ClInclude>
+    <ClInclude Include="DistanceTravelled.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GS.fx">

@@ -20,12 +20,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -97,6 +99,7 @@
     <ClCompile Include="ClusterState.cpp" />
     <ClCompile Include="DesertAnt.cpp" />
     <ClCompile Include="DesertAntForage.cpp" />
+    <ClCompile Include="DistanceTravelled.cpp" />
     <ClCompile Include="DXRenderer.cpp" />
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="Experiment.cpp" />
@@ -136,6 +139,7 @@
     <ClInclude Include="CoordinateConversions.h" />
     <ClInclude Include="DesertAnt.h" />
     <ClInclude Include="DesertAntForage.h" />
+    <ClInclude Include="DistanceTravelled.h" />
     <ClInclude Include="DXRenderer.h" />
     <ClInclude Include="Entropy.h" />
     <ClInclude Include="ENVIRONMENT_DESC.h" />
