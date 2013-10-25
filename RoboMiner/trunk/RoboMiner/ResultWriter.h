@@ -16,7 +16,13 @@ public:
 	string generateFileName( EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc);
 	void reset();
 	//outputs file
+
 	bool writeResultFile();
+	bool writeResultToSql();
+
+	int getEnvironmentTypeId(string type);
+	int getAlgorithmId(string type);
+
 private:
 	string generateFileHeader(PerformanceBed *pb, int num_samples );
 
