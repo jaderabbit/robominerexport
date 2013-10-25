@@ -146,7 +146,7 @@ LPTSTR createCommandlineString( ENVIRONMENT_DESC e, EXPERIMENT_DESC d) {
 }
 
 
-int main4(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 
 	//Test Case 1	
 	/*EXPERIMENT_DESC d;
@@ -213,11 +213,12 @@ int main4(int argc, char* argv[]) {
 
 	short parts = 1; short part = 1;
 	if (argc >= 3 ) {
+		stringstream s1;
+		s1 << argv[1];
+		s1 >> parts;
 		stringstream s;
-		s << argv[1];
-		 s >> parts;
 		s << argv[2];
-		short part; s >> part;
+		s >> part;
 	}
 
 	unsigned int size = goldWasteRatio.size();
