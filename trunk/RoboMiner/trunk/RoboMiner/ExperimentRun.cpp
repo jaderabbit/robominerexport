@@ -53,7 +53,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
 	return true;
 }
 
-int main(int argc, char* argv[]) 
+int main4(int argc, char* argv[]) 
 {
 	/*vector<int**> v;
 	for (int i=0;i < 10; i++) {
@@ -127,8 +127,8 @@ int main(int argc, char* argv[])
 	//Setup all the parameters to be run.
 	//Environment types
 
-	string environment_types[] = {"clustered","uniform", "vein","gaussian" };
-	int num_environment_types = 1;
+	string environment_types[] = {"uniform", "vein","gaussian" };
+	int num_environment_types = 3;
 
 
 	//Grid sizes
