@@ -2,6 +2,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include "DatabaseClass.h"
 
 ResultWriter::ResultWriter(void)
 {
@@ -52,6 +53,7 @@ string ResultWriter::generateFileHeader( PerformanceBed *pb, int num_samples ) {
 			fileHeader << ",";
 		}
 	}
+
 	return fileHeader.str();
 }
 
@@ -91,6 +93,104 @@ bool ResultWriter::writeResultFile() {
 
 	cout << "COMPLETE: " << fileName << endl;
 	//Open File
+	ofstream log; 
+	log.open("log.txt",std::ios_base::app);
+	log << "COMPLETE: " << fileName << endl;
+	log.close();
+
+	//TODO: Change function to return result of opening the file
+	return true;
+}
+
+int ResultWriter::getEnvironmentTypeId( string type)
+{
+	switch (type[0])
+	{
+		case 'c' : return 1; break; //clustered
+		case 'g' : return 2; break; //gaussian
+		case 'u' : return 3; break; //uniform
+		case 'v': return 4; break;  //vein            
+	}
+	return -1;
+}
+
+int ResultWriter::getAlgorithmId( string type)
+{
+	switch (type[0])
+	{
+		case 'D' : return 1; break; //Desert Ant
+		case 'H' : return 2; break; //Honey Bee
+		case 'B' : return 3; break; //Basic/Naive
+	}
+	return -1;
+}
+
+
+bool ResultWriter::writeResultToSql()
+{
+	DatabaseClass* db = new DatabaseClass("Data Source=DEEPTHOUGHT;Initial Catalog=Experiment;Integrated Security=True");
+	db->CreateConnection();
+
+	//Generate or get experiment
+	int experimentId = db->GetExperimentID( exp_desc.gold_waste_division_ratio , exp_desc.number_robots, exp_desc.max_path);
+	if (experimentId < 0)
+	{
+		db->AddExperiment(  exp_desc.gold_waste_division_ratio , exp_desc.number_robots, exp_desc.max_path);
+		experimentId = db->GetExperimentID( exp_desc.gold_waste_division_ratio , exp_desc.number_robots, exp_desc.max_path);
+	}
+
+	//Generate or get environment
+	int type = getEnvironmentTypeId(env_desc.type);
+	int environmentId =  db->GetEnvironmentID( env_desc.grid_size, env_desc.num_objects, env_desc.ratio_gold, type);
+	if (environmentId < 0)
+	{
+		db->AddEnvironment( env_desc.grid_size, env_desc.num_objects, env_desc.ratio_gold, type);
+		environmentId =  db->GetEnvironmentID( env_desc.grid_size, env_desc.num_objects, env_desc.ratio_gold, type);
+	}
+
+	//Get Algorithm Id
+	int algorithmId = getAlgorithmId( algType);
+
+	//Generate all the data
+
+	//for each iteration, for each performance measure, write out the value for each sample, for each iteration
+
+	//For each performance measure
+	int num_pm = samples[0]->pm.size();
+	for (int i=0; i < num_pm; ++i)
+	{
+		int performanceId = samples[0]->pm[i]->getId();
+		bool perIteration = samples[0]->pm[i]->isPerIteration();
+		for (int j=0; j < samples.size(); j++)
+		{	
+			double value = samples[j]->pm[i]->getFinalValue();
+			db->AddResultRow(experimentId, performanceId, algorithmId, environmentId,exp_desc.total_iterations,j,value);
+			/*
+			if (perIteration) {
+				int it = 0;
+				while( samples[j]->pm[i]->isNext() ) {
+						double value = samples[j]->pm[i]->getNextValue();
+						//int expId, int measId,  int algId, int envId,  int it, int sample, double value )
+						db->AddResultRow(experimentId, performanceId, algorithmId, environmentId,it,j,value);
+						it++;
+				}
+			} else{
+				double value = samples[j]->pm[i]->getNextValue();
+				//int expId, int measId,  int algId, int envId,  int it, int sample, double value )
+				db->AddResultRow(experimentId, performanceId, algorithmId, environmentId,exp_desc.total_iterations,j,value);
+			}*/
+				
+		}
+	}
+
+	//Close the database connection
+	db->CloseConnection();
+
+	//Console Logging
+	string fileName = generateFileName(exp_desc, env_desc);
+	cout << "COMPLETE: " << fileName << endl;
+
+	//File Logging
 	ofstream log; 
 	log.open("log.txt",std::ios_base::app);
 	log << "COMPLETE: " << fileName << endl;
