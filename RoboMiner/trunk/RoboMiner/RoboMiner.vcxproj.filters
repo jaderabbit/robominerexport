@@ -73,6 +73,9 @@
     <Filter Include="Experiment\ClusterGeneration">
       <UniqueIdentifier>{99d8ad7f-471c-4256-bdd3-966fa34cc337}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SQL">
+      <UniqueIdentifier>{3f0f1616-fb26-4fda-8717-eba7622236f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Forager.cpp">
@@ -130,32 +133,11 @@
     <ClCompile Include="ClusterState.cpp">
       <Filter>RobotState\Cluster</Filter>
     </ClCompile>
-    <ClCompile Include="Experiment.cpp">
-      <Filter>Experiment</Filter>
-    </ClCompile>
-    <ClCompile Include="PerformanceMeasure.cpp">
-      <Filter>Experiment\Performance Measures</Filter>
-    </ClCompile>
-    <ClCompile Include="PerformanceBed.cpp">
-      <Filter>Experiment\Performance Measures</Filter>
-    </ClCompile>
     <ClCompile Include="BasicForagingState.cpp">
       <Filter>RobotState\UncollabForage</Filter>
     </ClCompile>
     <ClCompile Include="ResultWriter.cpp">
       <Filter>Results</Filter>
-    </ClCompile>
-    <ClCompile Include="AverageDistance.cpp">
-      <Filter>Experiment\Performance Measures\PerSample</Filter>
-    </ClCompile>
-    <ClCompile Include="AverageTimeInState.cpp">
-      <Filter>Experiment\Performance Measures\PerSample</Filter>
-    </ClCompile>
-    <ClCompile Include="Entropy.cpp">
-      <Filter>Experiment\Performance Measures\PerSample</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemsForagedOverTime.cpp">
-      <Filter>Experiment\Performance Measures\PerIteration</Filter>
     </ClCompile>
     <ClCompile Include="BeeForage.cpp">
       <Filter>Experiment\BeeForage Experiment</Filter>
@@ -180,7 +162,33 @@
     <ClCompile Include="ClusterGeneration.cpp">
       <Filter>Experiment\ClusterGeneration</Filter>
     </ClCompile>
-    <ClCompile Include="DistanceTravelled.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <Filter>SQL</Filter>
+    </ClCompile>
+    <ClCompile Include="DatabaseClass.h">
+      <Filter>SQL</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageDistance.cpp">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageTimeInState.cpp">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClCompile>
+    <ClCompile Include="Entropy.cpp">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemsForagedOverTime.cpp">
+      <Filter>Experiment\Performance Measures\PerIteration</Filter>
+    </ClCompile>
+    <ClCompile Include="Experiment.cpp">
+      <Filter>Experiment</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceBed.cpp">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceMeasure.cpp">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -231,17 +239,8 @@
     <ClInclude Include="ClusterState.h">
       <Filter>RobotState\Cluster</Filter>
     </ClInclude>
-    <ClInclude Include="Experiment.h">
-      <Filter>Experiment</Filter>
-    </ClInclude>
     <ClInclude Include="EXPERIMENT_DESC.h">
       <Filter>Experiment\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="PerformanceMeasure.h">
-      <Filter>Experiment\Performance Measures</Filter>
-    </ClInclude>
-    <ClInclude Include="PerformanceBed.h">
-      <Filter>Experiment\Performance Measures</Filter>
     </ClInclude>
     <ClInclude Include="BasicForagingState.h">
       <Filter>RobotState\UncollabForage</Filter>
@@ -251,18 +250,6 @@
     </ClInclude>
     <ClInclude Include="ResultWriter.h">
       <Filter>Results</Filter>
-    </ClInclude>
-    <ClInclude Include="Entropy.h">
-      <Filter>Experiment\Performance Measures\PerSample</Filter>
-    </ClInclude>
-    <ClInclude Include="AverageDistance.h">
-      <Filter>Experiment\Performance Measures\PerSample</Filter>
-    </ClInclude>
-    <ClInclude Include="AverageTimeInState.h">
-      <Filter>Experiment\Performance Measures\PerSample</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemsForagedOverTime.h">
-      <Filter>Experiment\Performance Measures\PerIteration</Filter>
     </ClInclude>
     <ClInclude Include="BeeForage.h">
       <Filter>Experiment\BeeForage Experiment</Filter>
@@ -288,7 +275,33 @@
     <ClInclude Include="ClusterGeneration.h">
       <Filter>Experiment\ClusterGeneration</Filter>
     </ClInclude>
-    <ClInclude Include="DistanceTravelled.h" />
+    <ClInclude Include="stdafx.h">
+      <Filter>SQL</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>SQL</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageDistance.h">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageTimeInState.h">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClInclude>
+    <ClInclude Include="Entropy.h">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemsForagedOverTime.h">
+      <Filter>Experiment\Performance Measures\PerIteration</Filter>
+    </ClInclude>
+    <ClInclude Include="Experiment.h">
+      <Filter>Experiment</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceBed.h">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceMeasure.h">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="GS.fx">

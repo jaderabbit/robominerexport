@@ -21,6 +21,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -57,8 +58,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>/RTCu %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
+      <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>false</ExceptionHandling>
+       </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -75,6 +77,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsManaged>true</CompileAsManaged>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -97,9 +101,9 @@
     <ClCompile Include="BeeForage.cpp" />
     <ClCompile Include="ClusterGeneration.cpp" />
     <ClCompile Include="ClusterState.cpp" />
+    <ClCompile Include="DatabaseClass.h" />
     <ClCompile Include="DesertAnt.cpp" />
     <ClCompile Include="DesertAntForage.cpp" />
-    <ClCompile Include="DistanceTravelled.cpp" />
     <ClCompile Include="DXRenderer.cpp" />
     <ClCompile Include="Entropy.cpp" />
     <ClCompile Include="Experiment.cpp" />
@@ -124,6 +128,7 @@
     <ClCompile Include="RobotState.cpp" />
     <ClCompile Include="sfmt.cpp" />
     <ClCompile Include="StatisticsHandler.cpp" />
+    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tools.cpp" />
     <ClCompile Include="Update.cpp" />
   </ItemGroup>
@@ -139,7 +144,6 @@
     <ClInclude Include="CoordinateConversions.h" />
     <ClInclude Include="DesertAnt.h" />
     <ClInclude Include="DesertAntForage.h" />
-    <ClInclude Include="DistanceTravelled.h" />
     <ClInclude Include="DXRenderer.h" />
     <ClInclude Include="Entropy.h" />
     <ClInclude Include="ENVIRONMENT_DESC.h" />
@@ -161,6 +165,8 @@
     <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotState.h" />
     <ClInclude Include="sfmt.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
     <ClInclude Include="TileRenderGraph.h" />
     <ClInclude Include="Tools.h" />
     <ClInclude Include="Types.h" />
