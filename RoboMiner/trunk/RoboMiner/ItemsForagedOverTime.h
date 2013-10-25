@@ -16,7 +16,18 @@ public:
 
 	virtual bool isNext();
 	virtual string getNext();
-
+	virtual double getNextValue();
+	virtual double getFinalValue();
+	virtual bool isPerIteration() {return true;}
+	virtual int getId() {
+		if (measureType == RUN_GOLD)
+		{
+			return 1;
+		} else 
+		{
+			return 2;
+		}
+	}
 private:
 	vector<double> total;
 	vector<double> gold;
@@ -25,5 +36,6 @@ private:
 	int time;
 	int running_sum;
 	int measureType;
+	double absoluteTotal;
 };
 

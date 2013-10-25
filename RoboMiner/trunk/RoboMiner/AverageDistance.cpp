@@ -27,3 +27,14 @@ string AverageDistance::getNext() {
 		return s.str();
 	}
 }
+
+double AverageDistance::getNextValue() {
+	//Return ratio at end
+	return measurement[0];
+}
+
+
+double AverageDistance::getFinalValue() {
+	//Return ratio at end
+	return measurement[0];
+}

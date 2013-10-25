@@ -14,8 +14,12 @@ public:
 	virtual void finalize() {}
 //Methods required for outputting results
 	virtual bool isNext() = 0;
+	virtual double getNextValue() = 0;
+	virtual double getFinalValue() = 0;
 	virtual string getNext() = 0;
 	virtual string getName() = 0;
+	virtual bool isPerIteration() = 0;
+	virtual int getId() = 0;
 	//virtual void reset() = 0;
 
 protected:

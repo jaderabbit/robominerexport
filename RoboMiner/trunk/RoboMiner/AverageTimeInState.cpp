@@ -114,3 +114,15 @@ string AverageTimeInState::getNext() {
 		return s1.str();
 	}
 }
+
+
+double AverageTimeInState::getNextValue() {
+	//Return ratio at end
+	return measurement[0];
+}
+
+double AverageTimeInState::getFinalValue() {
+	//Return ratio at end
+	return measurement[0];
+}
+

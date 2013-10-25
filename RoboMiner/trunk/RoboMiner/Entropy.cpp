@@ -1,5 +1,4 @@
 #include "Entropy.h"
-#include <vld.h>
 
 Entropy::Entropy(void)
 {
@@ -176,4 +175,14 @@ string Entropy::getNext() {
 		timer++;
 		return s1.str();
 	}
+}
+
+double Entropy::getNextValue() {
+	//Return ratio at end
+	return measurement[0];
+}
+
+double Entropy::getFinalValue() {
+	//Return ratio at end
+	return measurement[0];
 }

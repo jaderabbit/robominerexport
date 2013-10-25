@@ -1,4 +1,5 @@
 #include "ItemsForagedOverTime.h"
+#include "Mine.h"
 #include <sstream>
 
 ItemsForagedOverTime::ItemsForagedOverTime() : PerformanceMeasure()
@@ -23,6 +24,23 @@ ItemsForagedOverTime::~ItemsForagedOverTime(void)
 
 void ItemsForagedOverTime::takeMeasure( vector<Robot>& robots) 
 {
+
+	//Calculate the total of type at beginning
+	if (time == 0 ) {	
+			absoluteTotal = 0;
+				//Count Gold
+			for (int i=0; i < robots[0].mine->grid.size(); i++) {
+				for (int j=0; j < robots[0].mine->grid.size(); j++) 
+				{
+					if ( robots[0].mine->grid[i][j].type == GOLD && (measureType == GOLD_M || measureType == RUN_GOLD) ) {	
+							absoluteTotal++;
+					} else if ( robots[0].mine->grid[i][j].type == WASTE && measureType == WASTE_M || measureType == RUN_WASTE ) {	//Count Waste
+							absoluteTotal++;
+					} 
+				}
+			}
+	}
+
 	int sum = 0;
 	int goldSum = 0;
 	int wasteSum = 0;
@@ -45,13 +63,14 @@ void ItemsForagedOverTime::takeMeasure( vector<Robot>& robots)
 }
 
 bool ItemsForagedOverTime::isNext() {
-	return ( timer > total.size() ) ? false : true;
+	return ( timer >= total.size() ) ? false : true;
 }
 
 string ItemsForagedOverTime::getNext() {
+	//Return ratio at end
 	if (timer >= total.size() ) {
 		stringstream s1;
-		s1 << total[total.size()-1];
+		s1 << total[total.size()-1]/absoluteTotal;
 		timer++;
 		return s1.str();
 	}
@@ -60,4 +79,21 @@ string ItemsForagedOverTime::getNext() {
 	s1 << total[timer];
 	timer++;
 	return s1.str();
+}
+
+double ItemsForagedOverTime::getNextValue() {
+	//Return ratio at end
+	if (timer >= total.size() ) {
+		return total[total.size()-1]/absoluteTotal;
+		timer++;
+	}
+	
+	double val  = total[timer];
+	timer++;
+	return val;
+}
+
+double ItemsForagedOverTime::getFinalValue() {
+	//Return ratio at end
+	return running_sum/absoluteTotal;
 }

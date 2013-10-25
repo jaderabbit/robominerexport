@@ -20,7 +20,10 @@ public:
 
 	virtual bool isNext();
 	virtual string getNext();
-
+	virtual double getNextValue();
+	virtual double getFinalValue();
+	virtual bool isPerIteration() {return false;}
+	virtual int getId(){return 3;}
 private:
 	int state;
 	int time;

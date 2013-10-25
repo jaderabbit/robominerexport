@@ -173,7 +173,9 @@ void  Experiment::runAllSamples() {
 
 	//Save all experiments in the reader. 
 	resultWriter.setResults(pbs,desc,env_desc,getAlgorithmName());
-	resultWriter.writeResultFile();
+
+	//resultWriter.writeResultFile();
+	resultWriter.writeResultToSql(); //Database
 
 	//End of experiment
 }
