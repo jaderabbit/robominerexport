@@ -128,7 +128,7 @@ int ResultWriter::getAlgorithmId( string type)
 
 bool ResultWriter::writeResultToSql()
 {
-	DatabaseClass* db = new DatabaseClass("Data Source=DEEPTHOUGHT;Initial Catalog=Experiment;Integrated Security=True");
+	DatabaseClass* db = new DatabaseClass("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
 	db->CreateConnection();
 
 	//Generate or get experiment
