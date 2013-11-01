@@ -648,6 +648,7 @@ bool Robot::isStuck() {
 		return false;
 	}
 
+
 	//add all coords
 	Coord total; total.x = 0; total.y = 0;
 	for (int i=0; i < stuck_window.size(); i++) {
