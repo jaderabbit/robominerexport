@@ -61,6 +61,8 @@ public:
 		PrepareResultCommand();
 		PrepareEnvironment();
 		PrepareExperiment();
+		PrepareSelectEnvironment();
+		PrepareSelectExperiment();
 	}
 
 	void PrepareResultCommand()
@@ -138,6 +140,61 @@ public:
 		experimentcmd->Prepare();
 	}
 
+	void PrepareSelectExperiment()
+	{
+		// 1. Inialize the SqlCommand object.
+		experimentselectcmd = gcnew SqlCommand();
+
+		// 2. Assign the connection to the SqlCommand.
+		experimentselectcmd->Connection = con;
+
+		// 3. Set the SQL command text.
+		// SQL statement or the name of the stored procedure.
+		experimentselectcmd->CommandText = "SELECT [id] FROM [Experiment].[dbo].[Experiment] WHERE ([division] between @division and @division2) and [robots] = @robots ";
+
+		// 4. Set the command type.
+		// CommandType::Text for ordinary SQL statements;
+		// CommandType::StoredProcedure for stored procedures.
+		experimentselectcmd->CommandType = CommandType::Text;
+
+		// 5. Append the parameters.
+		// DBNull::Value for SQL-Nullable fields.
+		experimentselectcmd->Parameters->Add("@division", SqlDbType::Float);
+		experimentselectcmd->Parameters->Add("@division2", SqlDbType::Float);
+		experimentselectcmd->Parameters->Add("@robots", SqlDbType::Int);
+
+		//Prepare.
+		experimentselectcmd->Prepare();
+	}	
+
+	void PrepareSelectEnvironment()
+	{
+		// 1. Inialize the SqlCommand object.
+		environmentselectcmd = gcnew SqlCommand();
+
+		// 2. Assign the connection to the SqlCommand.
+		environmentselectcmd->Connection = con;
+
+		// 3. Set the SQL command text.
+		// SQL statement or the name of the stored procedure.
+		environmentselectcmd->CommandText = "SELECT [id] FROM [Experiment].[dbo].[Environment] WHERE [size] =@size and [objects] = @objects and [ratio] =@ratio and [type] = @type;";
+
+		// 4. Set the command type.
+		// CommandType::Text for ordinary SQL statements;
+		// CommandType::StoredProcedure for stored procedures.
+		environmentselectcmd->CommandType = CommandType::Text;
+
+		// 5. Append the parameters.
+		// DBNull::Value for SQL-Nullable fields.
+		environmentselectcmd->Parameters->Add("@size", SqlDbType::Int);
+		environmentselectcmd->Parameters->Add("@objects", SqlDbType::Int);
+		environmentselectcmd->Parameters->Add("@ratio", SqlDbType::Float);
+		environmentselectcmd->Parameters->Add("@type", SqlDbType::Int);
+
+		//Prepare.
+		environmentselectcmd->Prepare();
+	}	
+
 	void AddExperiment( double division, int robots, int maxpath)
 	{
 		// 5. Append the parameters.
@@ -194,15 +251,17 @@ public:
 		// 1. Inialize the DataSet object.
 		ds = gcnew DataSet();
 
-		// 2. Create a SELECT SQL command.
-		String ^ strSelectCmd = "SELECT [id] FROM [Experiment].[dbo].[Environment] WHERE [size] ="+size+" and [objects] = "+objects+" and [ratio] ="+ratio+" and [type] = "+type+";";
-
 		// 3. Inialize the SqlDataAdapter object.
 		// SqlDataAdapter represents a set of data commands and a 
         // database connection that are used to fill the DataSet and 
-        // update a SQL Server database. 
-		da = gcnew SqlDataAdapter(strSelectCmd, con);
-
+        // update a SQL Server database.
+		environmentselectcmd->Parameters[0]->Value = size;
+		environmentselectcmd->Parameters[1]->Value = objects;
+		environmentselectcmd->Parameters[2]->Value = ratio;
+		environmentselectcmd->Parameters[3]->Value = type;
+	
+		da = gcnew SqlDataAdapter(environmentselectcmd);
+		
 		// 4. Fill the DataSet object.
 		// Fill the DataTable in DataSet with the rows selected by the SQL 
 		// command.
@@ -225,14 +284,16 @@ public:
 		// 1. Inialize the DataSet object.
 		ds = gcnew DataSet();
 
-		// 2. Create a SELECT SQL command.
-		String ^ strSelectCmd = "SELECT [id] FROM [Experiment].[dbo].[Experiment] WHERE [division] ="+division+" and [robots] = "+robots+";";
-
 		// 3. Inialize the SqlDataAdapter object.
 		// SqlDataAdapter represents a set of data commands and a 
         // database connection that are used to fill the DataSet and 
         // update a SQL Server database. 
-		da = gcnew SqlDataAdapter(strSelectCmd, con);
+		// 5. Append the parameters.
+		experimentselectcmd->Parameters[0]->Value = division;
+		experimentselectcmd->Parameters[1]->Value = division + 0.01;
+		experimentselectcmd->Parameters[2]->Value = robots;
+
+		da = gcnew SqlDataAdapter(experimentselectcmd);
 
 		// 4. Fill the DataSet object.
 		// Fill the DataTable in DataSet with the rows selected by the SQL 
@@ -400,7 +461,9 @@ private:
 	gcroot<SqlCommand ^> cmd;
 	gcroot<SqlCommand ^> resultcmd;
 	gcroot<SqlCommand ^> environmentcmd;
+	gcroot<SqlCommand ^> environmentselectcmd;
 	gcroot<SqlCommand ^> experimentcmd;
+	gcroot<SqlCommand ^> experimentselectcmd;
 	gcroot<SqlDataAdapter ^> da;
 };
 
