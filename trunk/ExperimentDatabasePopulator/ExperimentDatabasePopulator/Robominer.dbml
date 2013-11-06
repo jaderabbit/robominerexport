@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Experiment" Class="RobominerDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DEEPTHOUGHT;Initial Catalog=Experiment;Integrated Security=True" SettingsObjectName="ExperimentDatabasePopulator.Properties.Settings" SettingsPropertyName="ExperimentConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Algorithm" Member="Algorithms">
+    <Type Name="Algorithm">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Association Name="Algorithm_Result" Member="Results" ThisKey="id" OtherKey="algorithmid" Type="Result" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Environment" Member="Environments">
+    <Type Name="Environment">
+      <Column Name="size" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="objects" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ratio" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Environment_Result" Member="Results" ThisKey="id" OtherKey="environmentid" Type="Result" />
+      <Association Name="EnvironmentType_Environment" Member="EnvironmentType" ThisKey="type" OtherKey="id" Type="EnvironmentType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EnvironmentType" Member="EnvironmentTypes">
+    <Type Name="EnvironmentType">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="EnvironmentType_Environment" Member="Environments" ThisKey="id" OtherKey="type" Type="Environment" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Experiment" Member="Experiments">
+    <Type Name="Experiment">
+      <Column Name="division" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="robots" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="maxpath" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="Experiment_Result" Member="Results" ThisKey="id" OtherKey="experimentid" Type="Result" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PerformanceMeasure" Member="PerformanceMeasures">
+    <Type Name="PerformanceMeasure">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="PerformanceMeasure_Result" Member="Results" ThisKey="id" OtherKey="measureid" Type="Result" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Results" Member="Results">
+    <Type Name="Result">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="experimentid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="measureid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="algorithmid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="environmentid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="iteration" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="sample" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="value" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="Algorithm_Result" Member="Algorithm" ThisKey="algorithmid" OtherKey="id" Type="Algorithm" IsForeignKey="true" />
+      <Association Name="Environment_Result" Member="Environment" ThisKey="environmentid" OtherKey="id" Type="Environment" IsForeignKey="true" />
+      <Association Name="Experiment_Result" Member="Experiment" ThisKey="experimentid" OtherKey="id" Type="Experiment" IsForeignKey="true" />
+      <Association Name="PerformanceMeasure_Result" Member="PerformanceMeasure" ThisKey="measureid" OtherKey="id" Type="PerformanceMeasure" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
