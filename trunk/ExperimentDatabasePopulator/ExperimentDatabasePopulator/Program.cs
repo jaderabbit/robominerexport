@@ -132,7 +132,7 @@ namespace ExperimentDatabasePopulator
             //         Select(r => new AveStd { algorithm = r.Key.algorithmid, average = (double)r.Average(p => p.value), stdDev = (double)r.StdDev(x => x.value) });
             var result2 = dc.Results.Where(x => x.algorithmid == algorithmId && x.measureid == measureId).GroupBy(x => x.Environment.type);            
             var result = result2.Select(r => new AveStd { algorithm = algorithmId, average = (double)r.Average(p => p.value), stdDev = (double)r.StdDev<Result,doub>(x => x.value) });
-            var result3 = result2.StdDev(x => x.value);
+            //Bvar result3 = result2.StdDev(x => x.value);
             return result.ToList<AveStd>();
             
         }
@@ -164,7 +164,7 @@ namespace ExperimentDatabasePopulator
             RobominerDataContext dc = new RobominerDataContext("Data Source=DEEPTHOUGHT;Initial Catalog=Experiment;Integrated Security=True");
             CreateFluxVizFile(4, dc);
             CreateMannWhitneyUFile(1, dc);
-            CreateLatexAvgDevGroupByEnvironment(1, dc);
+            //CreateLatexAvgDevGroupByEnvironment(1, dc);
         }
 
     }
