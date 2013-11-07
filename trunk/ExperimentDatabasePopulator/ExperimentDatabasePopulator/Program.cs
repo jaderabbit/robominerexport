@@ -67,7 +67,8 @@ namespace ExperimentDatabasePopulator
     class Program
     {
         /**
-         Creates a FluxViz file for each measure
+         Creates a FluxViz file for each measure with the following items
+         * Algorithm, Environment Type, Size, Performance Measure
          */
         static void CreateFluxVizFile(int measureId, RobominerDataContext dc)
         {
