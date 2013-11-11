@@ -8,6 +8,7 @@
 #include <sstream>
 #include "Tools.h"
 #include "ClusterGeneration.h"
+#include "DatabaseClass.h"
 
 //#define _CRTDBG_MAP_ALLOC
 //#include <stdlib.h>
@@ -40,7 +41,43 @@ float convertFloat( char* text) {
 	return num;
 }
 
-bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
+int getAlgorithmId( string type)
+{
+	switch (type[0])
+	{
+		case 'D' : return 1; break; //Desert Ant
+		case 'H' : return 2; break; //Honey Bee
+		case 'B' : return 3; break; //Basic/Naive
+	}
+	return -1;
+}
+
+int getEnvironmentId( string type)
+{
+	switch (type[0])
+	{
+		case 'c' : return 1; break; //Clustered
+		case 'g' : return 2; break; //Gaussian
+		case 'u' : return 3; break; //Uniform
+		case 'v' : return 4; break; //Vein
+	}
+	return -1;
+}
+
+bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool runCheck ) 
+{
+
+	if (runCheck)
+	{
+		DatabaseClass* db = new DatabaseClass("Data Source=DEEPTHOUGHT;Initial Catalog=Experiment;Integrated Security=True");
+		db->CreateConnection();
+		bool exists = db->CheckResultExists(getAlgorithmId(e->getAlgorithmName()),d.gold_waste_division_ratio,d.number_robots,en.grid_size,en.num_objects,en.ratio_gold,getEnvironmentId(en.type));
+		db->CloseConnection();
+		delete db;
+		if (exists) 
+			return 1;
+	}
+
 	//Set the experiment parameters
 	e->setExperimentParam(d,en);
 
@@ -53,7 +90,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en ) {
 	return true;
 }
 
-int main4(int argc, char* argv[]) 
+int main(int argc, char* argv[]) 
 {
 	/*vector<int**> v;
 	for (int i=0;i < 10; i++) {
@@ -72,7 +109,7 @@ int main4(int argc, char* argv[])
 	}*/
 	//VLDEnable();
 	//Test
-	/*
+/*	
 	Tools t;
 	ENVIRONMENT_DESC e;
 	e.ratio_gold = 0.5;
@@ -89,18 +126,18 @@ int main4(int argc, char* argv[])
 	d.number_robots = 20;
 	d.gold_waste_division_ratio = 0.5;
 	vector<Experiment*> experiments;
-	experiments.push_back (new DesertAntForage(t) );
+	experiments.push_back (new BasicForage(t) );
 
 	for (int v = 0; v < experiments.size(); v++ ) {
-			runExperiment( experiments[v], d, e);
+			runExperiment( experiments[v], d, e, true);
 			delete experiments[v];
 	}
 
-	_CrtDumpMemoryLeaks();
-	*/
+	//_CrtDumpMemoryLeaks();
+	
 
 	//int k;
-	//cin >> k;	
+	//cin >> k;	*/
 	Tools t;
 
 	//Pull data from environment variables
@@ -179,7 +216,7 @@ int main4(int argc, char* argv[])
 						//experiments.push_back ( new ClusterGeneration(t));
 
 						for (int v = 0; v < experiments.size(); v++ ) {
-							runExperiment( experiments[v], d, e);
+							runExperiment( experiments[v], d, e, true);
 							delete experiments[v];
 						}
 					}
