@@ -63,6 +63,7 @@ public:
 		PrepareExperiment();
 		PrepareSelectEnvironment();
 		PrepareSelectExperiment();
+		PrepareSelectResult();
 	}
 
 	void PrepareResultCommand()
@@ -138,6 +139,19 @@ public:
 
 		//Prepare.
 		experimentcmd->Prepare();
+	}
+	
+	void PrepareSelectResult()
+	{
+		resultselectcmd = gcnew SqlCommand();
+		resultselectcmd->Connection = con;
+		resultselectcmd->CommandText = "SELECT [id] FROM [Experiment].[dbo].[Results] WHERE experimentid = @experimentid and environmentid = @environmentid and algorithmid = @algorithmid and measureId = @measureId;";
+		resultselectcmd->CommandType = CommandType::Text;
+		resultselectcmd->Parameters->Add("@experimentid", SqlDbType::Int);
+		resultselectcmd->Parameters->Add("@environmentid", SqlDbType::Int);
+		resultselectcmd->Parameters->Add("@algorithmid", SqlDbType::Int);
+		resultselectcmd->Parameters->Add("@measureid", SqlDbType::Int);
+		resultselectcmd->Prepare();
 	}
 
 	void PrepareSelectExperiment()
@@ -246,6 +260,39 @@ public:
 		environmentcmd->ExecuteNonQuery();
 	}
 
+	int GetResultID( int environmentId, int experimentId, int algorithmid, int measureId)
+	{
+		// 1. Inialize the DataSet object.
+		ds = gcnew DataSet();
+
+		// 3. Inialize the SqlDataAdapter object.
+		// SqlDataAdapter represents a set of data commands and a 
+        // database connection that are used to fill the DataSet and 
+        // update a SQL Server database.
+		resultselectcmd->Parameters[0]->Value = experimentId;
+		resultselectcmd->Parameters[1]->Value = environmentId;
+		resultselectcmd->Parameters[2]->Value = algorithmid;
+		resultselectcmd->Parameters[3]->Value = measureId;
+	
+		da = gcnew SqlDataAdapter(resultselectcmd);
+		
+		// 4. Fill the DataSet object.
+		// Fill the DataTable in DataSet with the rows selected by the SQL 
+		// command.
+		da->Fill(ds);
+
+		// Create an array of VARIANT to hold the ID column values.
+		VARIANT valuesID[1];
+
+		//Get column values
+		int len = this->GetValueForColumn(L"id", valuesID, 1);
+		if ( len > 0 )
+		{
+			return (valuesID[0].vt == VT_NULL) ? -1 :  valuesID[0].intVal;
+		}
+		return -1;
+	}
+
 	int GetEnvironmentID( int size, int objects, double ratio, int type)
 	{
 		// 1. Inialize the DataSet object.
@@ -277,6 +324,34 @@ public:
 			return (valuesID[0].vt == VT_NULL) ? -1 :  valuesID[0].intVal;
 		}
 		return -1;
+	}
+
+	bool CheckResultExists(int algorithmid, double division, double robots, int size, int objects, double ratio, int type )
+	{
+		int measureId = 1;
+		//Check environment exists
+		int environmentId = GetEnvironmentID(size, objects,ratio,type);
+		if (environmentId < 0)
+		{
+			return false;
+		}
+
+		//Check experiment exists
+		int experimentId = GetExperimentID(division,robots, 30);
+		if (experimentId < 0)
+		{
+			return false;
+		}
+
+		//Check result exists
+		int resultId = GetResultID(environmentId,experimentId, algorithmid, 1);
+		if (resultId < 0)
+		{
+			return false;
+		} else
+		{
+			return true;
+		}
 	}
 
 	int GetExperimentID( double division, int robots, int maxpath)
@@ -464,6 +539,7 @@ private:
 	gcroot<SqlCommand ^> environmentselectcmd;
 	gcroot<SqlCommand ^> experimentcmd;
 	gcroot<SqlCommand ^> experimentselectcmd;
+	gcroot<SqlCommand ^> resultselectcmd;
 	gcroot<SqlDataAdapter ^> da;
 };
 
