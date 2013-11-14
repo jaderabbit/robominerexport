@@ -8,7 +8,7 @@ namespace LinqExtension
 {
     public static class Extensions
     {
-        public static T StdDev<T>(this IEnumerable<T> list, Func<T, double?> values)
+        public static double StdDev<T>(this IEnumerable<T> list, Func<T, double?> values)
         {
             // ref: http://stackoverflow.com/questions/2253874/linq-equivalent-for-standard-deviation
             // ref: http://warrenseen.com/blog/2006/03/13/how-to-calculate-standard-deviation/ 

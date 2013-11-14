@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CsvTableWriter.cs" />
     <Compile Include="LatexWriter.cs" />
     <Compile Include="LinqExtension.cs" />
     <Compile Include="Program.cs" />

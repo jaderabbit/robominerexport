@@ -591,7 +591,7 @@ namespace ExperimentDatabasePopulator
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private System.Nullable<decimal> _division;
+		private System.Nullable<double> _division;
 		
 		private System.Nullable<int> _robots;
 		
@@ -605,7 +605,7 @@ namespace ExperimentDatabasePopulator
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OndivisionChanging(System.Nullable<decimal> value);
+    partial void OndivisionChanging(System.Nullable<double> value);
     partial void OndivisionChanged();
     partial void OnrobotsChanging(System.Nullable<int> value);
     partial void OnrobotsChanged();
@@ -621,8 +621,8 @@ namespace ExperimentDatabasePopulator
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_division", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> division
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_division", DbType="Double")]
+		public System.Nullable<double> division
 		{
 			get
 			{
