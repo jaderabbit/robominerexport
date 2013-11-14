@@ -1,6 +1,5 @@
 #pragma once
 #include "PerformanceMeasure.h"
-
 enum {GOLD_M, WASTE_M, ALL_M, RUN_GOLD, RUN_WASTE };
 
 class ItemsForagedOverTime : public PerformanceMeasure

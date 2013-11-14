@@ -25,10 +25,10 @@ public:
 
 private:
 	string generateFileHeader(PerformanceBed *pb, int num_samples );
-
 	vector<PerformanceBed*> samples;
 	EXPERIMENT_DESC exp_desc;
 	ENVIRONMENT_DESC env_desc;
 	string algType;
+
 };
 

@@ -69,7 +69,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool 
 
 	if (runCheck)
 	{
-		DatabaseClass* db = new DatabaseClass("Data Source=DEEPTHOUGHT;Initial Catalog=Experiment;Integrated Security=True");
+		DatabaseClass* db = new DatabaseClass("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
 		db->CreateConnection();
 		bool exists = db->CheckResultExists(getAlgorithmId(e->getAlgorithmName()),d.gold_waste_division_ratio,d.number_robots,en.grid_size,en.num_objects,en.ratio_gold,getEnvironmentId(en.type));
 		db->CloseConnection();
@@ -92,50 +92,6 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool 
 
 int main(int argc, char* argv[]) 
 {
-	/*vector<int**> v;
-	for (int i=0;i < 10; i++) {
-		int** k = new int*[10];
-		for (int j=0; j < 10; j++) {
-			k[j] = new int[10];
-			for (int q=0; q < 10; q++) {
-				k[j][q] = 0;
-			}	
-		}
-		v.push_back(k);
-	}
-
-	for (int i=0; i < 10; i++) {
-		delete [] v[i];
-	}*/
-	//VLDEnable();
-	//Test
-/*	
-	Tools t;
-	ENVIRONMENT_DESC e;
-	e.ratio_gold = 0.5;
-	e.sink_boundary = 5;
-	e.grid_size = 50;
-	e.num_objects = 50;
-	e.type = "vein";
-
-	EXPERIMENT_DESC d;
-	d.forager_explorer_ratio = 0.7f;
-	d.max_path = 50;
-	d.samples = 30;
-	d.total_iterations = 5000;
-	d.number_robots = 20;
-	d.gold_waste_division_ratio = 0.5;
-	vector<Experiment*> experiments;
-	experiments.push_back (new BasicForage(t) );
-
-	for (int v = 0; v < experiments.size(); v++ ) {
-			runExperiment( experiments[v], d, e, true);
-			delete experiments[v];
-	}
-
-	//_CrtDumpMemoryLeaks();
-	
-
 	//int k;
 	//cin >> k;	*/
 	Tools t;
@@ -164,8 +120,8 @@ int main(int argc, char* argv[])
 	//Setup all the parameters to be run.
 	//Environment types
 
-	string environment_types[] = {"uniform", "vein","gaussian" };
-	int num_environment_types = 3;
+	string environment_types[] = {"vein","gaussian", "clustered","uniform"};
+	int num_environment_types = 4;
 
 
 	//Grid sizes

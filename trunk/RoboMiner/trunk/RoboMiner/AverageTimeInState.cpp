@@ -51,7 +51,7 @@ void AverageTimeInState::finalize() {
 		totalItemsForaged+= itemsForagedPerRobot[i];
 	}
 
-	finalStatistic = totalTimeInState/totalItemsForaged/30.0/timeSpentInStatePerRobot.size();
+	finalStatistic = (timeSpentInStatePerRobot.size() <= 0) ? 0 : (totalItemsForaged > 0) ?  totalTimeInState/totalItemsForaged/30.0/timeSpentInStatePerRobot.size() :  0;
 	measurement.push_back(finalStatistic);
 }
 

@@ -49,6 +49,32 @@ public:
 	{
 		conStr = gcnew String(_conStr);
 	}
+	/*
+		gcroot<DataSet ^> ds;
+	gcroot<String ^> conStr;
+	gcroot<SqlConnection ^> con;
+	gcroot<SqlCommand ^> cmd;
+	gcroot<SqlCommand ^> resultcmd;
+	gcroot<SqlCommand ^> environmentcmd;
+	gcroot<SqlCommand ^> environmentselectcmd;
+	gcroot<SqlCommand ^> experimentcmd;
+	gcroot<SqlCommand ^> experimentselectcmd;
+	gcroot<SqlDataAdapter ^> da;
+	*/
+	~DatabaseClass()
+	{
+		delete experimentcmd;
+		delete experimentselectcmd;
+		delete resultcmd;
+		delete environmentcmd;
+		delete environmentselectcmd;
+		delete da;
+		delete cmd;
+		if (con) delete con;
+		delete conStr;
+		delete ds;
+	}
+
 
 	/*!
     * \brief
@@ -56,6 +82,7 @@ public:
 	*/
 	void CreateConnection()
 	{
+		if(con) delete con;
 		con = gcnew SqlConnection(conStr);
 		con->Open();
 		PrepareResultCommand();
@@ -312,6 +339,7 @@ public:
 		// 4. Fill the DataSet object.
 		// Fill the DataTable in DataSet with the rows selected by the SQL 
 		// command.
+
 		da->Fill(ds);
 
 		// Create an array of VARIANT to hold the ID column values.
@@ -324,6 +352,9 @@ public:
 			return (valuesID[0].vt == VT_NULL) ? -1 :  valuesID[0].intVal;
 		}
 		return -1;
+
+		delete ds;
+		delete da;
 	}
 
 	bool CheckResultExists(int algorithmid, double division, double robots, int size, int objects, double ratio, int type )
@@ -385,6 +416,10 @@ public:
 			return (valuesID[0].vt == VT_NULL) ? -1 :  valuesID[0].intVal;
 		}
 		return -1;
+
+		if (ds) delete ds;	
+		if (da) delete da;
+
 	}
 
 	/*!
@@ -500,7 +535,7 @@ public:
 	{
 		// Convert the column name to managed String object.
 		String ^columnStr = Marshal::PtrToStringUni((IntPtr)dataColumn);
-
+		
 		// Create an array of DataRow which holds all the DataTable rows.
 		array<DataRow ^> ^rows = ds->Tables[0]->Select();
 
@@ -525,6 +560,7 @@ public:
 	void CloseConnection()
 	{
 		con->Close();
+		delete con;
 	}
 
 private:

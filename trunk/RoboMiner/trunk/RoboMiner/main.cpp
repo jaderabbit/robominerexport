@@ -130,7 +130,7 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	e.sink_boundary = 5;
 
 	Tools tools;
-	Experiment *cg = new ClusterGeneration(tools);
+	Experiment *cg = new DesertAntForage(tools);
 	cg->setExperimentParam(d,e);
 
 	//intialize game
