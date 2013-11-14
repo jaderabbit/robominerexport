@@ -28,6 +28,11 @@ string AverageDistance::getNext() {
 	}
 }
 
+void AverageDistance::takeMeasure(vector<Robot>& robots) 
+{
+	
+}
+
 double AverageDistance::getNextValue() {
 	//Return ratio at end
 	return measurement[0];
@@ -38,3 +43,4 @@ double AverageDistance::getFinalValue() {
 	//Return ratio at end
 	return measurement[0];
 }
+

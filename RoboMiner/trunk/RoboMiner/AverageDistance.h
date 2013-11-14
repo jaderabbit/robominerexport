@@ -9,6 +9,7 @@ public:
 
 	virtual bool isNext();
 	virtual string getNext();
+	virtual void takeMeasure( vector<Robot>& robots);
 	virtual double getNextValue();
 
 	virtual string getName() { return "AverageDistance"; }

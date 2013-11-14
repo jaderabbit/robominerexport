@@ -2,7 +2,9 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <vld.h>
 #include "DatabaseClass.h"
+
 
 ResultWriter::ResultWriter(void)
 {
@@ -98,6 +100,7 @@ bool ResultWriter::writeResultFile() {
 	log << "COMPLETE: " << fileName << endl;
 	log.close();
 
+
 	//TODO: Change function to return result of opening the file
 	return true;
 }
@@ -128,7 +131,9 @@ int ResultWriter::getAlgorithmId( string type)
 
 bool ResultWriter::writeResultToSql()
 {
-	DatabaseClass* db = new DatabaseClass("Data Source=DEEPTHOUGHT;Initial Catalog=Experiment;Integrated Security=True");
+	//Database Class
+	DatabaseClass* db = new DatabaseClass("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
+
 	db->CreateConnection();
 
 	//Generate or get experiment
@@ -185,6 +190,7 @@ bool ResultWriter::writeResultToSql()
 
 	//Close the database connection
 	db->CloseConnection();
+	delete db;
 
 	//Console Logging
 	string fileName = generateFileName(exp_desc, env_desc);

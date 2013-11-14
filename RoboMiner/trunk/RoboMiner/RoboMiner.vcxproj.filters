@@ -73,8 +73,11 @@
     <Filter Include="Experiment\ClusterGeneration">
       <UniqueIdentifier>{99d8ad7f-471c-4256-bdd3-966fa34cc337}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SQL">
+    <Filter Include="SQL Managed">
       <UniqueIdentifier>{3f0f1616-fb26-4fda-8717-eba7622236f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SQL Native">
+      <UniqueIdentifier>{44794584-9a2f-4513-b69a-caa323ed0e54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,10 +166,10 @@
       <Filter>Experiment\ClusterGeneration</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>SQL</Filter>
+      <Filter>SQL Managed</Filter>
     </ClCompile>
     <ClCompile Include="DatabaseClass.h">
-      <Filter>SQL</Filter>
+      <Filter>SQL Managed</Filter>
     </ClCompile>
     <ClCompile Include="AverageDistance.cpp">
       <Filter>Experiment\Performance Measures\PerSample</Filter>
@@ -276,10 +279,10 @@
       <Filter>Experiment\ClusterGeneration</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>SQL</Filter>
+      <Filter>SQL Managed</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>SQL</Filter>
+      <Filter>SQL Managed</Filter>
     </ClInclude>
     <ClInclude Include="AverageDistance.h">
       <Filter>Experiment\Performance Measures\PerSample</Filter>

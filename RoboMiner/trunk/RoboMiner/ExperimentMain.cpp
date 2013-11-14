@@ -146,7 +146,7 @@ LPTSTR createCommandlineString( ENVIRONMENT_DESC e, EXPERIMENT_DESC d) {
 }
 
 
-int main(int argc, char* argv[]) {
+int main4(int argc, char* argv[]) {
 
 	//Test Case 1	
 	/*EXPERIMENT_DESC d;
