@@ -192,6 +192,9 @@
     <ClCompile Include="PerformanceMeasure.cpp">
       <Filter>Experiment\Performance Measures</Filter>
     </ClCompile>
+    <ClCompile Include="SQLODBC.cpp">
+      <Filter>SQL Native</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Robot.h">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="PerformanceMeasure.h">
       <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
+    <ClInclude Include="SQLODBC.h">
+      <Filter>SQL Native</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
