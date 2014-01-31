@@ -111,7 +111,7 @@ void BasicForage::initializeRobots() {
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
 
-		if ( t.randomOpen() < desc.gold_waste_division_ratio ) {
+		if ( t.randomOpen() <= desc.gold_waste_division_ratio ) {
 			r.setDivision(GOLD);
 		} else {
 			r.setDivision(WASTE);
