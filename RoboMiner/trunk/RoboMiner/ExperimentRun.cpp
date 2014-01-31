@@ -90,7 +90,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool 
 	return true;
 }
 
-int main(int argc, char* argv[]) 
+int main4(int argc, char* argv[]) 
 {
 	//int k;
 	//cin >> k;	*/
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 	d.total_iterations = convertInt( argv[6] );
 
 	d.max_path = 30;
-	d.total_iterations = 10000;
+	d.total_iterations = 50000;
 
 	cout << argv[1] << endl;
 	cout << argv[2] << endl;
@@ -125,7 +125,9 @@ int main(int argc, char* argv[])
 
 
 	//Grid sizes
-	int grid_sizes[] = {50, 100, 200, 300,500};
+	//int grid_sizes[] = {50, 100, 200, 300,500};
+	//int grid_sizes[] = {50, 100, 200};
+	int grid_sizes[] = {300, 500};
 	vector<int> gridSize (grid_sizes, grid_sizes + sizeof(grid_sizes) / sizeof(int) );
 
 	//Object percentage
@@ -144,12 +146,12 @@ int main(int argc, char* argv[])
 	vector<double> goldWasteRobotDiv (gold_waste_robot_division, gold_waste_robot_division + sizeof(gold_waste_robot_division) / sizeof(double) );
 
 	//Environment Types
-	for (int i=0; i < num_environment_types; i++) {
-		e.type = environment_types[i];
-
 		//Grid size
-		for (int j=0; j < gridSize.size(); j++) {
-			e.grid_size = gridSize[j];
+	for (int j=0; j < gridSize.size(); j++) {
+		e.grid_size = gridSize[j];
+
+		for (int i=0; i < num_environment_types; i++) {
+			e.type = environment_types[i];
 
 			//Percentage of objects
 			for (int k=0; k < objectPercentage.size(); k++ ) {
@@ -166,13 +168,13 @@ int main(int argc, char* argv[])
 
 						//Experiment
 					    vector<Experiment*> experiments;
-						experiments.push_back( new BeeForage(t) );
-						experiments.push_back( new BasicForage(t) );
+						//experiments.push_back( new BeeForage(t) );
+						//experiments.push_back( new BasicForage(t) );
 						experiments.push_back (new DesertAntForage(t) );
 						//experiments.push_back ( new ClusterGeneration(t));
 
 						for (int v = 0; v < experiments.size(); v++ ) {
-							runExperiment( experiments[v], d, e, true);
+							runExperiment( experiments[v], d, e, false);
 							delete experiments[v];
 						}
 					}
