@@ -114,23 +114,25 @@ bool Robot::findItem() {
 	for (int i=-1; i <= 1; i++) {
 		for (int j=-1; j <= 1; j++) {
 			if ( validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == GOLD) {
-				load_type = mine->grid[pos.x +i][pos.y+j].type;
-				if (activity == FORAGE || activity == DESERTANT || activity == EXPLORE ) { //Added explorer 2013/06/06 Seeley Model 
-					loaded = true;
-					mine->grid[pos.x +i][pos.y+j].type = EMPTY;
-					dir.x = i; dir.y = j;
+				if ((activity != DESERTANT) || (activity == DESERTANT && division == GOLD)) {
+					load_type = mine->grid[pos.x +i][pos.y+j].type;
+					if (activity == FORAGE || activity == DESERTANT || activity == EXPLORE ) { //Added explorer 2013/06/06 Seeley Model 
+						loaded = true;
+						mine->grid[pos.x +i][pos.y+j].type = EMPTY;
+						dir.x = i; dir.y = j;
 
-					//Calculate the desirability of the location. 
-					calculateDistanceFromSink();
-					site_desirability= calculateLocationDesirability(distance_from_sink/max_distance_from_sink,calculateDensity());
+						//Calculate the desirability of the location. 
+						calculateDistanceFromSink();
+						site_desirability= calculateLocationDesirability(distance_from_sink/max_distance_from_sink,calculateDensity());
 					
-					if (activity != DESERTANT) 
-						division = GOLD;
+						if (activity != DESERTANT) 
+							division = GOLD;
+					}
+					previous_item_pos.x = pos.x +i;
+					previous_item_pos.y = pos.y +j;
+					return true;
 				}
-				previous_item_pos.x = pos.x +i;
-				previous_item_pos.y = pos.y +j;
-				return true;
-			} else if (activity != DESERTANT && division ==WASTE && validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE) {
+			} else if (division ==WASTE && validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE) {
 				load_type = mine->grid[pos.x +i][pos.y+j].type;
 
 				if (activity == FORAGE || activity == DESERTANT || activity == EXPLORE ) { //Added explorer 2013/06/06 Seeley Model 
