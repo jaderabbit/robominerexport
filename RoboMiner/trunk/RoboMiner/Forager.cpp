@@ -72,7 +72,7 @@ void Robot::avoidSink() {
 void Robot::locateStep() {
 	//TODO: Add obstacle avoidance to locating
 	//set destination
-	if (state_counter == 0 && ( activity == FORAGE || activity == DESERTANT) ) {	
+	if (state_counter == 0 && activity == FORAGE ) {	
 		//set home as the destination
 		destination.x = clusterLocation.x;
 		destination.y = clusterLocation.y;
