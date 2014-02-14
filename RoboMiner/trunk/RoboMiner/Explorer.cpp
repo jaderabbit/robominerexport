@@ -132,7 +132,7 @@ bool Robot::findItem() {
 					previous_item_pos.y = pos.y +j;
 					return true;
 				}
-			} else if (division ==WASTE && validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE) {
+			} else if (activity != DESERTANT && division ==WASTE && validPos(pos.x+i,pos.y+j) && mine->grid[pos.x +i][pos.y+j].type == WASTE) {
 				load_type = mine->grid[pos.x +i][pos.y+j].type;
 
 				if (activity == FORAGE || activity == DESERTANT || activity == EXPLORE ) { //Added explorer 2013/06/06 Seeley Model 
