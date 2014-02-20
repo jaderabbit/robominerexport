@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2011
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExperimentDatabasePopulator", "ExperimentDatabasePopulator\ExperimentDatabasePopulator.csproj", "{A2B4DFB2-C5E3-4C25-BB08-A43DB5FE8EF7}"
 EndProject
 Global
