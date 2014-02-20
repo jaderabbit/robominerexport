@@ -13,6 +13,22 @@ using System.Data;
 namespace ExperimentDatabasePopulator
 {
 
+    struct SingleResult 
+    {
+        public int algorithmid { get; set;}
+        public int measureid { get; set; }
+        public int sample { get; set; }
+        public int iteration { get; set; }
+        public double division { get; set; }
+        public int robots { get; set; }
+        public int size { get; set; }
+        public int objects { get; set; }
+        public double ratio { get; set; }
+        public int type { get; set; }
+        public double value { get; set; }
+
+    };
+
     struct ENVIRONMENT_DESC
     {
         public string type;
@@ -523,16 +539,121 @@ namespace ExperimentDatabasePopulator
             }
 
         }
+        
+
+        static void Result_to_Database( SingleResult result,  RobominerDataContext dc)
+        {
+            //get experimentid where division + robots
+            var experiment = dc.Experiments.Where(n => n.division == result.division && n.robots == result.robots).FirstOrDefault<Experiment>();
+
+            //create experiment if null
+            if (experiment == null)
+            {
+                experiment = new Experiment();
+                experiment.division = result.division;
+                experiment.robots = result.robots;
+                dc.Experiments.InsertOnSubmit(experiment);
+                dc.SubmitChanges();
+            }
+            //get environmentid which size, objects, radio and type
+            var environment = dc.Environments.Where(n => n.objects == result.objects && n.ratio == result.ratio && n.size == result.size && n.type == result.type).FirstOrDefault<Environment>();
+
+            //create experiment if null
+            if (environment == null)
+            {
+                environment = new Environment();
+                environment.objects = result.objects;
+                environment.ratio = result.ratio;
+                environment.size = result.size;
+                environment.type = result.type;
+                dc.Environments.InsertOnSubmit(environment);
+                dc.SubmitChanges();
+            }
+
+            //create record with experimentid, measureid, algorithmid, environmentid, iteration, sample, value
+            var r = new Result();
+            r.algorithmid = result.algorithmid;
+            r.environmentid = environment.id;
+            r.experimentid = experiment.id;
+            r.iteration = result.iteration;
+            r.sample = result.sample;
+            r.measureid = result.measureid;
+            r.value = result.value;
+
+            //Insert record
+            dc.Results.InsertOnSubmit(r);
+        }
+
+        /*
+         * Import text file data into database. 
+         */
+        static void Import_data_file(string path, RobominerDataContext dc)
+        {
+            using (TextReader sw = File.OpenText(path))
+            {
+                CsvReader csv = new CsvReader(sw);
+                int c = 0;
+                while (csv.Read())
+                {
+                    //If can
+                    int intfield;
+                    if (!csv.TryGetField<int>(0, out intfield))
+                    {
+                        continue;
+                    }
+
+                    //Get record from csv
+                    SingleResult record = new SingleResult();
+                    record.algorithmid = csv.GetField<int>(0);
+                    record.measureid = csv.GetField<int>(1);
+                    record.sample = csv.GetField<int>(2);
+                    record.iteration = csv.GetField<int>(3);
+                    record.division = csv.GetField<double>(4);
+                    record.robots = csv.GetField<int>(5);
+                    record.size = csv.GetField<int>(6);
+                    record.objects = csv.GetField<int>(7);
+                    record.ratio = csv.GetField<double>(8);
+                    record.type = csv.GetField<int>(9);
+                    record.value = csv.GetField<double>(10);
+
+                    //Add to database
+                    Result_to_Database(record, dc);
+
+                    //Submit changes regularly
+                    c++;
+                    if (c % 100 == 0)
+                    {
+                        dc.SubmitChanges();
+                    }
+                }
+            }
+        }
+
+        /**
+         * Import all text data into the database 
+         */
+        static void Import_data(RobominerDataContext dc)
+        {
+            double[] gold_ratios = { 0, 0.2, 0.25, 0.33333333, 0.5, 0.666666667, 0.75, 0.8, 1 };
+            for (int i = 0; i < gold_ratios.Length; i++)
+            {
+                string fileName = "results/" + Convert.ToString(gold_ratios[i]) + ".csv";
+                Import_data_file(fileName,dc);
+            }
+        }
+
         /**
          * Creates latex table of averages and deviations for a specific performance measure
          * 
          */
-
         static void Main(string[] args)
         {
             RobominerDataContext dc = new RobominerDataContext("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
            
-            foreach (PerformanceMeasure a in dc.PerformanceMeasures)
+
+            Import_data_file("0.csv", dc);
+
+            /*foreach (PerformanceMeasure a in dc.PerformanceMeasures)
             {
                 //MWU
                 Create_MWU_All(a.id, dc);
@@ -558,6 +679,9 @@ namespace ExperimentDatabasePopulator
                 Create_AvgDev_General(a.id, "Experiment", "division", dc, format);
                 Create_AvgDev_General(a.id, "Experiment", "robots", dc, format);
 
+<<<<<<< .mine
+            }*/
+=======
                 format = "tex";
                 Create_Avg_General(a.id, "EnvironmentType", "name", dc, format, true);
                 Create_Avg_General(a.id, "Environment", "ratio", dc, format);
@@ -567,6 +691,7 @@ namespace ExperimentDatabasePopulator
                 Create_Avg_General(a.id, "Experiment", "robots", dc, format);
                 */
             }
+>>>>>>> .r126
             dc.Dispose();
         }
 
