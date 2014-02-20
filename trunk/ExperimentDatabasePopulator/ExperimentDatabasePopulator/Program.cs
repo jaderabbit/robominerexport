@@ -187,8 +187,8 @@ namespace ExperimentDatabasePopulator
          */
         static void AppendToMWUFile(string performanceMeasure, string input, string tag, string category)
         {
-            string output = String.Format("MWU_{0}_results.csv", performanceMeasure);
-            using (StreamWriter writer = File.AppendText(String.Format("MWU_{0}_batch.csv",performanceMeasure)))
+            string output = String.Format("MWU/MWU_{0}_results.csv", performanceMeasure);
+            using (StreamWriter writer = File.AppendText(String.Format("MWU/MWU_{0}_batch.csv",performanceMeasure)))
             {
                 writer.WriteLine("{0}, {1}, {2}, {3}", input, tag, category, output);
                 writer.Close();
@@ -212,7 +212,7 @@ namespace ExperimentDatabasePopulator
         {
             var results = dc.Results.Where(n => n.measureid== measureId);
             string name = dc.PerformanceMeasures.Where(n => n.id == measureId).Select(n => n.name).FirstOrDefault().Trim();
-            string fileName = String.Format("MWU_{0}.txt", name);
+            string fileName = String.Format("MWU/MWU_{0}.txt", name);
 
             //TODO: Check how to write to a file.
             FileStream fileStream = File.Open(fileName, FileMode.Create);
@@ -248,7 +248,7 @@ namespace ExperimentDatabasePopulator
                 var results = dc.Results.Where(n => n.measureid == measureId && n.Environment.type == i);
                 string name = dc.PerformanceMeasures.Where(n => n.id == measureId).Select(n => n.name).FirstOrDefault().Trim();
                 string environmentName = dc.EnvironmentTypes.Where(n => n.id == i).FirstOrDefault().name;
-                string fileName = String.Format("MWU_{0}_{1}.txt", name, environmentName);
+                string fileName = String.Format("MWU/MWU_{0}_{1}.txt", name, environmentName.Trim());
 
                Create_MWU(name,results.ToList<Result>(),fileName, environmentName,"Environment");
             }
@@ -271,7 +271,7 @@ namespace ExperimentDatabasePopulator
                 //Get performance measure
                 string name = dc.PerformanceMeasures.Where(n => n.id == measureId).Select(n => n.name).FirstOrDefault().Trim();
 
-                string fileName = String.Format("MWU_{0}_size{1}.txt", name, sizes[i] );
+                string fileName = String.Format("MWU/MWU_{0}_size{1}.txt", name, sizes[i] );
 
                 Create_MWU(name, results.ToList<Result>(), fileName, Convert.ToString(sizes[i]), "sizes");
 
@@ -295,7 +295,7 @@ namespace ExperimentDatabasePopulator
                 //Get performance measure
                 string name = dc.PerformanceMeasures.Where(n => n.id == measureId).Select(n => n.name).FirstOrDefault().Trim();
 
-                string fileName = String.Format("MWU_{0}_ratio{1}.txt", name, ratios[i]);
+                string fileName = String.Format("MWU/MWU_{0}_ratio{1}.txt", name, ratios[i]);
 
                 Create_MWU(name, results.ToList<Result>(), fileName, Convert.ToString(ratios[i]), "ratios");
             }
@@ -319,7 +319,7 @@ namespace ExperimentDatabasePopulator
                 var results = dc.Results.Where(n => n.measureid == measureId && n.Experiment.robots == robots[i]);
 
                
-                string fileName = String.Format("MWU_{0}_robots{1}.txt", name, robots[i]);
+                string fileName = String.Format("MWU/MWU_{0}_robots{1}.txt", name, robots[i]);
 
                 Create_MWU(name, results.ToList<Result>(), fileName, Convert.ToString(robots[i]), "robots");
             }
@@ -343,7 +343,7 @@ namespace ExperimentDatabasePopulator
                 var results = dc.Results.Where(n => n.measureid == measureId && n.Experiment.division == division[i]);
 
 
-                string fileName = String.Format("MWU_{0}_division{1}.txt", name, division[i]);
+                string fileName = String.Format("MWU/MWU_{0}_division{1}.txt", name, division[i]);
 
                 Create_MWU(name, results.ToList<Result>(), fileName, Convert.ToString(division[i]), "division");
             }
@@ -365,7 +365,7 @@ namespace ExperimentDatabasePopulator
             {
                 //Get results for performance measure and environment size. 
                 var results = dc.Results.Where(n => n.measureid == measureId && n.Environment.objects == objects[i]);
-                string fileName = String.Format("MWU_{0}_objects{1}.txt", name, objects[i]);
+                string fileName = String.Format("MWU/MWU_{0}_objects{1}.txt", name, objects[i]);
                 Create_MWU(name, results.ToList<Result>(), fileName, Convert.ToString(objects[i]), "objects");
             }
         }
@@ -398,13 +398,79 @@ namespace ExperimentDatabasePopulator
         }
 
         /**
+         * Creates avg for
+         * */
+        static void Create_Avg_General(int measureId, string table, string column, RobominerDataContext dc, string format, bool trimField = false)
+        {
+            //Get performance measure
+            string name = dc.PerformanceMeasures.Where(n => n.id == measureId).Select(n => n.name).FirstOrDefault().Trim();
+
+            //Create file name
+            string filePath = String.Format("Avg_{3}_{0}_{1}.{2}", table, column, format, name);
+
+            //Does the Column need to be trimmed?
+            string alias = column;
+            if (trimField)
+            {
+                table = String.Format("RTRIM({0}", table);
+                column = String.Format("{0} )", column);
+            }
+
+            //Construct query
+            string query = String.Format(@"SELECT * FROM (
+	            SELECT RTRIM(Algorithm.name) as algorithm, {1}.{0} as {3}, AVG(value) as value
+	            FROM [Experiment].[dbo].[Results] 
+	            JOIN Experiment.dbo.Environment on environmentid = Experiment.dbo.Environment.id
+                JOIN Experiment.dbo.Experiment on experimentid = Experiment.dbo.Experiment.id
+	            JOIN Experiment.dbo.Algorithm on algorithmid = Experiment.dbo.Algorithm.id
+                JOIN Experiment.dbo.EnvironmentType on Experiment.dbo.Environment.type = Experiment.dbo.EnvironmentType.id
+	            WHERE measureid = {2}
+	            GROUP BY Algorithm.name, {1}.{0} ) 
+            AS AvgStd
+            PIVOT ( 
+	            MAX(value) FOR [algorithm] IN (Naive, DesertAnt,HoneyBee )
+            ) AS p;", column, table, measureId, alias);
+
+            //Create new dataset
+            DataSet ds = new DataSet();
+
+            //Execute Query
+            using (SqlConnection connection = new SqlConnection("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True"))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(ds);
+
+            }
+
+            //Write query
+            if (ds.Tables.Count > 0)
+            {
+                if (format.Equals("tex"))
+                {
+                    LatexWriter writer = new LatexWriter(filePath);
+                    writer.OutputTable(ds.Tables[0]);
+                }
+                else
+                {
+                    CsvTableWriter csvwriter = new CsvTableWriter(filePath);
+                    csvwriter.OutputTable(ds.Tables[0]);
+                }
+            }
+
+        }
+
+        /**
          * Creates an average with standard deviation latex table grouping by any specified table and any specified column.
          * trimField = True if the column needs to be trimmed.
          */
-        static void Create_AvgDev_General(int measureId, string table, string column, RobominerDataContext dc, bool trimField = false)
+        static void Create_AvgDev_General(int measureId, string table, string column, RobominerDataContext dc, string format, bool trimField = false)
         {
+            //Get performance measure
+            string name = dc.PerformanceMeasures.Where(n => n.id == measureId).Select(n => n.name).FirstOrDefault().Trim();
+
             //Create file name
-            string filePath = String.Format("AvgDev_{0}_{1}.tex", table, column);
+            string filePath = String.Format(format +"\\AvgDev_{3}_{0}_{1}.{2}", table, column,format,name);
 
             //Does the Column need to be trimmed?
             string alias = column;
@@ -419,6 +485,7 @@ namespace ExperimentDatabasePopulator
 	            SELECT RTRIM(Algorithm.name) as algorithm, {1}.{0} as {3}, ( CAST(AVG(value) as VARCHAR(20) )+ ' (' +CAST(STDEV(value) as VARCHAR(20))+') ') as value
 	            FROM [Experiment].[dbo].[Results] 
 	            JOIN Experiment.dbo.Environment on environmentid = Experiment.dbo.Environment.id
+                JOIN Experiment.dbo.Experiment on experimentid = Experiment.dbo.Experiment.id
 	            JOIN Experiment.dbo.Algorithm on algorithmid = Experiment.dbo.Algorithm.id
                 JOIN Experiment.dbo.EnvironmentType on Experiment.dbo.Environment.type = Experiment.dbo.EnvironmentType.id
 	            WHERE measureid = {2}
@@ -432,7 +499,7 @@ namespace ExperimentDatabasePopulator
             DataSet ds = new DataSet();
 
             //Execute Query
-            using (SqlConnection connection = new SqlConnection("Data Source=DEEPTHOUGHT;Initial Catalog=Experiment;Integrated Security=True"))
+            using (SqlConnection connection = new SqlConnection("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True"))
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 SqlDataAdapter da = new SqlDataAdapter(command);
@@ -443,8 +510,16 @@ namespace ExperimentDatabasePopulator
             //Write query
             if (ds.Tables.Count > 0)
             {
-                LatexWriter writer = new LatexWriter(filePath);
-                writer.OutputTable(ds.Tables[0]);
+                if (format.Equals("tex"))
+                {
+                    LatexWriter writer = new LatexWriter(filePath);
+                    writer.OutputTable(ds.Tables[0]);
+                }
+                else
+                {
+                    CsvTableWriter csvwriter = new CsvTableWriter(filePath);
+                    csvwriter.OutputTable(ds.Tables[0]);
+                }
             }
 
         }
@@ -455,7 +530,8 @@ namespace ExperimentDatabasePopulator
 
         static void Main(string[] args)
         {
-            RobominerDataContext dc = new RobominerDataContext("Data Source=DEEPTHOUGHT;Initial Catalog=Experiment;Integrated Security=True");
+            RobominerDataContext dc = new RobominerDataContext("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
+           
             foreach (PerformanceMeasure a in dc.PerformanceMeasures)
             {
                 //MWU
@@ -466,21 +542,30 @@ namespace ExperimentDatabasePopulator
                 Create_MWU_Robots(a.id, dc);
                 Create_MWU_Size(a.id, dc);
                 Create_MWU_Type(a.id, dc);
-
+/*
                 //FluxViz
                 Create_FluxViz_All(a.id, dc);
                 Create_FluxViz_File_Alg_EnvType(a.id, dc);
                 Create_FluxViz_Alg_Type_Ratio(a.id, dc);
                 Create_FluxViz_Alg_Type_Rat_Div_Env(a.id, dc);
-
+                
                 //Latex
-                Create_AvgDev_General(a.id, "EnvironmentType", "name", dc, true);
-                Create_AvgDev_General(a.id, "Environment", "ratio", dc);
-                Create_AvgDev_General(a.id, "Environment", "size", dc);
-                Create_AvgDev_General(a.id, "Environment", "objects", dc);
-                Create_AvgDev_General(a.id, "Experiment", "division", dc);
-                Create_AvgDev_General(a.id,"Experiment","robots",dc);
+                string format = "csv";
+                Create_AvgDev_General(a.id, "EnvironmentType", "name", dc, format, true);
+                Create_AvgDev_General(a.id, "Environment", "ratio", dc, format);
+                Create_AvgDev_General(a.id, "Environment", "size", dc, format);
+                Create_AvgDev_General(a.id, "Environment", "objects", dc, format);
+                Create_AvgDev_General(a.id, "Experiment", "division", dc, format);
+                Create_AvgDev_General(a.id, "Experiment", "robots", dc, format);
 
+                format = "tex";
+                Create_Avg_General(a.id, "EnvironmentType", "name", dc, format, true);
+                Create_Avg_General(a.id, "Environment", "ratio", dc, format);
+                Create_Avg_General(a.id, "Environment", "size", dc, format);
+                Create_Avg_General(a.id, "Environment", "objects", dc, format);
+                Create_Avg_General(a.id, "Experiment", "division", dc, format);
+                Create_Avg_General(a.id, "Experiment", "robots", dc, format);
+                */
             }
             dc.Dispose();
         }
