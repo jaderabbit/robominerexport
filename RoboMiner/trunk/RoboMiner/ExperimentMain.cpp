@@ -148,7 +148,7 @@ LPTSTR createCommandlineString( ENVIRONMENT_DESC e, EXPERIMENT_DESC d) {
 //#include "SQLODBC.h"
 
 
-int main4(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 
 	//Test Case 1	
 	/*EXPERIMENT_DESC d;
@@ -203,7 +203,7 @@ int main4(int argc, char* argv[]) {
 	//Variables that do not change.
 	exp_desc.max_path = 50;				//Max path
 	exp_desc.samples = 30;				//Samples
-	exp_desc.total_iterations = 50000;	//total iterations
+	exp_desc.total_iterations = 10000;	//total iterations
 	env_desc.sink_boundary = 5;			//Sink boundary
 	exp_desc.forager_explorer_ratio = 0.7f; //Forager explorer ratio.
 

@@ -59,7 +59,8 @@ int DesertAntForage::runStep() {
 }
 
 void DesertAntForage::initializeRobots() {
-	
+	int goldCount = ceil(number_robots*desc.gold_waste_division_ratio);
+	int wasteCount = floor(number_robots - number_robots*desc.gold_waste_division_ratio);
 	int forager_count = 0, explorer_count = 0; 	int c = 0;
 	for (int i=0; i < number_robots ; i ++ ) {
 		//Create Robots
@@ -99,11 +100,38 @@ void DesertAntForage::initializeRobots() {
 
 		forager_count++;
 		
-		if ( t.randomOpen() <= desc.gold_waste_division_ratio ) {
+
+		//Set GOLD WASTE division
+		if (desc.gold_waste_division_ratio < 1 && desc.gold_waste_division_ratio > 0 && i==0 ) { 
+			//if there ratio isnt only gold or only waste and is first. 
+			//This is to ensure there exists AT LEAST one gold forager.
 			robots[i].setDivision(GOLD);
-		} else {
+			goldCount--;
+		} else if (desc.gold_waste_division_ratio < 1 && desc.gold_waste_division_ratio > 0 && i== 1) {  
+			//if there ratio isnt only gold or only waste and is second
+			//if there ratio isnt only gold or only waste and is first. 
+			//This is to ensure there exists AT LEAST one waste forager.
 			robots[i].setDivision(WASTE);
+			wasteCount--;
+		} else if ( (goldCount > 0 && wasteCount > 0) || (goldCount == 0 && wasteCount == 0) ) {
+			//randomly choose
+			if (t.orand() < 0.5 ) {
+				robots[i].setDivision(GOLD);
+				goldCount--;
+			} else {
+				robots[i].setDivision(WASTE);
+				wasteCount--;
+			}
+		} else if ( goldCount > 0 && wasteCount == 0 ) {
+			robots[i].setDivision(GOLD);
+			goldCount--;
+			//choose Gold
+		} else if ( goldCount == 0 && wasteCount > 0 ) {
+			//choose waste
+			robots[i].setDivision(WASTE);
+			wasteCount--;
 		}
+
 
 	}
 

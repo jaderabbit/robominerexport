@@ -84,7 +84,8 @@ int BasicForage::cleanup() {
 
 void BasicForage::initializeRobots() {
 	//Initialize Robots
-	
+	int goldCount = ceil(number_robots*desc.gold_waste_division_ratio);
+	int wasteCount = floor(number_robots - number_robots*desc.gold_waste_division_ratio);
 	//TODO: Decide if initialize at sink or randomly
 	//TODO: Allow for robots to NOT choose what items to cluster. i.e. A robot can cluster any item.
 	for (int i=0; i < number_robots ; i ++ ) {
@@ -111,11 +112,35 @@ void BasicForage::initializeRobots() {
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
 
-		if ( t.randomOpen() <= desc.gold_waste_division_ratio ) {
-			r.setDivision(GOLD);
-		} else {
-			r.setDivision(WASTE);
-		}
+		if (desc.gold_waste_division_ratio < 1 && desc.gold_waste_division_ratio > 0 && i==0 ) { 
+			//if there ratio isnt only gold or only waste and is first. 
+			//This is to ensure there exists AT LEAST one gold forager.
+			robots[i].setDivision(GOLD);
+			goldCount--;
+		} else if (desc.gold_waste_division_ratio < 1 && desc.gold_waste_division_ratio > 0 && i== 1) {  
+			//if there ratio isnt only gold or only waste and is second
+			//if there ratio isnt only gold or only waste and is first. 
+			//This is to ensure there exists AT LEAST one waste forager.
+			robots[i].setDivision(WASTE);
+			wasteCount--;
+		} else if ( (goldCount > 0 && wasteCount > 0) || (goldCount == 0 && wasteCount == 0) ) {
+			//randomly choose
+			if (t.orand() < 0.5 ) {
+				robots[i].setDivision(GOLD);
+				goldCount--;
+			} else {
+				robots[i].setDivision(WASTE);
+				wasteCount--;
+			}
+		} else if ( goldCount > 0 && wasteCount == 0 ) {
+			robots[i].setDivision(GOLD);
+			goldCount--;
+			//choose Gold
+		} else if ( goldCount == 0 && wasteCount > 0 ) {
+			//choose waste
+			robots[i].setDivision(WASTE);
+			wasteCount--;
+		} 
 
 		r.setActivity(activity);
 		r.setStringTracker(s.str());
