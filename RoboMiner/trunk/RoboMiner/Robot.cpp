@@ -29,8 +29,11 @@ const  int Robot::T_size = 30;
 
 Robot::Robot(void)
 {
+	cout << "Default constructor called" << endl;
+	hasState = false;
 	one_stuck_mother_fucker = 0;
-
+	this->site_desirability =0;
+	this->density = 0;
 	pos.x = 0; pos.y = 0;		//position
 	dir.x = 0; dir.y = 0;		//direction
 
@@ -57,6 +60,84 @@ Robot::Robot(void)
 
 	 //home vector
 	 homeVector.x = 0; homeVector.y = 0;
+
+
+}
+
+Robot:: Robot(const Robot& other) {
+	this->activity = other.activity;
+	this->activity_counter = other.activity_counter;
+	this->clusterLocation = other.clusterLocation;
+	this->density = other.density;
+	this->desirability_threshold = other.desirability_threshold;
+	this->desirability_total = other.desirability_total;
+	this->destination = other.destination;
+	this->dir = other.dir;
+	this->distance_from_sink = other.distance_from_sink;
+	this->division = other.division;
+	this->drop_prob_const = other.drop_prob_const;
+	this->foraged = other.foraged;
+	this->hasState = other.hasState;
+	this->homeVector = other.homeVector;
+	this->index = other.index;
+	this->lambda = other.lambda;
+	this->lambdas = other.lambdas;
+	this->loaded = other.loaded;
+	this->load_type = other.load_type;	
+	this->max_path = other.max_path;
+	this->max_distance_from_sink = other.max_distance_from_sink;
+	this->mine = other.mine;
+	this->moved = other.moved;
+	this->num_clusters = other.num_clusters;
+	this->num_desirabilities = other.num_desirabilities;
+	this->oldSinkPos = other.oldSinkPos;
+	this->one_stuck_mother_fucker = other.one_stuck_mother_fucker;
+	this->original_division = other.original_division;
+	this->path_count = other.path_count;
+	this->path_length = other.path_length;
+	this->performanceBed = other.performanceBed;
+	this->pickup_prob_const = other.pickup_prob_const;
+	this->pos = other.pos;
+	this->previous_item_pos = other.previous_item_pos;
+	this->recruited = other.recruited;
+	this->recruiterClusterLocation = other.recruiterClusterLocation;
+	this->recruiterOriginalPos = other.recruiterOriginalPos;
+	this->recruitment_reps = other.recruitment_reps;
+	this->robots = other.robots;
+	this->robotState = other.robotState;
+	this->site_desirability = other.site_desirability;
+	this->state = other.state;
+	this->state_counter = other.state_counter;
+	this->stuck_window = other.stuck_window;
+	this->T = other.T;
+	this->typeForaged = other.typeForaged;
+	this->robotState = other.robotState;
+
+
+	 //Set initial states
+	 init_states[CLUSTER] = UNLOADED;
+	 init_states[FORAGE] = WAITING;
+	 init_states[EXPLORE] = EXPLORING;
+
+	 	//Direction circle
+	dir_circle[0].x = 1; dir_circle[0].y = 0;
+	dir_circle[1].x = 1; dir_circle[1].y = 1;
+	dir_circle[2].x = 0; dir_circle[2].y = 1;
+	dir_circle[3].x = -1; dir_circle[3].y = 1;
+	dir_circle[4].x = -1; dir_circle[4].y = 0;
+	dir_circle[5].x = -1; dir_circle[5].y = -1;
+	dir_circle[6].x = 0; dir_circle[6].y = -1;
+	dir_circle[7].x = 1; dir_circle[7].y = -1;
+
+	recruitment_reps = MAX_RECRUITMENT_REPS;
+}
+
+void Robot::setRobotState( RobotState* _state ) { 
+	if (hasState) {
+		delete robotState;
+	}
+	robotState = _state; 
+	hasState = true;
 }
 
 Robot::Robot(Mine* _mine, Tools &_t) : mine(_mine), t(_t) {
@@ -88,6 +169,7 @@ Robot::Robot(Mine* _mine, Tools &_t) : mine(_mine), t(_t) {
 	 //Distance from sink
 	 max_distance_from_sink = 0;
 	 distance_from_sink = 0;
+	 robotState = 0;
 
 	 //Performance variable measures
 	resetPerformanceMeasures();
@@ -104,15 +186,20 @@ Robot::Robot(Mine* _mine, Tools &_t) : mine(_mine), t(_t) {
 
 	lambda = 0.5;
 	path_count = 0;
-
+	density = 0;
+	site_desirability = 0;
 	one_stuck_mother_fucker = 0;
 
 	desirability_threshold =0;
 	desirability_total=0;
 	num_desirabilities=0;
+	clusterLocation.x = 0;
+	clusterLocation.y = 0;
 
 	recruitment_reps = MAX_RECRUITMENT_REPS;
 	robotState = 0;
+	hasState = false;
+	this->robotState = 0;
 
 	//Only for clustering folks
 	num_clusters = 2;
@@ -126,6 +213,8 @@ Robot::Robot(Mine* _mine, Tools &_t) : mine(_mine), t(_t) {
 	}
 	pickup_prob_const = 0.01;
 	drop_prob_const = 0.9;
+
+	//cout << "Correct constructor called" << endl;
 }
 
 Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div,  string track_file){
@@ -266,13 +355,17 @@ Robot::Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, int 
 	 }
 
 	 robotState = 0;
+
 	 max_distance_from_sink = 0;
 }
 
 Robot::~Robot(void)
 {
-	if (robotState) delete robotState;
-	robotState = 0;
+	if (hasState) {
+		delete robotState;
+		robotState = 0;
+		hasState = false;
+	}
 }
 
 void Robot::setNumClusters( int _num_clusters ) { 
@@ -779,16 +872,16 @@ void Robot::homingStep() {
 	//set destination
 	if (state_counter == 0 && activity == EXPLORE ) {	
 		//set the location of the cluster
-		clusterLocation.x =  pos.x;
-		clusterLocation.y =  pos.y;
+		clusterLocation.x =  pos.x; 
+		clusterLocation.y =  pos.y; 
 
 		//set home as the destination
 		destination.x = oldSinkPos.x;
 		destination.y = oldSinkPos.y;
-	} else if (state_counter == 0 && activity == FORAGE || activity == DESERTANT) {
+	} else if (state_counter == 0 && activity == FORAGE ||state_counter == 0 && activity == DESERTANT) {
 		//set the location of the cluster
-		clusterLocation.x =  pos.x;
-		clusterLocation.y =  pos.y;
+		clusterLocation.x =  pos.x;//remove
+		clusterLocation.y =  pos.y;//remove
 
 		destination.x = oldSinkPos.x;
 		destination.y = oldSinkPos.y;

@@ -24,6 +24,23 @@ struct Coord {
 	int x;
 	int y;
 
+	Coord() 
+	{
+		x = 0;
+		y=0;
+	}
+
+	Coord( int _x, int _y)
+	{
+		x = _x;
+		y = _y;
+	}
+	Coord(const Coord &other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+	}
+
 	bool operator==(const Coord &other) const {
 		if ( x == other.x && y == other.y) {
 			return true;
@@ -47,6 +64,7 @@ public:
 //Methods
 	//Constructors
 	Robot(void);
+	Robot(const Robot& other);
 	Robot(Mine* _mine, Tools& _t);
 	Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _max_path, string tracker = "");
 	Robot( Mine* _mine, Coord _pos, Coord _dir, int _act, int _state, int _max_path, int _div, string tracker = "");
@@ -160,7 +178,8 @@ public:
 	void setState( int _state ) { state = _state; }
 	int getState() { return state; }
 
-	void setRobotState( RobotState* _state ) { robotState = _state; }
+	void setRobotState( RobotState* _state );
+
 	RobotState* getRobotState() { return robotState; }
 
 	void setMaxPath( int _max_path ) { max_path = _max_path; chooseMaxPathLength();	 }
@@ -254,6 +273,7 @@ public:
 	string trackFile;
 	vector<Coord> track;
 
+	bool hasState;
 	RobotState* robotState;
 	vector<Robot>* robots;
 

@@ -58,14 +58,17 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions> /EHsc %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>false</ExceptionHandling>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3dx10.lib;d3d10.lib;%(AdditionalDependencies);</AdditionalDependencies>
-      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <EntryPointSymbol>WinMain</EntryPointSymbol>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,21 +76,22 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <CompileAsManaged>true</CompileAsManaged>
+      <CompileAsManaged>false</CompileAsManaged>
       <ExceptionHandling>false</ExceptionHandling>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/EHsc %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>d3dx10.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
-      <AdditionalOptions>/clr %(AdditionalOptions)</AdditionalOptions>
+      <EntryPointSymbol>WinMain</EntryPointSymbol>
       <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
@@ -101,7 +105,6 @@
     <ClCompile Include="BeeForage.cpp" />
     <ClCompile Include="ClusterGeneration.cpp" />
     <ClCompile Include="ClusterState.cpp" />
-    <ClCompile Include="DatabaseClass.h" />
     <ClCompile Include="DesertAnt.cpp" />
     <ClCompile Include="DesertAntForage.cpp" />
     <ClCompile Include="DXRenderer.cpp" />
@@ -127,9 +130,7 @@
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="RobotState.cpp" />
     <ClCompile Include="sfmt.cpp" />
-    <ClCompile Include="SQLODBC.cpp" />
     <ClCompile Include="StatisticsHandler.cpp" />
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tools.cpp" />
     <ClCompile Include="Update.cpp" />
   </ItemGroup>
@@ -166,9 +167,6 @@
     <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotState.h" />
     <ClInclude Include="sfmt.h" />
-    <ClInclude Include="SQLODBC.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="TileRenderGraph.h" />
     <ClInclude Include="Tools.h" />
     <ClInclude Include="Types.h" />

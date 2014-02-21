@@ -165,12 +165,6 @@
     <ClCompile Include="ClusterGeneration.cpp">
       <Filter>Experiment\ClusterGeneration</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>SQL Managed</Filter>
-    </ClCompile>
-    <ClCompile Include="DatabaseClass.h">
-      <Filter>SQL Managed</Filter>
-    </ClCompile>
     <ClCompile Include="AverageDistance.cpp">
       <Filter>Experiment\Performance Measures\PerSample</Filter>
     </ClCompile>
@@ -191,9 +185,6 @@
     </ClCompile>
     <ClCompile Include="PerformanceMeasure.cpp">
       <Filter>Experiment\Performance Measures</Filter>
-    </ClCompile>
-    <ClCompile Include="SQLODBC.cpp">
-      <Filter>SQL Native</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,12 +272,6 @@
     <ClInclude Include="ClusterGeneration.h">
       <Filter>Experiment\ClusterGeneration</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>SQL Managed</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>SQL Managed</Filter>
-    </ClInclude>
     <ClInclude Include="AverageDistance.h">
       <Filter>Experiment\Performance Measures\PerSample</Filter>
     </ClInclude>
@@ -307,9 +292,6 @@
     </ClInclude>
     <ClInclude Include="PerformanceMeasure.h">
       <Filter>Experiment\Performance Measures</Filter>
-    </ClInclude>
-    <ClInclude Include="SQLODBC.h">
-      <Filter>SQL Native</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

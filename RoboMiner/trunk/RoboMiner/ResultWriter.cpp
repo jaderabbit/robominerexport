@@ -2,8 +2,8 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <vld.h>
-#include "DatabaseClass.h"
+//#include <vld.h>
+//#include "DatabaseClass.h"
 
 
 ResultWriter::ResultWriter(void)
@@ -40,6 +40,82 @@ string ResultWriter::generateFileName( EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DE
 		<<"_iter_" << _exp_desc.total_iterations << "_mpath_" << _exp_desc.max_path << ".csv";
 	
 	return name.str();
+}
+
+string ResultWriter::generateSummaryResultFileName(EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc) 
+{
+	stringstream name;
+	name << "results\\" << _env_desc.ratio_gold << ".csv";
+	return name.str();
+}
+
+string ResultWriter::generateSummaryFileHeader()
+{
+	return "algorithmid,measureid,sample,iteration,division,robots,size,objects,ratio, type, value";
+}
+
+string ResultWriter::getExperimentResult(EXPERIMENT_DESC _exp_desc) 
+{
+	stringstream result;
+	result << _exp_desc.total_iterations << "," << _exp_desc.gold_waste_division_ratio << "," << _exp_desc.number_robots << ",";
+	return result.str();
+}
+
+string ResultWriter::getEnvironmentResult(ENVIRONMENT_DESC _env_desc)
+{
+	stringstream result;
+	result << _env_desc.grid_size << "," << _env_desc.num_objects << "," << _env_desc.ratio_gold << "," << getEnvironmentTypeId(_env_desc.type);
+	return result.str();
+}
+
+void ResultWriter::writeSummaryResultFile() 
+{
+	//Generate name
+	string fileName = generateSummaryResultFileName(exp_desc, env_desc);
+
+	//Open File
+	ofstream f; 
+	f.open(fileName.c_str(),std::ios_base::app);
+
+	//Generate header
+	string header = generateSummaryFileHeader();
+
+	//Output header
+	f << header << endl;
+
+	//Get Algorithm Id
+	int algorithmId = getAlgorithmId( algType);
+
+	//Generate all the data
+
+	//for each iteration, for each performance measure, write out the value for each sample, for each iteration
+
+	//For each performance measure
+	int num_pm = samples[0]->pm.size();
+	for (int i=0; i < num_pm; ++i)
+	{
+		//Get performance id
+		int performanceId = samples[0]->pm[i]->getId();
+		for (int j=0; j < samples.size(); j++)
+		{	
+			int sample = j;
+			double value = samples[j]->pm[i]->getFinalValue();
+
+			//Output to file
+			f << algorithmId << "," << performanceId << "," << sample << "," << getExperimentResult(exp_desc) << getEnvironmentResult(env_desc) << "," << value << endl;
+		}
+	}
+
+		//Close file	
+	f.close();
+
+	cout << "COMPLETE: " << generateFileName(exp_desc, env_desc) << endl;
+	//Open File
+	ofstream log; 
+	log.open("log.txt",std::ios_base::app);
+	log << "COMPLETE: " << fileName << endl;
+	log.close();
+
 }
 	
 
@@ -132,7 +208,7 @@ int ResultWriter::getAlgorithmId( string type)
 bool ResultWriter::writeResultToSql()
 {
 	//Database Class
-	DatabaseClass* db = new DatabaseClass("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
+	/*DatabaseClass* db = new DatabaseClass("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
 
 	db->CreateConnection();
 
@@ -169,7 +245,7 @@ bool ResultWriter::writeResultToSql()
 		for (int j=0; j < samples.size(); j++)
 		{	
 			double value = samples[j]->pm[i]->getFinalValue();
-			db->AddResultRow(experimentId, performanceId, algorithmId, environmentId,exp_desc.total_iterations,j,value);
+			//db->AddResultRow(experimentId, performanceId, algorithmId, environmentId,exp_desc.total_iterations,j,value);
 			/*
 			if (perIteration) {
 				int it = 0;
@@ -183,14 +259,14 @@ bool ResultWriter::writeResultToSql()
 				double value = samples[j]->pm[i]->getNextValue();
 				//int expId, int measId,  int algId, int envId,  int it, int sample, double value )
 				db->AddResultRow(experimentId, performanceId, algorithmId, environmentId,exp_desc.total_iterations,j,value);
-			}*/
+			}
 				
 		}
 	}
 
 	//Close the database connection
-	db->CloseConnection();
-	delete db;
+	//db->CloseConnection();
+	//delete db;
 
 	//Console Logging
 	string fileName = generateFileName(exp_desc, env_desc);
@@ -200,7 +276,7 @@ bool ResultWriter::writeResultToSql()
 	ofstream log; 
 	log.open("log.txt",std::ios_base::app);
 	log << "COMPLETE: " << fileName << endl;
-	log.close();
+	log.close();*/
 
 	//TODO: Change function to return result of opening the file
 	return true;

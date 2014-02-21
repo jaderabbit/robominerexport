@@ -82,7 +82,7 @@ void DesertAntForage::initializeRobots() {
 		Robot r(&mine,t);
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
-		r.setStringTracker(s.str());
+		//r.setStringTracker(s.str());
 		r.setMutualRobotAwareness(&robots);
 		r.setMaxPath(desc.max_path);
 		r.setIndex(i);

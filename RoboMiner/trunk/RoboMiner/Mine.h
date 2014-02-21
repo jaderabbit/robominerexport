@@ -12,6 +12,16 @@ struct Block {
 	int type;
 	int index;
 
+	Block() {
+		type = 0;
+		index = 0;
+	}
+
+	Block( const Block &other ) {
+		this->type = other.type;
+		this->index = other.index;
+	}
+
 	bool Block::operator==(const Block &other) const {
 		return ( type == other.type);
 	}
