@@ -92,7 +92,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool 
 	return true;
 }
 
-int main(int argc, char* argv[]) 
+int main4(int argc, char* argv[]) 
 {
 	//int k;
 	//cin >> k;	*/
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 	d.total_iterations = convertInt( argv[6] );
 
 	d.max_path = 30;
-	d.total_iterations = 50000;
+	d.total_iterations = 10000;
 
 	cout << argv[1] << endl;
 	cout << argv[2] << endl;

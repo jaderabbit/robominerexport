@@ -880,8 +880,11 @@ void Robot::homingStep() {
 		destination.y = oldSinkPos.y;
 	} else if (state_counter == 0 && activity == FORAGE ||state_counter == 0 && activity == DESERTANT) {
 		//set the location of the cluster
-		clusterLocation.x =  pos.x;//remove
-		clusterLocation.y =  pos.y;//remove
+		if (activity!=DESERTANT)
+		{
+			clusterLocation.x =  pos.x;//remove
+			clusterLocation.y =  pos.y;//remove
+		}
 
 		destination.x = oldSinkPos.x;
 		destination.y = oldSinkPos.y;
