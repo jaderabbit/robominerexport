@@ -14,6 +14,12 @@ public:
 
 	//Generates file path and name
 	string generateFileName( EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc);
+	string generateSummaryResultFileName(EXPERIMENT_DESC _exp_desc, ENVIRONMENT_DESC _env_desc);
+	string generateSummaryFileHeader();
+	void writeSummaryResultFile();
+	string getEnvironmentResult(ENVIRONMENT_DESC _env_desc);
+	string getExperimentResult(EXPERIMENT_DESC _exp_desc);
+
 	void reset();
 	//outputs file
 

@@ -114,7 +114,7 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	EXPERIMENT_DESC d;
 	d.width = 50; d.height = 50;
 	d.number_objects = 700;
-	d.number_robots = 100;
+	d.number_robots = 1;
 	d.gold_waste_ratio = 1;
 	d.forager_explorer_ratio = 0.8f;
 	d.total_iterations = 10000;
@@ -126,11 +126,11 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	e.grid_size = 50;
 	e.num_objects = 20;
 	e.ratio_gold = 0.666667;
-	e.type = "uniform";
+	e.type = "clustered";
 	e.sink_boundary = 5;
 
 	Tools tools;
-	Experiment *cg = new DesertAntForage(tools);
+	Experiment *cg = new BasicForage(tools);
 	cg->setExperimentParam(d,e);
 
 	//intialize game
@@ -152,9 +152,9 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 		}
 		else
 		{		
-			//if ( t % 10 ==0 ) {
+			if ( t % 100 ==0 ) {
 				game.Update();
-			//}
+			}
 			t++;
 			game.RenderScene();
 		}

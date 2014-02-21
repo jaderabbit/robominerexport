@@ -19,6 +19,7 @@ Experiment::~Experiment(void)
 
 	for (int i=0; i < pbs.size(); i++) {
 		delete pbs[i];
+		pbs[i] = 0;
 	}
 
 	if (pb != NULL && pb->pm.size() > 0) {
@@ -174,8 +175,9 @@ void  Experiment::runAllSamples() {
 	//Save all experiments in the reader. 
 	resultWriter.setResults(pbs,desc,env_desc,getAlgorithmName());
 
+	resultWriter.writeSummaryResultFile();
 	//resultWriter.writeResultFile();
-	resultWriter.writeResultToSql(); //Database
+	//resultWriter.writeResultToSql(); //Database
 
 	//End of experiment
 }
@@ -199,7 +201,7 @@ string Experiment::getEnvironmentFileName() {
 	pb->attach( new ItemsForagedOverTime(RUN_GOLD) );
 	pb->attach( new ItemsForagedOverTime(RUN_WASTE));
 	pb->attach( new AverageTimeInState(PM_WAIT));
-	pb->attach( new Entropy(env_desc.grid_size,number_robots) );
+	//pb->attach( new Entropy(env_desc.grid_size,number_robots) );
 
  }
 

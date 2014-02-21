@@ -8,11 +8,13 @@
 #include <sstream>
 #include "Tools.h"
 #include "ClusterGeneration.h"
-#include "DatabaseClass.h"
+//#include "MemLeakDetect.h"
+//#include "DatabaseClass.h"
 
 //#define _CRTDBG_MAP_ALLOC
 //#include <stdlib.h>
 //#include <crtdbg.h>
+// Detect Memory Leaks
 
 using namespace std;
 
@@ -69,13 +71,13 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool 
 
 	if (runCheck)
 	{
-		DatabaseClass* db = new DatabaseClass("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
+		/*DatabaseClass* db = new DatabaseClass("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
 		db->CreateConnection();
 		bool exists = db->CheckResultExists(getAlgorithmId(e->getAlgorithmName()),d.gold_waste_division_ratio,d.number_robots,en.grid_size,en.num_objects,en.ratio_gold,getEnvironmentId(en.type));
 		db->CloseConnection();
 		delete db;
 		if (exists) 
-			return 1;
+			return 1;*/
 	}
 
 	//Set the experiment parameters
@@ -90,7 +92,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool 
 	return true;
 }
 
-int main4(int argc, char* argv[]) 
+int main(int argc, char* argv[]) 
 {
 	//int k;
 	//cin >> k;	*/
@@ -126,8 +128,8 @@ int main4(int argc, char* argv[])
 
 	//Grid sizes
 	//int grid_sizes[] = {50, 100, 200, 300,500};
-	//int grid_sizes[] = {50, 100, 200};
-	int grid_sizes[] = {300, 500};
+	int grid_sizes[] = {50, 100, 200};
+	//int grid_sizes[] = {300, 500};
 	vector<int> gridSize (grid_sizes, grid_sizes + sizeof(grid_sizes) / sizeof(int) );
 
 	//Object percentage
