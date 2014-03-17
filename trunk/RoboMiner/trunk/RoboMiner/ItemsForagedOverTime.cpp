@@ -34,7 +34,7 @@ void ItemsForagedOverTime::takeMeasure( vector<Robot>& robots)
 				{
 					if ( robots[0].mine->grid[i][j].type == GOLD && (measureType == GOLD_M || measureType == RUN_GOLD) ) {	
 							absoluteTotal++;
-					} else if ( robots[0].mine->grid[i][j].type == WASTE && measureType == WASTE_M || measureType == RUN_WASTE ) {	//Count Waste
+					} else if ( robots[0].mine->grid[i][j].type == WASTE && (measureType == WASTE_M || measureType == RUN_WASTE) ) {	//Count Waste
 							absoluteTotal++;
 					} 
 				}
