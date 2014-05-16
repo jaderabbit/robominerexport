@@ -198,9 +198,9 @@ string Experiment::getEnvironmentFileName() {
 }
 
  void Experiment::initializePerformanceMeasures() {
-	pb->attach( new ItemsForagedOverTime(RUN_GOLD) );
+	//pb->attach( new ItemsForagedOverTime(RUN_GOLD) );
 	pb->attach( new ItemsForagedOverTime(RUN_WASTE));
-	pb->attach( new AverageTimeInState(PM_WAIT));
+	//pb->attach( new AverageTimeInState(PM_WAIT));
 	//pb->attach( new Entropy(env_desc.grid_size,number_robots) );
 
  }

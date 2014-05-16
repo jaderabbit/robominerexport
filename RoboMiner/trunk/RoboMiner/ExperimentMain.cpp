@@ -148,7 +148,7 @@ LPTSTR createCommandlineString( ENVIRONMENT_DESC e, EXPERIMENT_DESC d) {
 //#include "SQLODBC.h"
 
 
-int main(int argc, char* argv[]) {
+int main4(int argc, char* argv[]) {
 
 	//Test Case 1	
 	/*EXPERIMENT_DESC d;

@@ -112,6 +112,19 @@ void BasicForage::initializeRobots() {
 		r.setInitialPosition(p.x,p.y);
 		r.setDir(d);
 
+		
+		r.setActivity(activity);
+		r.setStringTracker(s.str());
+		r.setMutualRobotAwareness(&robots);
+		r.setIndex(i);
+		r.setMaxPath(50);
+
+		//Performance bed
+		r.setPerformanceBed(pb);
+
+		//push back robot
+		robots.push_back(r);
+
 		if (desc.gold_waste_division_ratio < 1 && desc.gold_waste_division_ratio > 0 && i==0 ) { 
 			//if there ratio isnt only gold or only waste and is first. 
 			//This is to ensure there exists AT LEAST one gold forager.
@@ -142,17 +155,6 @@ void BasicForage::initializeRobots() {
 			wasteCount--;
 		} 
 
-		r.setActivity(activity);
-		r.setStringTracker(s.str());
-		r.setMutualRobotAwareness(&robots);
-		r.setIndex(i);
-		r.setMaxPath(50);
-
-		//Performance bed
-		r.setPerformanceBed(pb);
-
-		//push back robot
-		robots.push_back(r);
 
 	}
 }

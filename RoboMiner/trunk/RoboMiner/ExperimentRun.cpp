@@ -92,7 +92,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool 
 	return true;
 }
 
-int main4(int argc, char* argv[]) 
+int main(int argc, char* argv[]) 
 {
 	//int k;
 	//cin >> k;	*/
@@ -127,8 +127,8 @@ int main4(int argc, char* argv[])
 
 
 	//Grid sizes
-	//int grid_sizes[] = {50, 100, 200, 300,500};
-	int grid_sizes[] = {50, 100, 200};
+	//int grid_sizes[] = {50, 100, 200, 300};
+	int grid_sizes[] = {500};
 	//int grid_sizes[] = {300, 500};
 	vector<int> gridSize (grid_sizes, grid_sizes + sizeof(grid_sizes) / sizeof(int) );
 
@@ -170,9 +170,9 @@ int main4(int argc, char* argv[])
 
 						//Experiment
 					    vector<Experiment*> experiments;
-						//experiments.push_back( new BeeForage(t) );
+						experiments.push_back( new BeeForage(t) );
 						//experiments.push_back( new BasicForage(t) );
-						experiments.push_back (new DesertAntForage(t) );
+						//experiments.push_back (new DesertAntForage(t) );
 						//experiments.push_back ( new ClusterGeneration(t));
 
 						for (int v = 0; v < experiments.size(); v++ ) {
