@@ -118,7 +118,7 @@ int APIENTRY _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpC
 	d.gold_waste_ratio = 1;
 	d.forager_explorer_ratio = 0.8f;
 	d.total_iterations = 4000;
-	d.gold_waste_division_ratio =0.5;
+	d.gold_waste_division_ratio =0.75;
 	d.max_path = 50;
 	d.samples = 19;
 	ENVIRONMENT_DESC e;
