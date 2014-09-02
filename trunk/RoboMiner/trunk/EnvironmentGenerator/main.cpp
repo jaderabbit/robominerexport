@@ -44,8 +44,8 @@ void outputFile( string fname, vector<vector<int>> grid ) {
 	int waste = 0;
 	int robots = 0;
 	int sink_num = 0;
-	for (int j=0; j < grid.size(); j++) {
-		for (int i=0; i < grid.size(); i++) {
+	for (unsigned int j=0; j < grid.size(); j++) {
+		for (unsigned int i=0; i < grid.size(); i++) {
 			char a;
 			switch( grid[i][j] ) {
 				case 0: { a = '.'; break;}
@@ -121,8 +121,8 @@ vector<vector<int>> gaussianDistribution(int _num_objects, double _ratio_gold, i
 		bool empty = false;
 		while (!empty) {
 			//Choose type
-			int x_new = t.gaussianDistribution(center_x, (_grid_size)/2*_ratio_gold);
-			int y_new = t.gaussianDistribution(center_y, _grid_size/2*_ratio_gold);
+			int x_new = floor(t.gaussianDistribution(center_x, (_grid_size)/2*_ratio_gold));
+			int y_new = floor(t.gaussianDistribution(center_y, _grid_size/2*_ratio_gold));
 
 			if ( x_new > 0 && x_new < _grid_size && y_new > 0 && y_new < _grid_size ) {
 				//check if new position is empty. If so place
@@ -134,7 +134,7 @@ vector<vector<int>> gaussianDistribution(int _num_objects, double _ratio_gold, i
 		}
 	}
 
-	for (int i =  _ratio_gold*_num_objects; i < _num_objects; i++) {
+	for (unsigned int i =  floor(_ratio_gold*_num_objects); i < _num_objects; i++) {
 		bool empty = false;
 		int count = 0;
 		while (!empty) {
@@ -208,7 +208,7 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 		double m = (1.0*(a.y - b.y ))/(1.0*(a.x - b.x ));
 
 		//Calculate C
-		int c = a.y - m*a.x;
+		int c = round(a.y - m*a.x);
 
 		//Boundaries
 		int xbounds[2];
@@ -227,8 +227,8 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 				int y_new = (int) (m*x_new + c);
 
 				//Add gassian noise to it
-				x_new = t.gaussianDistribution(x_new,deviation);
-				y_new = t.gaussianDistribution(y_new,deviation);
+				x_new = round(t.gaussianDistribution(x_new,deviation));
+				y_new = round(t.gaussianDistribution(y_new,deviation));
 
 				//Check if valid position
 				if ( x_new >= 0 && x_new < _grid_size && y_new >= 0 && y_new < _grid_size) {
@@ -254,17 +254,17 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 	} //if 
 	else { //k=0
 		//Generate Points
-		for (int i=0; i < _ratio_gold*_num_objects; i++) {
+		for (int i=0; i < ceil(_ratio_gold*_num_objects); i++) {
 
 			bool empty = false;
 			int count = 0;
 			while (!empty) {
 
 				//Add guassian noise to a.x to get x_new
-				int x_new = t.gaussianDistribution(a.x,deviation);
+				int x_new = round(t.gaussianDistribution(a.x,deviation));
 
 				//Randomly choose y_new on valid domain
-				int y_new = t.random(0,_grid_size-1);
+				int y_new = round(t.random(0,_grid_size-1));
 
 
 				//Check if valid position
@@ -289,7 +289,7 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 	}
 	
 	//Generate Waste
-	for (int i =  _ratio_gold*_num_objects; i < _num_objects; i++) {
+	for (int i =  floor(_ratio_gold*_num_objects); i < _num_objects; i++) {
 		bool empty = false;
 		while (!empty) {
 
@@ -321,7 +321,7 @@ vector<vector<int>> veinDistribution(int _num_objects, double _ratio_gold, int _
 
 bool collision( vector<Coord> &centroids, vector<int> &radii, Coord c, int r ) {
 	int feather = 2;
-	for (int i=0; i < centroids.size(); i++) {
+	for (unsigned int i=0; i < centroids.size(); i++) {
 		if ( c.x < (centroids[i].x + radii[i]-feather) &&  c.x > (centroids[i].x - radii[i] +feather) ) { 
 			if ( c.y < (centroids[i].y + radii[i]-feather) &&  c.y > (centroids[i].y - radii[i] +feather) ) {
 				return false;
@@ -360,7 +360,7 @@ void alternateClusteredPerType(vector<vector<int>> &grid, vector<Coord> &centroi
 	c.y = t.random(0, _grid_size);
 
 	//Generate the number of objects for the cluster
-	int N_gold = t.random(floor(0.25*S_gold),floor(2*S_gold));
+	int N_gold = round(t.random(floor(0.25*S_gold),floor(2*S_gold)));
 
 	//Limit
 	if (N_gold > gold_count ) {
@@ -368,7 +368,7 @@ void alternateClusteredPerType(vector<vector<int>> &grid, vector<Coord> &centroi
 	}
 
 	//Calculate radius size
-	int r = sqrt(N_gold*1.0/(M_PI)) + 1;
+	int r = round(sqrt(N_gold*1.0/(M_PI)) + 1);
 
 	//Validation & regeneration
 	bool ok = false;
