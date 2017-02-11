@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2349A257-2103-495D-808B-997CECA5814A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>RoboMiner</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Visual Leak Detector\include;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Visual Leak Detector\lib\Win32;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Visual Leak Detector\include;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Visual Leak Detector\lib\Win32;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>ExtendedCorrectnessRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions> /EHsc %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>false</ExceptionHandling>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsManaged>false</CompileAsManaged>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3dx10.lib;d3d10.lib;%(AdditionalDependencies);</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsManaged>false</CompileAsManaged>
+      <ExceptionHandling>false</ExceptionHandling>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/EHsc %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3dx10.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <Profile>true</Profile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AverageDistance.cpp" />
+    <ClCompile Include="AverageTimeInState.cpp" />
+    <ClCompile Include="BasicForage.cpp" />
+    <ClCompile Include="BasicForageGoldOnly.cpp" />
+    <ClCompile Include="BasicForagingState.cpp" />
+    <ClCompile Include="Clusterer.cpp" />
+    <ClCompile Include="BeeForage.cpp" />
+    <ClCompile Include="ClusterGeneration.cpp" />
+    <ClCompile Include="ClusterState.cpp" />
+    <ClCompile Include="DesertAnt.cpp" />
+    <ClCompile Include="DesertAntForage.cpp" />
+    <ClCompile Include="DXRenderer.cpp" />
+    <ClCompile Include="Entropy.cpp" />
+    <ClCompile Include="Experiment.cpp" />
+    <ClCompile Include="ExperimentMain.cpp" />
+    <ClCompile Include="ExperimentRun.cpp" />
+    <ClCompile Include="Explorer.cpp" />
+    <ClCompile Include="ExploreState.cpp" />
+    <ClCompile Include="Forager.cpp" />
+    <ClCompile Include="ForageState.cpp" />
+    <ClCompile Include="FrequencyHistogramTool.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="ItemsForagedOverTime.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mine.cpp" />
+    <ClCompile Include="mt.cc" />
+    <ClCompile Include="mtrand.cpp" />
+    <ClCompile Include="PerformanceBed.cpp" />
+    <ClCompile Include="PerformanceMeasure.cpp" />
+    <ClCompile Include="ResultWriter.cpp" />
+    <ClCompile Include="Robot.cpp" />
+    <ClCompile Include="RobotState.cpp" />
+    <ClCompile Include="sfmt.cpp" />
+    <ClCompile Include="StatisticsHandler.cpp" />
+    <ClCompile Include="Tools.cpp" />
+    <ClCompile Include="Update.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AverageDistance.h" />
+    <ClInclude Include="AverageTimeInState.h" />
+    <ClInclude Include="BasicForage.h" />
+    <ClInclude Include="BasicForageGoldOnly.h" />
+    <ClInclude Include="BasicForagingState.h" />
+    <ClInclude Include="BeeForage.h" />
+    <ClInclude Include="ClusterGeneration.h" />
+    <ClInclude Include="ClusterState.h" />
+    <ClInclude Include="CoordinateConversions.h" />
+    <ClInclude Include="DesertAnt.h" />
+    <ClInclude Include="DesertAntForage.h" />
+    <ClInclude Include="DXRenderer.h" />
+    <ClInclude Include="Entropy.h" />
+    <ClInclude Include="ENVIRONMENT_DESC.h" />
+    <ClInclude Include="Experiment.h" />
+    <ClInclude Include="EXPERIMENT_DESC.h" />
+    <ClInclude Include="ExploreState.h" />
+    <ClInclude Include="FatalError.h" />
+    <ClInclude Include="ForageState.h" />
+    <ClInclude Include="FrequencyHistogramTool.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="ItemsForagedOverTime.h" />
+    <ClInclude Include="Mine.h" />
+    <ClInclude Include="mt.h" />
+    <ClInclude Include="mtrand.h" />
+    <ClInclude Include="PerformanceBed.h" />
+    <ClInclude Include="PerformanceMeasure.h" />
+    <ClInclude Include="randomc.h" />
+    <ClInclude Include="ResultWriter.h" />
+    <ClInclude Include="Robot.h" />
+    <ClInclude Include="RobotState.h" />
+    <ClInclude Include="sfmt.h" />
+    <ClInclude Include="TileRenderGraph.h" />
+    <ClInclude Include="Tools.h" />
+    <ClInclude Include="Types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAnalysisTool\DataAnalysisTool.vcxproj">
+      <Project>{975d75b0-96d2-405b-aada-f52355725e42}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GS.fx" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

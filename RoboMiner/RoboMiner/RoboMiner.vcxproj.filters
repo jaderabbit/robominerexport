@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Robots">
+      <UniqueIdentifier>{67154647-4ad9-4a94-bb07-f2c1244360c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment">
+      <UniqueIdentifier>{b7a16b44-ee64-4663-9d42-7afa5a215e02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{540ecb41-8079-424c-bc60-41a483a1a839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataAnalysis">
+      <UniqueIdentifier>{1e4a1b98-ec15-40c6-b883-8856bbb71c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Visualizer">
+      <UniqueIdentifier>{2644407a-3e17-488d-9870-0395d2b21fbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RobotState">
+      <UniqueIdentifier>{8df6bcca-bb4a-42b3-a7cb-f4de5ae04afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RobotState\ExplorerForager">
+      <UniqueIdentifier>{98516377-c7e4-4b98-81ef-fc5b5a2b4091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RobotState\UncollabForage">
+      <UniqueIdentifier>{31842c64-ca54-431c-a842-eaa0fa7719ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RobotState\Cluster">
+      <UniqueIdentifier>{79f2f43d-1c82-45e4-b515-0bbb8f2bf7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\New Mersenne Twister">
+      <UniqueIdentifier>{f752eaf4-89bc-447e-a378-10f47ef16206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Old Mersenne Twister">
+      <UniqueIdentifier>{7e7fa4de-aef0-4388-9a0c-534ef33d209a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment">
+      <UniqueIdentifier>{be8a2e6c-faed-4fa2-ad53-9477c50c80a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\Descriptors">
+      <UniqueIdentifier>{94ecb0ae-4a4d-455c-b582-cd1f5bdb0f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\Performance Measures">
+      <UniqueIdentifier>{328a66c7-2742-477f-b940-299d460d9d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Results">
+      <UniqueIdentifier>{59123268-d48e-4aa4-8b14-9211bb3398a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\Performance Measures\PerIteration">
+      <UniqueIdentifier>{9e9f7430-c268-44ea-9f60-adc5f478e963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\Performance Measures\PerSample">
+      <UniqueIdentifier>{91f174b4-7cf7-4529-b269-0c07252f3542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\BeeForage Experiment">
+      <UniqueIdentifier>{7b248b50-017f-4705-833d-52635b9e0fbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\BasicForage">
+      <UniqueIdentifier>{34db5c2d-6ebc-4093-9ef8-605b3f757152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\BasicForage\GoldOnly">
+      <UniqueIdentifier>{1eb1d6a6-2627-4036-b74d-584def973679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\DesertAntForage Experiment">
+      <UniqueIdentifier>{529b07b3-6868-48db-b02b-edd1a8bcabc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RobotState\DesertAnt">
+      <UniqueIdentifier>{13a076a9-a71c-44f1-8c56-8cb5566dc812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\ThreadSafeMersenneTwister">
+      <UniqueIdentifier>{65d26184-1b60-4b98-9afd-2c6cb388453f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Experiment\ClusterGeneration">
+      <UniqueIdentifier>{99d8ad7f-471c-4256-bdd3-966fa34cc337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SQL Managed">
+      <UniqueIdentifier>{3f0f1616-fb26-4fda-8717-eba7622236f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SQL Native">
+      <UniqueIdentifier>{44794584-9a2f-4513-b69a-caa323ed0e54}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Forager.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="Mine.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="Robot.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Explorer.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="Clusterer.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="StatisticsHandler.cpp">
+      <Filter>Robots</Filter>
+    </ClCompile>
+    <ClCompile Include="FrequencyHistogramTool.cpp">
+      <Filter>DataAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="DXRenderer.cpp">
+      <Filter>Visualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Visualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>Visualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Update.cpp">
+      <Filter>Visualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="RobotState.cpp">
+      <Filter>RobotState</Filter>
+    </ClCompile>
+    <ClCompile Include="ExploreState.cpp">
+      <Filter>RobotState\ExplorerForager</Filter>
+    </ClCompile>
+    <ClCompile Include="mtrand.cpp">
+      <Filter>Tools\New Mersenne Twister</Filter>
+    </ClCompile>
+    <ClCompile Include="mt.cc">
+      <Filter>Tools\Old Mersenne Twister</Filter>
+    </ClCompile>
+    <ClCompile Include="ForageState.cpp">
+      <Filter>RobotState\ExplorerForager</Filter>
+    </ClCompile>
+    <ClCompile Include="ClusterState.cpp">
+      <Filter>RobotState\Cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicForagingState.cpp">
+      <Filter>RobotState\UncollabForage</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultWriter.cpp">
+      <Filter>Results</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeForage.cpp">
+      <Filter>Experiment\BeeForage Experiment</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicForage.cpp">
+      <Filter>Experiment\BasicForage</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicForageGoldOnly.cpp">
+      <Filter>Experiment\BasicForage\GoldOnly</Filter>
+    </ClCompile>
+    <ClCompile Include="ExperimentMain.cpp" />
+    <ClCompile Include="DesertAntForage.cpp">
+      <Filter>Experiment\DesertAntForage Experiment</Filter>
+    </ClCompile>
+    <ClCompile Include="DesertAnt.cpp">
+      <Filter>RobotState\DesertAnt</Filter>
+    </ClCompile>
+    <ClCompile Include="sfmt.cpp">
+      <Filter>Tools\ThreadSafeMersenneTwister</Filter>
+    </ClCompile>
+    <ClCompile Include="ExperimentRun.cpp" />
+    <ClCompile Include="ClusterGeneration.cpp">
+      <Filter>Experiment\ClusterGeneration</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageDistance.cpp">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClCompile>
+    <ClCompile Include="AverageTimeInState.cpp">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClCompile>
+    <ClCompile Include="Entropy.cpp">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemsForagedOverTime.cpp">
+      <Filter>Experiment\Performance Measures\PerIteration</Filter>
+    </ClCompile>
+    <ClCompile Include="Experiment.cpp">
+      <Filter>Experiment</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceBed.cpp">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceMeasure.cpp">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Robot.h">
+      <Filter>Robots</Filter>
+    </ClInclude>
+    <ClInclude Include="Mine.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="FrequencyHistogramTool.h">
+      <Filter>DataAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateConversions.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXRenderer.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="FatalError.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="TileRenderGraph.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Visualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="RobotState.h">
+      <Filter>RobotState</Filter>
+    </ClInclude>
+    <ClInclude Include="ExploreState.h">
+      <Filter>RobotState\ExplorerForager</Filter>
+    </ClInclude>
+    <ClInclude Include="mtrand.h">
+      <Filter>Tools\New Mersenne Twister</Filter>
+    </ClInclude>
+    <ClInclude Include="mt.h">
+      <Filter>Tools\Old Mersenne Twister</Filter>
+    </ClInclude>
+    <ClInclude Include="ForageState.h">
+      <Filter>RobotState\ExplorerForager</Filter>
+    </ClInclude>
+    <ClInclude Include="ClusterState.h">
+      <Filter>RobotState\Cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="EXPERIMENT_DESC.h">
+      <Filter>Experiment\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicForagingState.h">
+      <Filter>RobotState\UncollabForage</Filter>
+    </ClInclude>
+    <ClInclude Include="ENVIRONMENT_DESC.h">
+      <Filter>Experiment\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultWriter.h">
+      <Filter>Results</Filter>
+    </ClInclude>
+    <ClInclude Include="BeeForage.h">
+      <Filter>Experiment\BeeForage Experiment</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicForage.h">
+      <Filter>Experiment\BasicForage</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicForageGoldOnly.h">
+      <Filter>Experiment\BasicForage\GoldOnly</Filter>
+    </ClInclude>
+    <ClInclude Include="DesertAntForage.h">
+      <Filter>Experiment\DesertAntForage Experiment</Filter>
+    </ClInclude>
+    <ClInclude Include="DesertAnt.h">
+      <Filter>RobotState\DesertAnt</Filter>
+    </ClInclude>
+    <ClInclude Include="sfmt.h">
+      <Filter>Tools\ThreadSafeMersenneTwister</Filter>
+    </ClInclude>
+    <ClInclude Include="randomc.h">
+      <Filter>Tools\ThreadSafeMersenneTwister</Filter>
+    </ClInclude>
+    <ClInclude Include="ClusterGeneration.h">
+      <Filter>Experiment\ClusterGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageDistance.h">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClInclude>
+    <ClInclude Include="AverageTimeInState.h">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClInclude>
+    <ClInclude Include="Entropy.h">
+      <Filter>Experiment\Performance Measures\PerSample</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemsForagedOverTime.h">
+      <Filter>Experiment\Performance Measures\PerIteration</Filter>
+    </ClInclude>
+    <ClInclude Include="Experiment.h">
+      <Filter>Experiment</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceBed.h">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceMeasure.h">
+      <Filter>Experiment\Performance Measures</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GS.fx">
+      <Filter>Visualizer</Filter>
+    </None>
+  </ItemGroup>
+</Project>
