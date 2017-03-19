@@ -20,8 +20,8 @@ SpecializationRatioOverTime::~SpecializationRatioOverTime(void)
 
 void SpecializationRatioOverTime::takeMeasure( vector<Robot>& robots) 
 {
-  gold_total = 0;
-  waste_total = 0;
+  int gold_total = 0;
+  int waste_total = 0;
 
   for (unsigned int i=0; i < robots.size(); i++) 
   {

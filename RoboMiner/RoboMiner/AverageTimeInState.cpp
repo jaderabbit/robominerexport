@@ -20,7 +20,7 @@ void AverageTimeInState::takeMeasure( vector<Robot>& robots)
 {
 	//Increment time counter
 	time++;
-
+	num_robots = robots.size();
 	//For each robot
 	for (int i=0; i < robots.size(); i++) {
 		//If the previous state of the robot is not equal to the current state then
@@ -35,7 +35,7 @@ void AverageTimeInState::takeMeasure( vector<Robot>& robots)
 }
 
 void AverageTimeInState::finalize() {
-	finalStatistic = (totalItemsForaged <= 0) ? 0 : (totalItemsForaged > 0) ?  totalTimeSpentInState/(1.0*totalItemsForaged)/(robots.size()*1.0) :  0; :  0;
+	finalStatistic = (totalItemsForaged <= 0) ? 0 : (totalItemsForaged > 0) ?  totalTimeSpentInState/(1.0*totalItemsForaged)/(num_robots*1.0) :  0;
 	measurement.push_back(finalStatistic);
 }
 

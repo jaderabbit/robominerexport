@@ -32,6 +32,7 @@ private:
 	int totalItemsForaged;
 	int totalTimeSpentInState;
 	double finalStatistic;
+	int num_robots;
 
 };
 
