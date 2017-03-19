@@ -29,7 +29,8 @@ private:
 	int time;
 	vector<int> timeSpentInStatePerRobot;
 	vector<int> itemsForagedPerRobot;
-
+	int totalItemsForaged;
+	int totalTimeSpentInState;
 	double finalStatistic;
 
 };

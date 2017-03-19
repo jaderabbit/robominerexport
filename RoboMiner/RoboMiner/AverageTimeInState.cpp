@@ -18,16 +18,6 @@ AverageTimeInState::AverageTimeInState( int _state) : PerformanceMeasure(), stat
 
 void AverageTimeInState::takeMeasure( vector<Robot>& robots) 
 {
-	//Initialize arrays storing measures
-	if ( time == 0 )
-	{
-		for (int i=0; i < robots.size(); i++) 
-		{
-			timeSpentInStatePerRobot.push_back(0);
-			itemsForagedPerRobot.push_back(0);
-		}
-	}
-
 	//Increment time counter
 	time++;
 
@@ -35,23 +25,17 @@ void AverageTimeInState::takeMeasure( vector<Robot>& robots)
 	for (int i=0; i < robots.size(); i++) {
 		//If the previous state of the robot is not equal to the current state then
 		if ( getState(robots[i].getState()) == state ) {
-			timeSpentInStatePerRobot[i]++;
+			totalTimeSpentInState++;
 		}
 		if ( robots[i].foraged ) {
-			itemsForagedPerRobot[i]++;
+			totalItemsForaged++;
 		}
 	}
+
 }
 
 void AverageTimeInState::finalize() {
-	double totalTimeInState = 0;
-	double totalItemsForaged = 0;
-	for (int i=0; i < timeSpentInStatePerRobot.size(); i++) {
-		totalTimeInState+= timeSpentInStatePerRobot[i];
-		totalItemsForaged+= itemsForagedPerRobot[i];
-	}
-
-	finalStatistic = (timeSpentInStatePerRobot.size() <= 0) ? 0 : (totalItemsForaged > 0) ?  totalTimeInState/totalItemsForaged/30.0/timeSpentInStatePerRobot.size() :  0;
+	finalStatistic = (totalItemsForaged <= 0) ? 0 : (totalItemsForaged > 0) ?  totalTimeSpentInState/(1.0*totalItemsForaged)/(robots.size()*1.0) :  0; :  0;
 	measurement.push_back(finalStatistic);
 }
 

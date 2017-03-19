@@ -193,17 +193,23 @@ string Experiment::getEnvironmentFileName() {
 	fileName << "_size_" << env_desc.grid_size;
 	fileName << "_obj_" << env_desc.num_objects;
 	fileName << "_ratio_" << env_desc.ratio_gold;
-	fileName << "_sim_" << sampleCount << ".txt";
+	//fileName << "_sim_" << sampleCount << ".txt";
+	fileName << "_sim_" << 0 << ".txt"; //make it always use the same environment per sample
 	return fileName.str();
 }
 
- void Experiment::initializePerformanceMeasures() {
-	//pb->attach( new ItemsForagedOverTime(RUN_GOLD) );
+void Experiment::initializePerformanceMeasures() {
+	pb->attach( new ItemsForagedOverTime(RUN_GOLD) );
 	pb->attach( new ItemsForagedOverTime(RUN_WASTE));
-	//pb->attach( new AverageTimeInState(PM_WAIT));
+
+	// Track these guys as they're the division of labour related requests
+	pb->attach( new AverageTimeInState(WAITING)); // How much time are we wasting waiting
+	pb->attach( new AverageTimeInState(RECRUITING)); //How often are we recruiting and are we recruiting in uniform environments
+	pb->attach( new AverageTimeInState(CHOOSE_ACTIVITY)); //How often are we switching - are we switching in uniform environments
+
 	//pb->attach( new Entropy(env_desc.grid_size,number_robots) );
 
- }
+}
 
  void Experiment::addPerformanceMeasure( PerformanceMeasure * pm) {
 	 pb->attach( pm );
