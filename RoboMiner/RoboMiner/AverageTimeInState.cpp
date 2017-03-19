@@ -14,6 +14,9 @@ AverageTimeInState::~AverageTimeInState(void)
 AverageTimeInState::AverageTimeInState( int _state) : PerformanceMeasure(), state(_state)
 {
 	time = 0;
+	finalValue =true;
+	totalTimeSpentInState = 0;
+	totalItemsForaged = 0;
 }
 
 void AverageTimeInState::takeMeasure( vector<Robot>& robots) 
@@ -41,26 +44,26 @@ void AverageTimeInState::finalize() {
 
 int AverageTimeInState::getState(int _state) {
 		switch (_state) {
-		//Locating
-		case LOCATING: return PM_FORAGE;
-		case LOCAL_CLUSTER_SEARCH: return PM_FORAGE;
-		case LOADING: return PM_FORAGE;
+			//Locating
+			case LOCATING: return PM_FORAGE;
+			case LOCAL_CLUSTER_SEARCH: return PM_FORAGE;
+			case LOADING: return PM_FORAGE;
 
-		//Exploring
-		case EXPLORING: return PM_EXPLORE;
+			//Exploring
+			case EXPLORING: return PM_EXPLORE;
 
-		//Returning
-		case HOMING : return PM_RETURN;
-		case BEACON_HOMING : return PM_RETURN;
+			//Returning
+			case HOMING : return PM_RETURN;
+			case BEACON_HOMING : return PM_RETURN;
 
-		//Waiting
-		case WAITING : return PM_WAIT;
+			//Waiting
+			case WAITING : return PM_WAIT;
 
-		//Recruiting
-		case RECRUITING : return PM_RECRUIT;
-
-		//default
-		default: return PM_OTHER;
+			//Recruiting
+			case RECRUITING : return PM_RECRUIT;
+			case CHOOSE_ACTIVITY: return PM_CHOOSE_ACTIVITY;
+			//default
+			default: return PM_OTHER;
 	}
 }
 
@@ -71,6 +74,7 @@ string AverageTimeInState::getStateName( int _state) {
 		case PM_RECRUIT: return "RECRUIT";
 		case PM_RETURN: return "RETURN";
 		case PM_WAIT: return "WAIT"; 
+		case PM_CHOOSE_ACTIVITY: return "CHOOSE_ACTIVITY";
 		default: return "OTHER";
 	}
 }
@@ -88,7 +92,7 @@ bool AverageTimeInState::isNext() {
 
 string AverageTimeInState::getNext() {
 	stringstream s1;
-	if (timer < time ) {
+	if (timer < time-1 ) {
 		timer++;
 		return "";
 	} else {		

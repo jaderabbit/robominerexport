@@ -26,6 +26,7 @@ protected:
 
 	vector<double> measurement;
 	int timer;
+	bool finalValue;
 	//stringstream s; 
 };
 

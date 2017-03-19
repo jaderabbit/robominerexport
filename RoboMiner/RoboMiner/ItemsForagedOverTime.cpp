@@ -95,5 +95,5 @@ double ItemsForagedOverTime::getNextValue() {
 
 double ItemsForagedOverTime::getFinalValue() {
 	//Return ratio at end
-	return ( absoluteTotal > 0 ) ? running_sum/absoluteTotal : 1;
+	return ( absoluteTotal > 0 ) ? running_sum/absoluteTotal : 0;
 }

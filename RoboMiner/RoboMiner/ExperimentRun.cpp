@@ -69,8 +69,8 @@ int getEnvironmentId( string type)
 bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool runCheck ) 
 {
 
-	if (runCheck)
-	{
+	//if (runCheck)
+	//{
 		/*DatabaseClass* db = new DatabaseClass("Data Source=JADE-PC;Initial Catalog=Experiment;Integrated Security=True");
 		db->CreateConnection();
 		bool exists = db->CheckResultExists(getAlgorithmId(e->getAlgorithmName()),d.gold_waste_division_ratio,d.number_robots,en.grid_size,en.num_objects,en.ratio_gold,getEnvironmentId(en.type));
@@ -78,7 +78,7 @@ bool runExperiment( Experiment* e, EXPERIMENT_DESC d, ENVIRONMENT_DESC en, bool 
 		delete db;
 		if (exists) 
 			return 1;*/
-	}
+	//}
 
 	//Set the experiment parameters
 	e->setExperimentParam(d,en);
@@ -122,29 +122,29 @@ int main(int argc, char* argv[])
 	//Setup all the parameters to be run.
 	//Environment types
 
-	string environment_types[] = {"vein","gaussian", "clustered","uniform"};
+	string environment_types[] = {"gaussian","vein", "clustered","uniform"};
 	int num_environment_types = 4;
 
 
 	//Grid sizes
-	//int grid_sizes[] = {50, 100, 200, 300};
-	int grid_sizes[] = {500};
+	int grid_sizes[] = {50, 100, 200, 300, 500};
+	//int grid_sizes[] = {500};
 	//int grid_sizes[] = {300, 500};
 	vector<int> gridSize (grid_sizes, grid_sizes + sizeof(grid_sizes) / sizeof(int) );
 
 	//Object percentage
-	int percentage_objects[] = { 5, 20, 50, 70, 90 };
+	int percentage_objects[] = { 90, 5, 20, 50, 70};
 	vector<int> objectPercentage (percentage_objects, percentage_objects + sizeof(percentage_objects) / sizeof(int) );
 
 	//-------------Experiment parameters. Innermost loops----------------------
 	//Number of robots
-	int num_robots[] = {10, 30, 50, 70, 100 };
+	int num_robots[] = { 100, 10, 30, 50, 70};
 	vector<int> numRobots (num_robots, num_robots + sizeof(num_robots) / sizeof(int) );
 
 	//Experiments
 
 	//Gold waste division ratio
-	double gold_waste_robot_division[] = {  0, 0.2, 0.25, 0.33333333, 0.5, 0.666666667, 0.75, 0.8, 1  };
+	double gold_waste_robot_division[] = {  0.8, 1, 0, 0.2, 0.25, 0.33333333, 0.5, 0.666666667, 0.75 };
 	vector<double> goldWasteRobotDiv (gold_waste_robot_division, gold_waste_robot_division + sizeof(gold_waste_robot_division) / sizeof(double) );
 
 	//Environment Types
@@ -171,8 +171,8 @@ int main(int argc, char* argv[])
 						//Experiment
 					    vector<Experiment*> experiments;
 						experiments.push_back( new BeeForage(t) );
-						//experiments.push_back( new BasicForage(t) );
-						//experiments.push_back (new DesertAntForage(t) );
+						experiments.push_back( new BasicForage(t) );
+						experiments.push_back (new DesertAntForage(t) );
 						//experiments.push_back ( new ClusterGeneration(t));
 
 						for (int v = 0; v < experiments.size(); v++ ) {

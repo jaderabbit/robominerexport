@@ -3,6 +3,7 @@
 
 AverageDistance::AverageDistance(void) : PerformanceMeasure()
 {
+	finalValue = true;
 }
 
 

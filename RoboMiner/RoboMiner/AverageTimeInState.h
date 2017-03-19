@@ -1,7 +1,7 @@
 #pragma once
 #include "PerformanceMeasure.h"
 
-enum {PM_EXPLORE, PM_RETURN, PM_FORAGE, PM_WAIT, PM_RECRUIT, PM_OTHER };
+enum {PM_EXPLORE, PM_RETURN, PM_FORAGE, PM_WAIT, PM_RECRUIT, PM_OTHER, PM_CHOOSE_ACTIVITY };
 
 class AverageTimeInState :
 	public PerformanceMeasure

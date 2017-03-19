@@ -3,6 +3,7 @@
 
 PerformanceMeasure::PerformanceMeasure() {
 	timer = 0;
+	finalValue = false;
 }
 
 

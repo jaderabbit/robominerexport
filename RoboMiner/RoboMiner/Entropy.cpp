@@ -9,6 +9,7 @@ Entropy::Entropy( int _gridSize, int _numRobots ) : PerformanceMeasure(),gridSiz
 {
 	//Initialize time
 	time = 0;
+    finalValue = true;
 	
 	//Initialize grid per robot
 	for (int i=0; i < _numRobots; i++) {

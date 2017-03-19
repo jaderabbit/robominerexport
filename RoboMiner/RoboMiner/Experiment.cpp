@@ -2,6 +2,7 @@
 
 #include "ItemsForagedOverTime.h"
 #include "AverageTimeInState.h"
+#include "SpecializationRatioOverTime.h"
 #include "Entropy.h"
 
 Experiment::Experiment(void) : sampleCount(0), cnt(0), pb(0)
@@ -176,7 +177,7 @@ void  Experiment::runAllSamples() {
 	resultWriter.setResults(pbs,desc,env_desc,getAlgorithmName());
 
 	resultWriter.writeSummaryResultFile();
-	//resultWriter.writeResultFile();
+	resultWriter.writeResultFile();
 	//resultWriter.writeResultToSql(); //Database
 
 	//End of experiment
@@ -201,11 +202,12 @@ string Experiment::getEnvironmentFileName() {
 void Experiment::initializePerformanceMeasures() {
 	pb->attach( new ItemsForagedOverTime(RUN_GOLD) );
 	pb->attach( new ItemsForagedOverTime(RUN_WASTE));
+	pb->attach( new SpecializationRatioOverTime());
 
 	// Track these guys as they're the division of labour related requests
-	pb->attach( new AverageTimeInState(WAITING)); // How much time are we wasting waiting
-	pb->attach( new AverageTimeInState(RECRUITING)); //How often are we recruiting and are we recruiting in uniform environments
-	pb->attach( new AverageTimeInState(CHOOSE_ACTIVITY)); //How often are we switching - are we switching in uniform environments
+	pb->attach( new AverageTimeInState(PM_WAIT)); // How much time are we wasting waiting
+	pb->attach( new AverageTimeInState(PM_RECRUIT)); //How often are we recruiting and are we recruiting in uniform environments
+	//pb->attach( new AverageTimeInState(PM_CHOOSE_ACTIVITY)); //How often are we switching - are we switching in uniform environments
 
 	//pb->attach( new Entropy(env_desc.grid_size,number_robots) );
 
